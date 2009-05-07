@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+
+    <input-mapper>
+      <input-attribute name="webbisId" scope="flow" />
+      <input-attribute name="SearchCriteria" scope="flow" />
+    </input-mapper>
+  
+	<start-state idref="showWebbis" />
+
+	<action-state id="showWebbis">
+		<bean-action bean="Webbisar.WebbisarFlowSupport" method="getWebbis">
+			<method-arguments>
+				<argument expression="flowScope.webbisId" />
+                <argument expression="flowScope.selectedImage" parameter-type="java.lang.Integer"/>
+			</method-arguments>
+			<method-result name="Webbis" scope="flow" />
+		</bean-action>
+		<transition on="success" to="viewPage" />
+	</action-state>
+
+	<view-state id="viewPage" view="/Webbisar_viewWebbis.xhtml">
+        <transition on="selectWebbisImageAction" to="showWebbis">
+          <set attribute="selectedImage" scope="flow" value="requestParameters.selectedImage" />
+        </transition>
+		<transition on="backToWebbisarAction" to="finish" />
+        <transition on="searchForWebbisAction" to="search"/>
+	</view-state>
+	
+    <end-state id="search"/>
+  
+	<end-state id="finish" />
+
+</flow>

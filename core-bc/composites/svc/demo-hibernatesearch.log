@@ -1,0 +1,2 @@
+2009-01-15 14:57:07,351 [main] WARN  org.hibernate.search.store.DirectoryProviderHelper  - Index directory not found, creating: '/Users/sofiajonsson/Documents/VGR/webbisar/workspace/trunk/core-bc/composites/svc/./lucene/indexes'
+2009-01-15 14:57:07,354 [main] WARN  org.hibernate.search.store.DirectoryProviderHelper  - Index directory not found, creating: '/Users/sofiajonsson/Documents/VGR/webbisar/workspace/trunk/core-bc/composites/svc/./lucene/indexes/se.vgr.webbisar.types.Webbis'
