@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <context:property-placeholder location="classpath:application.properties"/>
+    <!-- Enable Fine-Grained Autowiring with Annotations -->
+    <context:annotation-config/>
+    <!-- Scans for @Repository, @Service and @Component -->
+    <context:component-scan base-package="se.vgr.webbisar"/>
+
+    <!-- Spring2 Annotation Transaction, similar to EJB3 @TransactionAttribute -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+        
+    <!-- Spring2 @AspectJ -->
+    <aop:aspectj-autoproxy/>
+    <!-- Override Annotation Transaction -->
+    <aop:config>
+    	<!-- Declare Aspect -->
+        <aop:advisor id="txnAspect" advice-ref="txnAdvice" pointcut="execution(* *..service.*Manager.*(..))"/>
+    </aop:config>
+    <tx:advice id="txnAdvice">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <bean id="configuration" class="se.vgr.webbisar.svc.impl.ConfigurationImpl">
+      <property name="imageBaseDir" value="empty"/>
+      <property name="imageSize" value="1024x768"/>
+      <property name="imageQuality" value="95"/>
+    </bean>
+    
+</beans>

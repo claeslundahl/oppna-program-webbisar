@@ -1,0 +1,160 @@
+2009-01-16 10:23:59,672 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6782a9: display name [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]; startup date [Fri Jan 16 10:23:59 CET 2009]; root of context hierarchy
+2009-01-16 10:23:59,735 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext.xml]
+2009-01-16 10:24:00,190 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+2009-01-16 10:24:00,227 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]: org.springframework.beans.factory.support.DefaultListableBeanFactory@474392
+2009-01-16 10:24:00,331 [main] INFO  org.springframework.beans.factory.config.PropertyPlaceholderConfigurer  - Loading properties file from class path resource [database.properties]
+2009-01-16 10:24:00,393 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@474392: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,webbisDao,webbisService,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,txnAspect,txnAdvice,dataSource,entityManagerFactory,jpaDialect,transactionManager]; root of factory hierarchy
+2009-01-16 10:24:00,716 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Building JPA container EntityManagerFactory for persistence unit 'dbschema'
+2009-01-16 10:25:05,309 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6782a9: display name [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]; startup date [Fri Jan 16 10:25:05 CET 2009]; root of context hierarchy
+2009-01-16 10:25:05,389 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext.xml]
+2009-01-16 10:25:05,852 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+2009-01-16 10:25:05,888 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]: org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78
+2009-01-16 10:25:05,988 [main] INFO  org.springframework.beans.factory.config.PropertyPlaceholderConfigurer  - Loading properties file from class path resource [database.properties]
+2009-01-16 10:25:06,045 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,webbisDao,webbisService,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,txnAspect,txnAdvice,dataSource,entityManagerFactory,jpaDialect,transactionManager]; root of factory hierarchy
+2009-01-16 10:25:06,355 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Building JPA container EntityManagerFactory for persistence unit 'dbschema'
+2009-01-16 10:25:51,430 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6782a9: display name [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]; startup date [Fri Jan 16 10:25:51 CET 2009]; root of context hierarchy
+2009-01-16 10:25:51,492 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext.xml]
+2009-01-16 10:25:51,946 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+2009-01-16 10:25:51,982 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]: org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78
+2009-01-16 10:25:52,081 [main] INFO  org.springframework.beans.factory.config.PropertyPlaceholderConfigurer  - Loading properties file from class path resource [database.properties]
+2009-01-16 10:25:52,140 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,webbisDao,webbisService,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,txnAspect,txnAdvice,dataSource,entityManagerFactory,jpaDialect,transactionManager]; root of factory hierarchy
+2009-01-16 10:25:52,452 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Building JPA container EntityManagerFactory for persistence unit 'dbschema'
+2009-01-16 10:26:54,437 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6782a9: display name [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]; startup date [Fri Jan 16 10:26:54 CET 2009]; root of context hierarchy
+2009-01-16 10:26:54,500 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext.xml]
+2009-01-16 10:26:55,041 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+2009-01-16 10:26:55,077 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]: org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78
+2009-01-16 10:26:55,177 [main] INFO  org.springframework.beans.factory.config.PropertyPlaceholderConfigurer  - Loading properties file from class path resource [database.properties]
+2009-01-16 10:26:55,235 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,webbisDao,webbisService,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,txnAspect,txnAdvice,dataSource,entityManagerFactory,jpaDialect,transactionManager]; root of factory hierarchy
+2009-01-16 10:26:55,548 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Building JPA container EntityManagerFactory for persistence unit 'dbschema'
+2009-01-16 10:27:04,401 [main] WARN  org.hibernate.util.JDBCExceptionReporter  - SQL Error: 0, SQLState: null
+2009-01-16 10:27:04,401 [main] ERROR org.hibernate.util.JDBCExceptionReporter  - failed batch
+2009-01-16 10:27:04,402 [main] ERROR org.hibernate.event.def.AbstractFlushingEventListener  - Could not synchronize database state with session
+org.hibernate.exception.GenericJDBCException: Could not execute JDBC batch update
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:126)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:114)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:66)
+	at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:275)
+	at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:266)
+	at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:171)
+	at org.hibernate.event.def.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:321)
+	at org.hibernate.event.def.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:50)
+	at org.hibernate.impl.SessionImpl.flush(SessionImpl.java:1027)
+	at org.hibernate.impl.SessionImpl.managedFlush(SessionImpl.java:365)
+	at org.hibernate.transaction.JDBCTransaction.commit(JDBCTransaction.java:137)
+	at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:54)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:456)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:709)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:678)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:321)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:116)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:89)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:204)
+	at $Proxy28.save(Unknown Source)
+	at se.vgr.webbisar.tool.WebbisGenerator.run(WebbisGenerator.java:55)
+	at se.vgr.webbisar.tool.WebbisGenerator.main(WebbisGenerator.java:37)
+Caused by: java.sql.BatchUpdateException: failed batch
+	at org.hsqldb.jdbc.jdbcStatement.executeBatch(Unknown Source)
+	at org.hsqldb.jdbc.jdbcPreparedStatement.executeBatch(Unknown Source)
+	at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+	at org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(BatchingBatcher.java:70)
+	at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:268)
+	... 20 more
+2009-01-16 10:29:50,084 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6782a9: display name [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]; startup date [Fri Jan 16 10:29:50 CET 2009]; root of context hierarchy
+2009-01-16 10:29:50,148 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext.xml]
+2009-01-16 10:29:50,599 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+2009-01-16 10:29:50,635 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]: org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78
+2009-01-16 10:29:50,735 [main] INFO  org.springframework.beans.factory.config.PropertyPlaceholderConfigurer  - Loading properties file from class path resource [database.properties]
+2009-01-16 10:29:50,793 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,webbisDao,webbisService,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,txnAspect,txnAdvice,dataSource,entityManagerFactory,jpaDialect,transactionManager]; root of factory hierarchy
+2009-01-16 10:29:51,105 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Building JPA container EntityManagerFactory for persistence unit 'dbschema'
+2009-01-16 10:29:54,487 [main] WARN  org.hibernate.util.JDBCExceptionReporter  - SQL Error: 0, SQLState: null
+2009-01-16 10:29:54,487 [main] ERROR org.hibernate.util.JDBCExceptionReporter  - failed batch
+2009-01-16 10:29:54,488 [main] ERROR org.hibernate.event.def.AbstractFlushingEventListener  - Could not synchronize database state with session
+org.hibernate.exception.GenericJDBCException: Could not execute JDBC batch update
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:126)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:114)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:66)
+	at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:275)
+	at org.hibernate.jdbc.AbstractBatcher.prepareStatement(AbstractBatcher.java:114)
+	at org.hibernate.jdbc.AbstractBatcher.prepareStatement(AbstractBatcher.java:109)
+	at org.hibernate.jdbc.AbstractBatcher.prepareBatchStatement(AbstractBatcher.java:244)
+	at org.hibernate.persister.collection.AbstractCollectionPersister.recreate(AbstractCollectionPersister.java:1141)
+	at org.hibernate.action.CollectionRecreateAction.execute(CollectionRecreateAction.java:58)
+	at org.hibernate.engine.ActionQueue.execute(ActionQueue.java:279)
+	at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:263)
+	at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:171)
+	at org.hibernate.event.def.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:321)
+	at org.hibernate.event.def.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:50)
+	at org.hibernate.impl.SessionImpl.flush(SessionImpl.java:1027)
+	at org.hibernate.impl.SessionImpl.managedFlush(SessionImpl.java:365)
+	at org.hibernate.transaction.JDBCTransaction.commit(JDBCTransaction.java:137)
+	at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:54)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:456)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:709)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:678)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:321)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:116)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:89)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:204)
+	at $Proxy28.save(Unknown Source)
+	at se.vgr.webbisar.tool.WebbisGenerator.run(WebbisGenerator.java:53)
+	at se.vgr.webbisar.tool.WebbisGenerator.main(WebbisGenerator.java:37)
+Caused by: java.sql.BatchUpdateException: failed batch
+	at org.hsqldb.jdbc.jdbcStatement.executeBatch(Unknown Source)
+	at org.hsqldb.jdbc.jdbcPreparedStatement.executeBatch(Unknown Source)
+	at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+	at org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(BatchingBatcher.java:70)
+	at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:268)
+	... 26 more
+2009-01-16 10:33:01,137 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6782a9: display name [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]; startup date [Fri Jan 16 10:33:01 CET 2009]; root of context hierarchy
+2009-01-16 10:33:01,199 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext.xml]
+2009-01-16 10:33:01,650 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader  - Loading XML bean definitions from class path resource [applicationContext-hibernate.xml]
+2009-01-16 10:33:01,685 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext  - Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@6782a9]: org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78
+2009-01-16 10:33:01,785 [main] INFO  org.springframework.beans.factory.config.PropertyPlaceholderConfigurer  - Loading properties file from class path resource [database.properties]
+2009-01-16 10:33:01,843 [main] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory  - Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@b68d78: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,webbisDao,webbisService,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,txnAspect,txnAdvice,dataSource,entityManagerFactory,jpaDialect,transactionManager]; root of factory hierarchy
+2009-01-16 10:33:02,158 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean  - Building JPA container EntityManagerFactory for persistence unit 'dbschema'
+2009-01-16 10:33:05,063 [main] WARN  org.hibernate.util.JDBCExceptionReporter  - SQL Error: 0, SQLState: null
+2009-01-16 10:33:05,064 [main] ERROR org.hibernate.util.JDBCExceptionReporter  - failed batch
+2009-01-16 10:33:05,065 [main] ERROR org.hibernate.event.def.AbstractFlushingEventListener  - Could not synchronize database state with session
+org.hibernate.exception.GenericJDBCException: Could not execute JDBC batch update
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:126)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:114)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:66)
+	at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:275)
+	at org.hibernate.jdbc.AbstractBatcher.prepareStatement(AbstractBatcher.java:114)
+	at org.hibernate.jdbc.AbstractBatcher.prepareStatement(AbstractBatcher.java:109)
+	at org.hibernate.jdbc.AbstractBatcher.prepareBatchStatement(AbstractBatcher.java:244)
+	at org.hibernate.persister.collection.AbstractCollectionPersister.recreate(AbstractCollectionPersister.java:1141)
+	at org.hibernate.action.CollectionRecreateAction.execute(CollectionRecreateAction.java:58)
+	at org.hibernate.engine.ActionQueue.execute(ActionQueue.java:279)
+	at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:263)
+	at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:171)
+	at org.hibernate.event.def.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:321)
+	at org.hibernate.event.def.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:50)
+	at org.hibernate.impl.SessionImpl.flush(SessionImpl.java:1027)
+	at org.hibernate.impl.SessionImpl.managedFlush(SessionImpl.java:365)
+	at org.hibernate.transaction.JDBCTransaction.commit(JDBCTransaction.java:137)
+	at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:54)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:456)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:709)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:678)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:321)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:116)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:89)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:204)
+	at $Proxy28.save(Unknown Source)
+	at se.vgr.webbisar.tool.WebbisGenerator.run(WebbisGenerator.java:53)
+	at se.vgr.webbisar.tool.WebbisGenerator.main(WebbisGenerator.java:37)
+Caused by: java.sql.BatchUpdateException: failed batch
+	at org.hsqldb.jdbc.jdbcStatement.executeBatch(Unknown Source)
+	at org.hsqldb.jdbc.jdbcPreparedStatement.executeBatch(Unknown Source)
+	at net.rkbloom.logdriver.LogPreparedStatement.executeBatch(LogPreparedStatement.java:497)
+	at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+	at org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(BatchingBatcher.java:70)
+	at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:268)
+	... 26 more

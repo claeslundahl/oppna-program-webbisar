@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jstl/core">
+<head>
+	<title></title>
+</head>
+<body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="body">
+          <div id="custom-doc">
+          	<div id="hd">
+          		<div class="yui-b header"><h2>Webbisar (BETA)</h2></div>
+                <div class="yui-b topinfo">
+                   <p>
+                      Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
+                      och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
+                  </p>
+                </div>
+          		<div class="yui-b">
+          			<div class="yui-gb header">
+          				<div class="yui-u first">
+                          <p>	
+    				  		<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">
+    				  			Till webbis-startsidan
+    				  		</a>
+                          </p>
+          				</div>
+          				<div class="yui-u searchfield">
+		                    <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
+								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
+								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
+							</form>
+          				</div>
+						<div class="yui-u" style="text-align: right">
+                          <p>
+                            <a href="https://portal.vgregion.se/wps/portal/extern" target="_blank">Lägg till / Redigera webbis</a>
+						  </p>
+                        </div>
+        			</div>
+          		</div>	
+                <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+          	</div>
+          	<div id="bd">
+          		<div id="yui-main">
+          			<div class="yui-u first">
+                      <div class="search_item">
+                        #{SearchResultPage.numberOfHits} träffar
+                      </div>
+<!--                      <div class="search_item">-->
+<!--  			  		  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{SearchResultPage.searchResults[0].id}">-->
+<!--                          #{SearchResultPage.searchResults[0].header}-->
+<!--                        </a>-->
+<!--                      </div>-->
+<!--                      <div class="search_info">-->
+<!--                        #{SearchResultPage.searchResults[0].info}-->
+<!--                      </div>-->
+                    </div>
+                    <c:forEach var="sr" items="#{SearchResultPage.searchResults}" begin="0">
+          			<div class="yui-u">
+                      <div class="search_item">
+  			  		    <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{sr.id}">
+                          #{sr.header}
+                        </a>
+                      </div>
+                      <div class="search_info">
+                        <p>
+                          #{sr.info}                        
+                        </p>
+                      </div>
+                    </div>
+                    </c:forEach>
+          		</div>
+          	</div>
+          	<div id="ft">
+              <div class="yui-b">
+                <div class="yui-ge">
+                  <div class="yui-u first"> 
+                    <c:if test="#{!SearchResultPage.firstPage}">
+                      <p>
+                        <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">
+                           Tidigare sökrsultat
+                        </a>
+                      </p>
+                    </c:if>
+                  </div>
+                  <div class="yui-u" style="text-align: right">
+                    <c:if test="#{!SearchResultPage.lastPage}">
+                      <p>
+                        <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction">
+                          Fler sökresultat
+                        </a>
+                      </p>
+                    </c:if>
+                  </div>
+                </div>
+              </div>     
+            </div>
+          </div>
+       </ui:define>
+    </ui:composition>
+</body>
+</html>

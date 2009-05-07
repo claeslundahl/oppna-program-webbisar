@@ -1,0 +1,8 @@
+.externalToolBuilders
+.classpath
+.project
+.settings
+lucene
+target
+*.log
+bin
