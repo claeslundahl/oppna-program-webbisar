@@ -121,19 +121,20 @@ Webbisar byggs på VGRs interna Hudson-server. Denna är bara tillgänglig inter
 Konfiguration görs via ett antal konfigfiler. Dessa återfinns i allmänhet under `src/main/resources` i respektive projekt. Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i resp projekt och fil: 
 
 ||*Projekt*||*Konfigurations-fil*||*Inställning/property*||*Förklaring*||
-||module/portlet||services-config.xml||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
-||module/portlet||application-dev.properties resp. application-prod.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). `*`||
-||module/web||services-config.xml||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
-||module/web||hibernate.cfg.xml||hibernate.search.default.indexBase||Pekar ut var lucene-indexet ska ligga, ex `C:/webbisar/lucene/indexes`.||
-||module/web||application-dev.properties resp application-prod.properties|| `jdbc.url` samt `hibernate.connection.url` || Båda dessa ska ang JDBC-urlen till databasen. I den lokala utvecklingsmiljön har vi använt en lokal HSQL DB.||
-||module/web||application-dev.properties resp application-prod.properties|| `jdbc.username` samt `hibernate.connection.username` || Båda dessa sätts till användarnamnet i db.||
-||module/web||application-dev.properties resp application-prod.properties|| `jdbc.password` samt `hibernate.connection.password` || Båda sätts till lösenordet i db.||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseDir` || Katalog på disk där bilderna ska sparas.||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseUrl` || URL där bilderna kan accessas via Http (se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]).||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.ftpConfiguration` || URL till ftp-gränssnittet inkl användarnamn och lösen. `*`||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
+||modules/portlet, modules/web samt tools/datagenerator||services-config.xml (samt applicationContext-hibernate.xml för tools/datagenerator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
+||modules/portlet||application-dev.properties resp. application-prod.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). `*`||
+||modules/web samt tools/datagenerator||hibernate.cfg.xml||hibernate.search.default.indexBase||Pekar ut var lucene-indexet ska ligga, t ex `C:/webbisar/lucene/indexes`.||
+||module/web samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `jdbc.url` samt `hibernate.connection.url` || Båda dessa ska ang JDBC-urlen till databasen. I den lokala utvecklingsmiljön har vi använt en lokal HSQL DB.||
+||modules/web samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `jdbc.username` samt `hibernate.connection.username` || Båda dessa sätts till användarnamnet i db.||
+||modules/web samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `jdbc.password` samt `hibernate.connection.password` || Båda sätts till lösenordet i db.||
+||modules/web samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseDir` || Katalog på disk där bilderna ska sparas.||
+||module/web samt samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseUrl` || URL där bilderna kan accessas via Http (se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]).||
+||modules/web samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `webbisar.ftpConfiguration` || URL till ftp-gränssnittet inkl användarnamn och lösen. `*`||
+||modules/web samt samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
+||modules/web samt samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
+||composite/svc||users.properties|| `ftpserver.user.<ftp-username>.userpassword` || MD5 encrypterat lösenord till ftp-användaren med användarnamn `<ftp-username>`. Ska matcha inställningen i `webbisar.ftpConfiguration` ovan.||
+||composite/svc||users.properties|| `ftpserver.user.<ftp-username>.homedirectory` || Här lagras bilderna som ftpas upp med denna användare. Ska alltså matcha inställningen i `webbisar.imageBaseDir` ovan. ||
+
 
 `*` Not: När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webbappen. Därav att den enda konfigurationen som portletten behöver är urlen till webbappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer. 
 
