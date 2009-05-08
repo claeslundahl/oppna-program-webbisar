@@ -113,7 +113,7 @@ Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbil
 
 = Konfiguration = 
 
-Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources` i respektive projekt. Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil: 
+Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources` i respektive projekt (not: Under src/test/resources finns konfigurationsfiler som används vid enhetstester - dessa inställningar bör dock fungera utan ändringar. Se t ex projektet core-bc/composites/svc). Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil: 
 
 || *Projekt* || *Konfigurations-fil* || *Inställning/property* || *Förklaring* ||
 ||core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator||services-config.xml (applicationContext-hibernate.xml för tools/data-generator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller i projektet. Not: "Prod" används även för test/utvecklingsmiljön i dagsläget. Framöver kan det ev behövas fler filer. ||
