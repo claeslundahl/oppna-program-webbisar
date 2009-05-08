@@ -29,13 +29,29 @@ Web-applikationen är skriven enligt [http://code.google.com/p/oppna-program/wik
 Den första URL:en gör att man hamnar på förstasidan och den andra att man hamnar direkt på en webbis med det angivna id:et.
 Om man går direkt till `http://<host>/webbisar` så görs en redirect till den första URL:en. 
 
-= Integration med !EpiServer =
-Hos VGR är webbisar integrerat i !EpiServer. Bilden nedan visar hur Webbisar integrerar med EpiServer. På sidan i EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
+== Integration med !EpiServer ==
+Hos VGR är webbapplikationen integrerad i !EpiServer. Bilden nedan visar hur Webbisar integrerar med EpiServer. På sidan i EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/integration_med_episerver.png
  
-== P3P == 
+=== P3P === 
 För att kunna köra i en iframe i Internet Explorer 6 och 7 så krävs att man annonserar att man inte gör vissa saker med cookies som skulle kunna inkräkta på användarens integritet. Eftersom vi inte använder användarens identitet i Webbisar-applikationen så har vi ett servlet filter som lägger på en P3P header i varje response. Denna header gör att Internet Explorer 6 och 7 kan sätta cookien i iframe:n.
+
+
+== Felhantering ==
+
+Om något går fel i applikationen så görs en redirect till en servlet (`<host>/webbisar/internalerror/*`). Denna redirect görs dels från getlink.xhtml och dels från error.xhtml. Servleten som hanterar requests för internalerror försöker göra redirect till första sidan och räknar i användarsessionen upp det antal fel som inträffar inom 10 sekunder. Om det antalet överstiger tre, så görs redirect till en felsida som meddelar att applikationen har ett internt fel.
+
+Anledningen till detta upplägg är att man får ett fel då en användarsession och därmed ett flöde råkar ut för en timeout. Detta måste hanteras på något sätt. Nuvarande lösning är inte optimal men fungerar. 
+
+
+== Loggning == 
+
+Applikationen har en eventlog som hittas under Apache Tomcats installations-katalog under `logs`. Filen heter `tracelog.log`. I den kan man se när användare skapat, uppdaterat samt tagit bort webbisar.
+
+== Tredjepartsramverk ==
+Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene-index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
+
 
 = Servning av bilder =
 
@@ -51,19 +67,6 @@ Under .../tomcat/conf/Catalina/localhost/ finns filen images.xml med innehållet
 
 Detta innebär att det går att komma åt bilder i den lokala katalogen `C:/webbisar/images` och dess underkataloger via Tomcat-servern: `http://<host>/images/`. 
 
-= Felhantering =
-
-Om något går fel i applikationen så görs en redirect till en servlet (`<host>/webbisar/internalerror/*`). Denna redirect görs dels från getlink.xhtml och dels från error.xhtml. Servleten som hanterar requests för internalerror försöker göra redirect till första sidan och räknar i användarsessionen upp det antal fel som inträffar inom 10 sekunder. Om det antalet överstiger tre, så görs redirect till en felsida som meddelar att applikationen har ett internt fel.
-
-Anledningen till detta upplägg är att man får ett fel då en användarsession och därmed ett flöde råkar ut för en timeout. Detta måste hanteras på något sätt. Nuvarande lösning är inte optimal men fungerar. 
-
-
-= Loggning = 
-
-Applikationen har en eventlog som hittas under Apache Tomcats installations-katalog under `logs`. Filen heter `tracelog.log`. I den kan man se när användare skapat, uppdaterat samt tagit bort webbisar.
-
-= Tredjepartsramverk =
-Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene-index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
 
 = Portlets - för att editera webbisar = 
 Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt för att uppdatera lucene-indexet. 
@@ -79,7 +82,17 @@ EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera
 AdminEditWebbis portleten är endast tillgänglig för administratörer (konfigureras i portalen, själva portleten förutsätter att användaren är inloggad). Den används för att inaktivera/aktivera webbisar (inaktiva webbisar - innebär att de inte längre syns i sökningar och menyer) samt uppdatera lucene-indexet.
 
 = Widget =
-Widget:en baserar sig på JSON with padding. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett JavaScript objekt i JSON (!JavaScript Object Notation) format från servern, så kapslar man in objektet i ett metodanrop:
+
+Webbapplikationen har förberett stöd för sk widgets, som möjliggör att man kan visa delar av webbisar-innehållet på sin egen webbsida och samtidigt länka till webbisar. Det finns ett exempel som följer med webbapplikationen i, `widget-example.html`. Deployas per default på: 
+
+`http://<host>/widget-example.html`
+
+Exemplet använder sig av en css-fil och en !JavaScript-fil
+
+`/style/widget.css`
+`scripts/widget.js`
+
+Widget:en, som kommunicerar med webbapplikationen, baserar sig på _JSON (!JavaScript Object Notation) with padding_. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett JavaScript objekt i JSON-format från servern, så kapslar man in objektet i ett metodanrop:
 
 `{”message”, ”hello”}`
 
@@ -88,23 +101,16 @@ Blir således:
 `callback({ ”message”, ”hello”})`
 
    
-Sidan som tar emot anropet skapar dynamiskt en skript-tag och lägger i head elementet på sidan. Skript-taggen pekar med src-attributet mot servern som har informationen. Skriptelementet evalueras och i detta fallet så sker ett anrop till en funktion som heter callback på sidan. Om sidan har definierat en sådan funktion, så kommer den att anropas med JavaScript objektet och man kan använda det för att dynamiskt förändra sidan.
+Sidan som tar emot anropet skapar dynamiskt en skript-tag och lägger i head-elementet på sidan. Skript-taggen pekar med src-attributet mot servern som har informationen. Skriptelementet evalueras och i detta fallet så sker ett anrop till en funktion som heter callback på sidan. Om sidan har definierat en sådan funktion, så kommer den att anropas med !JavaScript objektet och man kan använda det för att dynamiskt förändra sidan.
 
-Det finns ett exempel som följer med webbisar applikationen: 
-`http://<host>/widget-example.html`
-
-Exemplet använder sig av en css-fil och en JavaScript-fil
-
-`http://<host>/style/widget.css`
-`http://<host>/scripts/widget.js`
-
-Genom att titta i den senare filen, så kan man förstå hur man kan använda mekanismen för att bygga widgets på sina egna sidor.
+Genom att titta på exemplet, ffa widget.js, så kan man förstå hur man kan använda mekanismen för att bygga widgets på sina egna sidor.
 
 = Databas = 
 Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (!WebbisParent) och en som innehåller bildinformation (!WebbisImage). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/db_tabeller.png
- 
+
+Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbilden ovan. 
 
 = Subversion = 
 Se [http://code.google.com/p/oppna-program-webbisar/source/checkout Source] för information om hur du checkar ut källkoden. 
