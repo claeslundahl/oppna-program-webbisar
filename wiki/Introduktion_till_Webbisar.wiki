@@ -131,8 +131,8 @@ Konfiguration görs via ett antal konfigfiler. Dessa återfinns i allmänhet und
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseDir` || Katalog på disk där bilderna ska sparas.||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseUrl` || URL där bilderna kan accessas via Http (se ovan).||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.ftpConfiguration` || URL till ftp-gränssnittet inkl användarnamn och lösen.||
-
-
+||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
+||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
 
 
 
