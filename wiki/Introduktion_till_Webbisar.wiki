@@ -83,7 +83,7 @@ Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och tes
 
 Webbapplikationen har förberett stöd för sk widgets, som möjliggör att man kan visa delar av webbisar-innehållet på sin egen webbsida och samtidigt länka till webbisar. Det finns ett exempel som följer med webbapplikationen i, `widget-example.html`. Deployas per default på: 
 
-`http://<host>/widget-example.html`
+`http://<host>/webbisar/widget-example.html`
 
 Exemplet använder sig av en css-fil och en !JavaScript-fil
 
