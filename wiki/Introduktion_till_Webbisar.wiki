@@ -110,11 +110,6 @@ http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/db_tabeller.png
 
 Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbilden ovan. 
 
-= Subversion = 
-Se [http://code.google.com/p/oppna-program-webbisar/source/checkout Source] för information om hur du checkar ut källkoden. 
-
-= CI Server (Hudson) = 
-Webbisar byggs på VGRs interna Hudson-server. Denna är bara tillgänglig internt på VGR.
 
 = Konfiguration = 
 
@@ -183,3 +178,9 @@ För att installera
 `> service.bat install Tomcat55`
 
 Man kan editera service.bat skriptet för att t.ex. öka minnet för Tomcat.
+
+= Subversion = 
+Se [http://code.google.com/p/oppna-program-webbisar/source/checkout Source] för information om hur du checkar ut källkoden. 
+
+= CI Server (Hudson) = 
+Detta projekt byggs på VGRs interna Hudson-server. Denna är bara tillgänglig internt på VGR.
