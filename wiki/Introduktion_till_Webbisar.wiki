@@ -14,7 +14,7 @@ Det finns även en "widget" som kan användas på andra webbsidor för att länk
 
 Webbisar består av två huvudkomponenter, en webapplikation som exekverar i en web-container, i dagsläget Apache Tomcat och en portlet webbapplikation med två portlets som exekverar i en JSR 286-kompatibel portal, t ex i IBM Websphere Portal. Förutom dessa två komponenter finns det även en images komponent som servar bilder. I dagsläget görs detta från Apache Tomcat (se nedan för konfiguration) men bilderna skulle även kunna ligga någon annanstans. 
 
-Portlet-komponenterna kommunicerar med webapplikationen via HTTP och FTP. HTTP används för att göra remote-anrop via Spring Remoting och FTP används för att överföra bildfiler. 
+Webbapplikationen innefattar funktionalitet för att söka efter och visa upp webbisar samt för att spara och uppdatera webbisar. Det är dock portlet-komponenten som har gränssnittet för att lägga till och uppdatera webbisar. Portlet-komponenterna kommunicerar i sin tur med webapplikationen via HTTP och FTP. HTTP används för att göra remote-anrop via Spring Remoting och FTP används för att överföra bildfiler. 
 
 Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bilder och en för att lagra ett Lucene index som används i sökningar. 
 
