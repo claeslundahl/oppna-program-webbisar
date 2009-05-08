@@ -114,6 +114,10 @@ Webbisar byggs på VGRs interna Hudson-server. Denna är bara tillgänglig inter
 
 = Konfiguration = 
 
+= Sätta upp sin lokala utvecklingsmiljö =
+
+Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
+
 = Att bygga en release =
 
 För att bygga en release behöver man se till att produktionsproperties är satta i både portlet och webbapplikation. Detta görs genom att ändra i services-config.xml under web-modulen och under portlet-modulen. Property-placeholder ska peka på application-prod.properties.
@@ -124,10 +128,12 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
     <context:property-placeholder location="classpath:application-prod.properties"/>
 …
-}}
+}}}
 I webapplicationen måste man dessutom ändra parametern som definierar var Lucene-indexet ligger. Denna parameter finns i hibernate.cfg.xml-filen: 
 
-{{{<property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>}}}
+{{{
+<property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>
+}}}
 
 Sedan bygger man med `mvn clean install` t.ex.
 
@@ -156,7 +162,3 @@ För att installera
 `> service.bat install Tomcat55`
 
 Man kan editera service.bat skriptet för att t.ex. öka minnet för Tomcat.
-
-= Sätta upp sin lokala utvecklingsmiljö =
-
-Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
