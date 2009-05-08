@@ -139,36 +139,43 @@ För att utveckla och köra projektet lokalt används referensarkitekturens utve
 
 Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets.
 
-== Sätt upp en lokal databas ==
-Databasen HSQL DB används lokalt för utveckling och test. I enhetstesterna körs den embedded och skall laddas hem och dras igång automatiskt. 
+== Ladda hem och installera en lokal databas ==
+Databasen HSQL DB används lokalt för utveckling och test. I enhetstesterna körs den embedded och laddas hem (mha maven) och dras igång automatiskt. 
 
 Då man kör webbappen i en lokal Tomcat så behöver man dra igång databasen som en separat process. 
 
-Ladda hem HSQL DB 1.8.0 från http://hsqldb.org/. 
+Ladda hem HSQL DB 1.8.0 från http://hsqldb.org/. Låt skapa en env-variabel `HSQLDB_HOME` som pekar på din installation. 
 
 Skapa sedan en katalog där du vill ha databasen. Starta databasen i den katalogen med följande kommando:
 {{{
-'java -cp $HSQLDB_HOME/lib/hsqldb.jar org.hsqldb.Server -database.0 file:webbisardb -dbname.0 webbisardb'
+java -cp $HSQLDB_HOME/lib/hsqldb.jar org.hsqldb.Server -database.0 file:webbisardb -dbname.0 webbisardb
 }}}
+
+Not: Vid behov av att titta på vad som finns i databasen kan följande kommando användas för att starta HSQL DBs admingränssnitt (en swing-applikation som följer med HSQL DB): 
+{{{
+java -cp $HSQLDB_HOME/lib/hsqldb.jar org.hsqldb.util.DatabaseManagerSwing
+}}}
+
+De db-inställningar som återfinns i application-dev.properties (jdbc-url, användarnamn och lösenord) bör fungera utan ändring. 
 
 Fullständig dokumentation över HSQL DB finns [http://hsqldb.sourceforge.net/web/hsqlDocsFrame.html här].
 
 == Skapa en lokal katalog för lucene-indexet ==
-todo
+
+Skapa en katalog där du vill att lucene-indexet skall ligga. Peka ut denna katalog i hibernate.cfg.xml-filen, propertyn heter `hibernate.search.default.indexBase`, under src/main/resources i projekten core-bc/modules/web samt tools/data-generator. 
+
 == Skapa en lokal katalog för bilderna ==
-todo
+
+Skapa en katalog där bilderna kan sparas lokalt. Peka ut denna katalog ifrån projektet core-bc/composite/svc -> filen users.properties -> propertyn `ftpserver.user.testuser.homedirectory` samt 
+projekten core-bc/modules/web och tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseDir`. 
+
 == Konfigurera din lokala Tomcat att serva bilderna ==
-todo
+Se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]. 
 
-
-== Gör nödvändiga konfigurationer ==
-
-Använd application-dev.properties i alla projekt. Ställ in rätt sökväg till bild-katalogen samt till lucene-index-katalogen. Se också till så att databas-properties är korrekt satta. 
-
-Se [http://code.google.com/p/oppna-program-webbisar/w/edit/Introduktion_till_Webbisar#Konfiguration konfigurationsavsnittet] ovan för mer detaljer kring vilka konfigurationer du behöver göra. 
+Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseUrl`.
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
-todo
+Projektet ska gå att köra ändå, men vill man ha testdata i systemet kan man köra tools/data-generator -> WebbisGenerator.java för att populera systemet med (stora mängder) testdata. TODO: Beskriv bildhantering för detta. 
 
 = Att bygga en release =
 
