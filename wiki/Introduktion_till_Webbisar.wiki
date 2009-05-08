@@ -126,12 +126,7 @@ Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki
 
 För att bygga en release behöver man se till att produktionsproperties är satta i både portlet och webbapplikation. Detta görs genom att ändra i services-config.xml under web-modulen och under portlet-modulen. Property-placeholder ska peka på application-prod.properties.
 {{{
-…            
-http://www.springframework.org/schema/tx 
-
-http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-    <context:property-placeholder location="classpath:application-prod.properties"/>
-…
+<context:property-placeholder location="classpath:application-prod.properties"/>
 }}}
 I webapplicationen måste man dessutom ändra parametern som definierar var Lucene-indexet ligger. Denna parameter finns i hibernate.cfg.xml-filen: 
 
