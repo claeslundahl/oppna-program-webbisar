@@ -122,7 +122,7 @@ Konfiguration görs via ett antal konfigfiler. Dessa återfinns i allmänhet und
 
 ||*Projekt*||*Konfigurations-fil*||*Inställning/property*||*Förklaring*||
 ||module/portlet||services-config.xml||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
-||module/portlet||application-dev.properties resp. application-prod.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). *||
+||module/portlet||application-dev.properties resp. application-prod.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). `*`||
 ||module/web||services-config.xml||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
 ||module/web||hibernate.cfg.xml||hibernate.search.default.indexBase||Pekar ut var lucene-indexet ska ligga, ex `C:/webbisar/lucene/indexes`.||
 ||module/web||application-dev.properties resp application-prod.properties|| `jdbc.url` samt `hibernate.connection.url` || Båda dessa ska ang JDBC-urlen till databasen. I den lokala utvecklingsmiljön har vi använt en lokal HSQL DB.||
@@ -130,12 +130,12 @@ Konfiguration görs via ett antal konfigfiler. Dessa återfinns i allmänhet und
 ||module/web||application-dev.properties resp application-prod.properties|| `jdbc.password` samt `hibernate.connection.password` || Båda sätts till lösenordet i db.||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseDir` || Katalog på disk där bilderna ska sparas.||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageBaseUrl` || URL där bilderna kan accessas via Http (se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]).||
-||module/web||application-dev.properties resp application-prod.properties|| `webbisar.ftpConfiguration` || URL till ftp-gränssnittet inkl användarnamn och lösen. *||
+||module/web||application-dev.properties resp application-prod.properties|| `webbisar.ftpConfiguration` || URL till ftp-gränssnittet inkl användarnamn och lösen. `*`||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
 ||module/web||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
 
-* Not: När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webbappen. Därav att den enda konfigurationen som portletten behöver är urlen till webbappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer. 
+`*` Not: När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webbappen. Därav att den enda konfigurationen som portletten behöver är urlen till webbappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer. 
 
 
 = Sätta upp sin lokala utvecklingsmiljö =
