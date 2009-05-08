@@ -20,7 +20,7 @@ Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bild
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png
 
-= Webbapplikationen för att visa webbisar =
+= Webbapplikationen - för att visa webbisar =
 Web-applikationen är skriven enligt [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA Öppna programs referensarkitektur] och är därför baserad på [http://www.springsource.org/webflow Spring Webflow version 1] och [http://java.sun.com/javaee/javaserverfaces/ JSF]/[https://facelets.dev.java.net/ Facelets]. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
 
 1) `http://<host>/webbisar?_flowId=Webbisar.view-flow`
@@ -65,7 +65,7 @@ Applikationen har en eventlog som hittas under Apache Tomcats installations-kata
 = Tredjepartsramverk =
 Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene-index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
 
-= Portlets = 
+= Portlets - för att editera webbisar = 
 Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt för att uppdatera lucene-indexet. 
 
 Portletarna är i största möjliga mån uppbyggda enligt [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA referensarkitekturen]. De följer t ex referensarkitekturen när det gäller katalogstruktur och att maven2 används för bygge etc. Portletarna använder sig däremot inte av den teknikstack som referensarkitekturen förespråkar då vissa av dessa ramverk (främst JSF och facelets) inte har visat sig fungera ihop med nuvarande version av Websphere Portal. Istället är portletarna implementerade mha av standarden JSR 286, utan några specifika webb-ramverk som hjälp. 
