@@ -135,14 +135,16 @@ Se respektive konfigurationsfil samt källkoden för övrig konfig.
 
 = Sätta upp sin lokala utvecklingsmiljö =
 
-För att utveckla och köra projektet lokalt används referensarkitekturens utvecklingsmiljö. Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
+För att utveckla och köra projektet lokalt används referensarkitekturens utvecklingsmiljö. Börja därför med att sätta upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
+
+För att köra webbisars webbapplikation och portlet lokalt behövs några ytterligare inställningar. 
 
 == Ladda hem och installera en lokal databas ==
 Databasen HSQL DB används lokalt för utveckling och test. I enhetstesterna körs den embedded och laddas hem (mha maven) och dras igång automatiskt. 
 
 Då man kör webbappen i en lokal Tomcat så behöver man dra igång databasen som en separat process. 
 
-Ladda hem HSQL DB 1.8.0 från http://hsqldb.org/. Låt skapa en env-variabel `HSQLDB_HOME` som pekar på din installation. 
+Ladda hem och packa upp HSQL DB 1.8.0 från http://hsqldb.org/. Skapa en env-variabel `HSQLDB_HOME` som pekar på din installation. 
 
 Skapa sedan en katalog där du vill ha databasen. Starta databasen i den katalogen med följande kommando:
 {{{
@@ -168,12 +170,12 @@ Skapa en katalog där bilderna kan sparas lokalt. Peka ut denna katalog ifrån p
 projekten core-bc/modules/web och tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseDir`. 
 
 == Konfigurera din lokala Tomcat att serva bilderna ==
-Se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]. 
+Följ instruktionerna [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]. 
 
 Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseUrl`.
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
-Projektet ska gå att köra ändå, men vill man ha testdata i systemet kan man köra tools/data-generator -> WebbisGenerator.java för att populera systemet med (stora mängder) testdata. TODO: Beskriv bildhantering för detta. 
+Projektet går att köra ändå, men vill man ha testdata i systemet kan man köra tools/data-generator -> WebbisGenerator.java för att populera systemet med (stora mängder) testdata. TODO: Beskriv detta i detalj. 
 
 == Testa portlets lokalt ==
 
