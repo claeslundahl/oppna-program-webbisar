@@ -135,9 +135,7 @@ Se respektive konfigurationsfil samt källkoden för övrig konfig.
 
 = Sätta upp sin lokala utvecklingsmiljö =
 
-För att utveckla och köra projektet lokalt används referensarkitekturens utvecklinsmiljö. Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
-
-Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets.
+För att utveckla och köra projektet lokalt används referensarkitekturens utvecklingsmiljö. Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
 
 == Ladda hem och installera en lokal databas ==
 Databasen HSQL DB används lokalt för utveckling och test. I enhetstesterna körs den embedded och laddas hem (mha maven) och dras igång automatiskt. 
@@ -176,6 +174,14 @@ Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
 Projektet ska gå att köra ändå, men vill man ha testdata i systemet kan man köra tools/data-generator -> WebbisGenerator.java för att populera systemet med (stora mängder) testdata. TODO: Beskriv bildhantering för detta. 
+
+== Testa portlets lokalt ==
+
+!OpenPortlet Container på Glassfish används för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets.
+
+=== Deploy av portlets till !OpenPortlet Container === 
+
+TODO
 
 = Att bygga en release =
 
