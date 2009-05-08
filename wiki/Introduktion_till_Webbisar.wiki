@@ -175,7 +175,12 @@ Följ instruktionerna [http://code.google.com/p/oppna-program-webbisar/wiki/Intr
 Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseUrl`.
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
-Projektet går att köra ändå, men vill man ha testdata i systemet kan man köra tools/data-generator -> WebbisGenerator.java för att populera systemet med (stora mängder) testdata. TODO: Beskriv detta i detalj. 
+Kör tools/data-generator -> WebbisGenerator.java (OBS tar ganska lång tid!)
+Kör därefter tools/data-generator -> WebbisIndexer.java för att indexera om. 
+
+TODO: Beskriv i detalj vilka bilder som behövs.
+
+Not: Projektet bör gå att köra ändå, men i dagsläget verkar indexeringen inte fungera utan testdata.  
 
 == Testa portlets lokalt ==
 
