@@ -1,6 +1,9 @@
 #summary Introduktion till projektet webbisar.
 #labels Featured
 
+= Innehåll =
+<wiki:toc/> 
+
 = Introduktion =
 
 Webbisar är en webbapplikation som har som huvudsyfte att lagra och visa bilder på nyfödda bäbisar, sk "webbisar". Genom att logga in i portalen (t ex med e-id) kan nyblivna föräldrar själva lägga upp och administrera bilder på sina nyfödda. Webbapplikationen visar sedan upp webbisarna. 
@@ -77,76 +80,83 @@ AdminEditWebbis portleten är endast tillgänglig för administratörer (konfigu
 
 = Widget =
 Widget:en baserar sig på JSON with padding. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett JavaScript objekt i JSON (!JavaScript Object Notation) format från servern, så kapslar man in objektet i ett metodanrop:
-{{{{”message”, ”hello”}}}}
+
+`{”message”, ”hello”}`
 
 Blir således:
 
-{{{callback({ ”message”, ”hello”})}}}
+`callback({ ”message”, ”hello”})`
+
    
 Sidan som tar emot anropet skapar dynamiskt en skript-tag och lägger i head elementet på sidan. Skript-taggen pekar med src-attributet mot servern som har informationen. Skriptelementet evalueras och i detta fallet så sker ett anrop till en funktion som heter callback på sidan. Om sidan har definierat en sådan funktion, så kommer den att anropas med JavaScript objektet och man kan använda det för att dynamiskt förändra sidan.
 
-Det finns ett exempel med webbisar applikationen: 
-http://webbisar.vgregion.se/webbisar/widget-example.html
+Det finns ett exempel som följer med webbisar applikationen: 
+`http://<host>/widget-example.html`
 
 Exemplet använder sig av en css-fil och en JavaScript-fil
-http://webbisar.vgregion.se/webbisar/style/widget.css
-http://webbisar.vgregion.se/webbisar/scripts/widget.js
+
+`http://<host>/style/widget.css`
+`http://<host>/scripts/widget.js`
 
 Genom att titta i den senare filen, så kan man förstå hur man kan använda mekanismen för att bygga widgets på sina egna sidor.
-Databas
-Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (WebbisParent) och en som innehåller bildinformation (WebbisImage). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
 
+= Databas = 
+Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (!WebbisParent) och en som innehåller bildinformation (!WebbisImage). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
+
+http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/db_tabeller.png
  
 
-Subversion
-Webbisar finns här i SVN:
+= Subversion = 
+Se [http://code.google.com/p/oppna-program-webbisar/source/checkout Source] för information om hur du checkar ut källkoden. 
 
+= CI Server (Hudson) = 
+Webbisar byggs på VGRs interna Hudson-server. Denna är bara tillgänglig internt på VGR.
 
-CI Server (Hudson)
-http://portalutv.vgregion.se:8090/hudson/job/webbisar/
-Building a release
-För att bygga en release behöver man se till att produktionsproperties är satta i både portlet och webbapplikation. Detta görs genom att ändra i services-config.xml under web modulen och under portlet modulen. Property-placeholder ska peka på application-prod.properties.
+= Konfiguration = 
+
+= Att bygga en release =
+
+För att bygga en release behöver man se till att produktionsproperties är satta i både portlet och webbapplikation. Detta görs genom att ändra i services-config.xml under web-modulen och under portlet-modulen. Property-placeholder ska peka på application-prod.properties.
+{{{
 …            
 http://www.springframework.org/schema/tx 
 
 http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
     <context:property-placeholder location="classpath:application-prod.properties"/>
 …
+}}
+I webapplicationen måste man dessutom ändra parametern som definierar var Lucene-indexet ligger. Denna parameter finns i hibernate.cfg.xml-filen: 
 
-I webapplicationen måste man dessutom ändra parametern som definierar var Lucene indexet ska ligger. Denna parameter finns i hibernate.cfg.xml-filen: 
+{{{<property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>}}}
 
-<property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>
+Sedan bygger man med `mvn clean install` t.ex.
 
-Sedan bygger man med mvn clean install t.ex.
-Deployment
-Vi har använt administratörsgränssnittet:
+Se [http://code.google.com/p/oppna-program/wiki/Introduktion_for_RA_committers#Release referensarkitekturen] för information om hur man skapar en officiell release och deployar till google code. Motsvarande procedur skall användas för webbisar. 
 
-http://webbisar.vgregion.se/manager/html
+= Deployment = 
+Vi har använt Tomcats administratörsgränssnitt:
 
+`http://<host>/manager/html`
 
-Lösenordet är konfigurerat i conf/tomcat-users.xml.
+för att deploya till Tomcat. 
 
-Börja alltid med att göra undeploy på webbisar applikationen. Applikationen deployar inte av sig ordentligt, så man brukar behöva stoppa Tomcat (som går som en windows service), ta bort webbisar katalogen under webapps och starta om Tomcat. Därefter går det bra att deploya en ny version genom att ladda upp war-filen via administratörsgränssnittet.
+Börja alltid med att göra undeploy på webbisar-applikationen. Applikationen deployar inte av sig ordentligt, så man brukar behöva stoppa Tomcat (som går som en windows service), ta bort webbisar katalogen under webapps och starta om Tomcat. Därefter går det bra att deploya en ny version genom att ladda upp war-filen via administratörsgränssnittet.
 
-Tomcat
-Tomcat är installerat på webbisar.vgregion.se som en windows service (Apache Tomcat Tomcat55).
+= Tomcat = 
+Tomcat är installerat som en windows service (Apache Tomcat Tomcat55).
 
 För att avinstallera:
 
-> cd C:\webbisar\apache-tomcat-5.5.27\bin
-> service.bat remove Tomcat55
+`> cd C:\webbisar\apache-tomcat-5.5.27\bin`
+`> service.bat remove Tomcat55`
 
 För att installera
 
-> cd C:\webbisar\apache-tomcat-5.5.27\bin
-> service.bat install Tomcat55
+`> cd C:\webbisar\apache-tomcat-5.5.27\bin`
+`> service.bat install Tomcat55`
 
 Man kan editera service.bat skriptet för att t.ex. öka minnet för Tomcat.
 
-
-
-
-
-= Sätta upp sin utvecklingsmiljö =
+= Sätta upp sin lokala utvecklingsmiljö =
 
 Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
