@@ -14,9 +14,9 @@ Det finns även en "widget" som kan användas på andra webbsidor för att länk
 
 Webbisar består av två huvudkomponenter, en webapplikation som exekverar i en web-container, i dagsläget Apache Tomcat och en portlet webbapplikation med två portlets som exekverar i en JSR 286-kompatibel portal, t ex i IBM Websphere Portal. Förutom dessa två komponenter finns det även en images komponent som servar bilder. I dagsläget görs detta från Apache Tomcat (se nedan för konfiguration) men bilderna skulle även kunna ligga någon annanstans. 
 
-Webbapplikationen innefattar funktionalitet för att söka efter och visa upp webbisar samt för att spara och uppdatera webbisar. Det är dock portlet-komponenten som har gränssnittet för att lägga till och uppdatera webbisar. Portlet-komponenterna kommunicerar i sin tur med webapplikationen via HTTP och FTP. HTTP används för att göra remote-anrop via Spring Remoting och FTP används för att överföra bildfiler. 
+Webbapplikationen innefattar funktionalitet för att söka efter och visa upp webbisar samt för att spara och uppdatera webbisar. Det är dock portlet-komponenten som implementerar gränssnittet för att lägga till och uppdatera webbisar. Detta för att användaren ska tvingas logga in (vi utnyttjar portalens inloggning mha e-id) innan han/hon lägger upp sina webbisar. Portlet-komponenterna kommunicerar med webapplikationen via HTTP (på URL:en http://<host>/webbisar/remoting) och FTP. HTTP används för att göra remote-anrop via Spring Remoting och FTP används för att överföra bildfiler. Dessa gränssnitt är ej åtkomliga utifrån utan nås bara från portalen.
 
-Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bilder och en för att lagra ett Lucene index som används i sökningar. 
+Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bilder och en för att lagra ett Lucene-index som används i sökningar. 
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png
 
@@ -30,12 +30,12 @@ Den första URL:en gör att man hamnar på förstasidan och den andra att man ha
 Om man går direkt till `http://<host>/webbisar` så görs en redirect till den första URL:en. 
 
 == Integration med !EpiServer ==
-Hos VGR är webbapplikationen integrerad i !EpiServer. Bilden nedan visar hur Webbisar integrerar med EpiServer. På sidan i EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
+Hos VGR är webbapplikationen integrerad i !EpiServer. Bilden nedan visar hur Webbisar integrerar med !EpiServer. På sidan i !EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/integration_med_episerver.png
  
 === P3P === 
-För att kunna köra i en iframe i Internet Explorer 6 och 7 så krävs att man annonserar att man inte gör vissa saker med cookies som skulle kunna inkräkta på användarens integritet. Eftersom vi inte använder användarens identitet i Webbisar-applikationen så har vi ett servlet filter som lägger på en P3P header i varje response. Denna header gör att Internet Explorer 6 och 7 kan sätta cookien i iframe:n.
+För att kunna köra i en iframe i Internet Explorer 6 och 7 så krävs att man annonserar att man inte gör vissa saker med cookies som skulle kunna inkräkta på användarens integritet. Eftersom vi inte använder användarens identitet i Webbisar-applikationen så har vi ett servlet filter som lägger på en P3P header i varje response. Denna header gör att Internet Explorer 6 och 7 kan sätta cookien i iframe:en.
 
 
 == Felhantering ==
@@ -52,7 +52,6 @@ Applikationen har en eventlog som hittas under Apache Tomcats installations-kata
 == Tredjepartsramverk ==
 Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene-index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
 
-
 = Servning av bilder =
 
 Som en temporär lösning lagras bilder direkt på den lokala disken på Apache Tomcat-maskinen. För att dessa bilder ska kunna kommas åt via http har följande konfiguration gjorts i Tomcat: 
@@ -67,7 +66,6 @@ Under .../tomcat/conf/Catalina/localhost/ finns filen images.xml med innehållet
 
 Detta innebär att det går att komma åt bilder i den lokala katalogen `C:/webbisar/images` och dess underkataloger via Tomcat-servern: `http://<host>/images/`. 
 
-
 = Portlets - för att editera webbisar = 
 Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt för att uppdatera lucene-indexet. 
 
@@ -76,10 +74,10 @@ Portletarna är i största möjliga mån uppbyggda enligt [http://code.google.co
 Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och test. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information.
 
 == !EditWebbis Portlet ==
-EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera och ta bort webbisar. Portleten skall endast vara tillgänglig då man har loggat in i portalen med hjälp av e-id. Korrekta rättigheter konfigureras i portalen, portleten i sig förutätter att användaren är inloggad. 
+!EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera och ta bort webbisar. Portleten skall endast vara tillgänglig då man har loggat in i portalen med hjälp av e-id. Korrekta rättigheter konfigureras i portalen, portleten i sig förutätter att användaren är inloggad. 
 
 == !AdminEditWebbis Portlet ==
-AdminEditWebbis portleten är endast tillgänglig för administratörer (konfigureras i portalen, själva portleten förutsätter att användaren är inloggad). Den används för att inaktivera/aktivera webbisar (inaktiva webbisar - innebär att de inte längre syns i sökningar och menyer) samt uppdatera lucene-indexet.
+!AdminEditWebbis portleten är endast tillgänglig för administratörer (konfigureras i portalen, själva portleten förutsätter att användaren är inloggad). Den används för att inaktivera/aktivera webbisar (inaktiva webbisar - innebär att de inte längre syns i sökningar och menyer) samt uppdatera lucene-indexet.
 
 = Widget =
 
@@ -92,7 +90,7 @@ Exemplet använder sig av en css-fil och en !JavaScript-fil
 `/style/widget.css`
 `scripts/widget.js`
 
-Widget:en, som kommunicerar med webbapplikationen, baserar sig på _JSON (!JavaScript Object Notation) with padding_. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett JavaScript objekt i JSON-format från servern, så kapslar man in objektet i ett metodanrop:
+Widget:en, som kommunicerar med webbapplikationen, baserar sig på _JSON (!JavaScript Object Notation) with padding_. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett !JavaScript objekt i JSON-format från servern, så kapslar man in objektet i ett metodanrop:
 
 `{”message”, ”hello”}`
 
