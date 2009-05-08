@@ -12,14 +12,14 @@
 
   <bean id="webbisServiceProxy"
     class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-    <property name="serviceUrl" value="${portlet.application.url}/WebbisService" />
+    <property name="serviceUrl" value="${webbapp.remoting.url}/WebbisService" />
     <property name="serviceInterface" value="se.vgr.webbisar.svc.WebbisService" />
     <property name="remoteInvocationFactory" ref="remoteInvocationFactory"/>
   </bean>
 
   <bean id="webbisImageServiceProxy"
     class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-    <property name="serviceUrl" value="${portlet.application.url}/WebbisImageService" />
+    <property name="serviceUrl" value="${webbapp.remoting.url}/WebbisImageService" />
     <property name="serviceInterface" value="se.vgr.webbisar.svc.WebbisImageService" />
     <property name="remoteInvocationFactory" ref="remoteInvocationFactory"/>
   </bean>
