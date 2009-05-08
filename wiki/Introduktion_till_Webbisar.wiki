@@ -13,6 +13,7 @@ Portlet komponenterna kommunicerar med webapplikationen via HTTP och FTP. HTTP a
 
 Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bilder och en för att lagra ett Lucene index som används i sökningar. 
 
+http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png
 
 = Webbapplikationen för att visa webbisar =
 Web-applikationen är skriven enligt VGRs referensarkitektur och är därför baserad på Spring Webflow version 1och JSF/Facelets. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
