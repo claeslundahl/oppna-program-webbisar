@@ -5,7 +5,136 @@
 
 
 
+= Systemöversikt =
 
-= För utvecklare =
+Webbisar består av två huvudkomponenter, en webapplikation som exekverar i en Apache Tomcat instans och en portlet webbapplikation med två portlets som exekverar i IBM Websphere portal. Förutom dessa två komponenter finns det även en images komponent som servar bilder från den lokala disken på Apache Tomcat maskinen. Detta är en temporärlösning tills det bestämts var bilderna faktiskt ska sparas.
+
+Portlet komponenterna kommunicerar med webapplikationen via HTTP och FTP. HTTP används för att göra remote anrop via Spring Remoting och FTP används för att överföra bildfiler. 
+
+Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bilder och en för att lagra ett Lucene index som används i sökningar. 
+
+
+= Webbapplikationen för att visa webbisar =
+Web-applikationen är skriven enligt VGRs referensarkitektur och är därför baserad på Spring Webflow version 1och JSF/Facelets. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
+
+1) http://<host>/webbisar?_flowId=Webbisar.view-flow
+2) http://<host>/webbisar?_flowId=Webbisar.view-flow&webbisId=<id>
+
+Den första URL:en gör att man hamnar på förstasidan och den andra att man hamnar direkt på en webbis med det angivna id:et.
+Om man går direkt till http://<host>/webbisar så görs en redirect till den första URL:en. 
+
+Integration med EpiServer
+Bilden nedan visar hur Webbisar integrerar med EpiServer. På sidan i EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på http://webbisar.vgregion.se/webbisar. Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
+ 
+
+ 
+Servning av bilder
+
+Som en temporär lösning lagras bilder direkt på den lokala disken på Apache Tomcat maskinen. För att dessa bilder ska kunna kommas åt via http har följande konfiguration gjorts i Tomcat: 
+
+Under .../tomcat/conf/Catalina/localhost/ finns filen images.xml med innehållet
+
+<?xml version='1.0' encoding='utf-8'?>
+<Context path = "/images" docBase="C:/webbisar/images">
+</Context>
+
+Detta innebär att det går att komma åt bilder i den lokala katalogen C:/webbisar/images och dess underkataloger via apache tomcatservern: http://140.166.83.38/images/. 
+Felhantering
+Om något går fel i applikationen så görs en redirect till en servlet (<host>/webbisar/internalerror/*). Denna redirect görs dels från getlink.xhtml och dels från error.xhtml. Servleten som hanterar requests för internalerror försöker göra redirect till första sidan och räknar i användarsessionen upp det antal fel som inträffar inom 10 sekunder. Om det antalet överstiger tre, så görs redirect till en felsida som meddelar att applikationen har ett internt fel.
+Anledningen till detta upplägg är att man får ett fel då en användarsession och därmed ett flöde råkar ut för en timeout. Detta måste hanteras på något sätt.
+P3P
+För att kunna köra i en iframe i Internet Explorer 6 och 7 så krävs att man annonserar att man inte gör vissa saker med cookies som skulle kunna inkräkta på användarens integritet. Eftersom vi inte använder användarens identitet i Webbisar applikationen så har vi ett servlet filter som lägger på en P3P header i varje response. Denna header gör att Internet Explorer 6 och 7 kan sätta cookien i iframe:n.
+Loggning
+Applikationen har en eventlog som hittas under Apache Tomcats installations katalog under logs. Filen heter tracelog.log. I den kan man se när användare skapat, uppdaterat samt tagit bort webbisar.
+
+Tredjepartsramverk
+Applikationen använder sig av JPA och Hibernate för databas persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
+
+Portlets
+Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt uppdatera lucene-indexet. 
+
+Portletarna är i största möjliga mån uppbyggda enligt VGRs referensarkitektur. De följer referensarkitekturen när det gäller katalogstruktur och att maven2 används för bygge etc. Portletarna använder sig däremot inte av den teknikstack som VGRs referensarkitektur förespråkar då vissa av dessa ramverk (främst JSF och facelets) inte har visat sig fungera ihop med nuvarande version av Websphere Portal. Istället är portletarna implementerade mha av standarden JSR 286, utan några specifika webb-ramverk som hjälp. 
+
+Lokalt har OpenPortal Container på Glassfish använts för utveckling och test. 
+
+EditWebbis Portlet
+EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera och ta bort webbisar. Portleten skall endast vara tillgänglig då man har loggat in i portalen med hjälp av e-id. Korrekta rättigheter konfigureras i portalen, portleten i sig förutätter att användaren är inloggad. 
+
+AdminEditWebbis Portlet
+AdminEditWebbis portleten är endast tillgänglig för administratörer (konfigureras i portalen, själva portleten förutsätter att användaren är inloggad). Den används för att inaktivera/aktivera webbisar (inaktiva webbisar - innebär att de inte längre syns i sökningar och menyer) samt uppdatera lucene-indexet.
+Widget
+Widget:en baserar sig på JSON with padding. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett JavaScript objekt i JSON (JavaScript Object Notation) format från servern, så kapslar man in objektet i ett metodanrop:
+{”message”, ”hello”}
+
+Blir således:
+
+callback({ ”message”, ”hello”})
+   
+Sidan som tar emot anropet skapar dynamiskt en skript-tag och lägger i head elementet på sidan. Skript-taggen pekar med src-attributet mot servern som har informationen. Skriptelementet evalueras och i detta fallet så sker ett anrop till en funktion som heter callback på sidan. Om sidan har definierat en sådan funktion, så kommer den att anropas med JavaScript objektet och man kan använda det för att dynamiskt förändra sidan.
+
+Det finns ett exempel med webbisar applikationen: 
+http://webbisar.vgregion.se/webbisar/widget-example.html
+
+Exemplet använder sig av en css-fil och en JavaScript-fil
+http://webbisar.vgregion.se/webbisar/style/widget.css
+http://webbisar.vgregion.se/webbisar/scripts/widget.js
+
+Genom att titta i den senare filen, så kan man förstå hur man kan använda mekanismen för att bygga widgets på sina egna sidor.
+Databas
+Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (WebbisParent) och en som innehåller bildinformation (WebbisImage). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
+
+ 
+
+Subversion
+Webbisar finns här i SVN:
+svn://vgr-utv-win01/vgr/webbisar/trunk
+
+CI Server (Hudson)
+http://portalutv.vgregion.se:8090/hudson/job/webbisar/
+Building a release
+För att bygga en release behöver man se till att produktionsproperties är satta i både portlet och webbapplikation. Detta görs genom att ändra i services-config.xml under web modulen och under portlet modulen. Property-placeholder ska peka på application-prod.properties.
+…            
+http://www.springframework.org/schema/tx 
+
+http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+    <context:property-placeholder location="classpath:application-prod.properties"/>
+…
+
+I webapplicationen måste man dessutom ändra parametern som definierar var Lucene indexet ska ligger. Denna parameter finns i hibernate.cfg.xml-filen: 
+
+<property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>
+
+Sedan bygger man med mvn clean install t.ex.
+Deployment
+Vi har använt administratörsgränssnittet:
+
+http://webbisar.vgregion.se/manager/html
+
+Detta gränssnitt ska ej vara synligt externt! Användarnamn/lösen är webbisadmin/DAThas5sE2apRu6
+
+Lösenordet är konfigurerat i conf/tomcat-users.xml i klartext. Detta borde kanske fixas!
+
+Börja alltid med att göra undeploy på webbisar applikationen. Applikationen deployar inte av sig ordentligt, så man brukar behöva stoppa Tomcat (som går som en windows service), ta bort webbisar katalogen under webapps och starta om Tomcat. Därefter går det bra att deploya en ny version genom att ladda upp war-filen via administratörsgränssnittet.
+
+Tomcat
+Tomcat är installerat på webbisar.vgregion.se som en windows service (Apache Tomcat Tomcat55).
+
+För att avinstallera:
+
+> cd C:\webbisar\apache-tomcat-5.5.27\bin
+> service.bat remove Tomcat55
+
+För att installera
+
+> cd C:\webbisar\apache-tomcat-5.5.27\bin
+> service.bat install Tomcat55
+
+Man kan editera service.bat skriptet för att t.ex. öka minnet för Tomcat.
+
+
+
+
+
+= Sätta upp sin utvecklingsmiljö =
 
 Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
