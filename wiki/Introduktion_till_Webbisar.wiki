@@ -71,7 +71,7 @@ Applikationen har två portlets, en som används för att lägga till och uppdat
 
 Portletarna är i största möjliga mån uppbyggda enligt [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA referensarkitekturen]. De följer t ex referensarkitekturen när det gäller katalogstruktur och att maven2 används för bygge etc. Portletarna använder sig däremot inte av den teknikstack som referensarkitekturen förespråkar då vissa av dessa ramverk (främst JSF och facelets) inte har visat sig fungera ihop med nuvarande version av Websphere Portal. Istället är portletarna implementerade mha av standarden JSR 286, utan några specifika webb-ramverk som hjälp. 
 
-Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och test. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information.
+All konfiguration som behövs i portlettarna hämtas från web-applikationen via Spring remoting. Den enda konfig som behövs i portlet-projektet är alltså urlen till webprojektets Spring remoting-interface. Se avsnittet [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration konfiguration] nedan.
 
 == !EditWebbis Portlet ==
 !EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera och ta bort webbisar. Portleten skall endast vara tillgänglig då man har loggat in i portalen med hjälp av e-id. Korrekta rättigheter konfigureras i portalen, portleten i sig förutätter att användaren är inloggad. 
@@ -81,14 +81,14 @@ Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och tes
 
 = Widget =
 
-Webbapplikationen har förberett stöd för sk widgets, som möjliggör att man kan visa delar av webbisar-innehållet på sin egen webbsida och samtidigt länka till webbisar. Det finns ett exempel som följer med webbapplikationen i, `widget-example.html`. Deployas per default på: 
+Webbapplikationen har förberett stöd för sk widgets, som möjliggör att man kan visa delar av webbisar-innehållet på sin egen webbsida och samtidigt länka till webbisar. Det finns ett exempel som följer med webbapplikationen i `widget-example.html`. Deployas per default på: 
 
 `http://<host>/webbisar/widget-example.html`
 
 Exemplet använder sig av en css-fil och en !JavaScript-fil
 
 `/style/widget.css`
-`scripts/widget.js`
+`/scripts/widget.js`
 
 Widget:en, som kommunicerar med webbapplikationen, baserar sig på _JSON (!JavaScript Object Notation) with padding_. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett !JavaScript objekt i JSON-format från servern, så kapslar man in objektet i ett metodanrop:
 
@@ -116,7 +116,7 @@ Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbil
 Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources` i respektive projekt. Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil: 
 
 || *Projekt* || *Konfigurations-fil* || *Inställning/property* || *Förklaring* ||
-||core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator||services-config.xml (samt applicationContext-hibernate.xml för tools/datagenerator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller i projektet. Not: "Prod" används även för test/utvecklingsmiljön i dagsläget. Framöver kan det ev behövas fler filer. ||
+||core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator||services-config.xml (applicationContext-hibernate.xml för tools/data-generator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller i projektet. Not: "Prod" används även för test/utvecklingsmiljön i dagsläget. Framöver kan det ev behövas fler filer. ||
 ||core-bc/modules/portlet||application-dev.properties resp. application-prod.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webappen på denna url. Därav att den enda konfigurationen som portletten behöver är urlen till webappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer (t ex FTP-konfigurationen). ||
 ||core-bc/modules/web samt tools/data-generator||hibernate.cfg.xml||`hibernate.search.default.indexBase`||Pekar ut var lucene-indexet ska ligga, t ex `C:/webbisar/lucene/indexes`. Vid lokal utveckling kan man behöva ändra denna inställning, om man inte kör på samma struktur som på utv/test-servern. ||
 ||core-bc/modules/web samt tools/data-generator||application-dev.properties resp application-prod.properties|| `jdbc.url` samt `hibernate.connection.url` || Båda dessa ska ang JDBC-urlen till databasen. I den lokala utvecklingsmiljön har vi använt en lokal HSQL DB.||
@@ -131,11 +131,44 @@ Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/
 ||core-bc/composites/svc||users.properties|| `ftpserver.user.<ftp-username>.userpassword` || MD5 encrypterat lösenord till ftp-användaren med användarnamn `<ftp-username>`. Ska matcha inställningen i `webbisar.ftpConfiguration` ovan. Se http://www.iwebtool.com/md5 för hur man encrypterar lösenordet. ||
 ||core-bc/composite/svc||users.properties|| `ftpserver.user.<ftp-username>.homedirectory` || I denna katalog lagras bilderna som ftp:as upp med denna användare. Ska alltså matcha inställningen i `webbisar.imageBaseDir` ovan. ||
 
-
+Se respektive konfigurationsfil samt källkoden för övrig konfig. 
 
 = Sätta upp sin lokala utvecklingsmiljö =
 
-Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
+För att utveckla och köra projektet lokalt används referensarkitekturens utvecklinsmiljö. Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
+
+Lokalt har !OpenPortlet Container på Glassfish använts för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets.
+
+== Sätt upp en lokal databas ==
+Databasen HSQL DB används lokalt för utveckling och test. I enhetstesterna körs den embedded och skall laddas hem och dras igång automatiskt. 
+
+Då man kör webbappen i en lokal Tomcat så behöver man dra igång databasen som en separat process. 
+
+Ladda hem HSQL DB 1.8.0 från http://hsqldb.org/. 
+
+Skapa sedan en katalog där du vill ha databasen. Starta databasen i den katalogen med följande kommando:
+{{{
+'java -cp $HSQLDB_HOME/lib/hsqldb.jar org.hsqldb.Server -database.0 file:webbisardb -dbname.0 webbisardb'
+}}}
+
+Fullständig dokumentation över HSQL DB finns [http://hsqldb.sourceforge.net/web/hsqlDocsFrame.html här].
+
+== Skapa en lokal katalog för lucene-indexet ==
+todo
+== Skapa en lokal katalog för bilderna ==
+todo
+== Konfigurera din lokala Tomcat att serva bilderna ==
+todo
+
+
+== Gör nödvändiga konfigurationer ==
+
+Använd application-dev.properties i alla projekt. Ställ in rätt sökväg till bild-katalogen samt till lucene-index-katalogen. Se också till så att databas-properties är korrekt satta. 
+
+Se [http://code.google.com/p/oppna-program-webbisar/w/edit/Introduktion_till_Webbisar#Konfiguration konfigurationsavsnittet] ovan för mer detaljer kring vilka konfigurationer du behöver göra. 
+
+== Populera den lokala databasen och lucene-indexet med testdata ==
+todo
 
 = Att bygga en release =
 
