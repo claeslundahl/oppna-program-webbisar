@@ -118,6 +118,17 @@ Webbisar byggs på VGRs interna Hudson-server. Denna är bara tillgänglig inter
 
 = Konfiguration = 
 
+Konfiguration görs via ett antal konfigfiler. Dessa återfinns i allmänhet under `src/main/resources` i respektive projekt. Här följer en uppställning kring vilka konfigurationer man kan göra i resp projekt och fil: 
+
+||*Projekt*||*konfig-fil*||*property/setting*||*förklaring*||
+||module/portlet||services-config.xml||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
+||module/portlet||application-dev.properties resp. application-prod.properties||webbapp.remoting.url||Här anger man urlen till Spring remoting-interfacet i webbappen.||
+||module/portlet||application-dev.properties resp. application-prod.properties||webbapp.remoting.url||Här anger man urlen till Spring remoting-interfacet i webbappen.||
+||module/web||services-config.xml||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut endera application-prod.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller. "Prod" gäller även för test/utvecklingsmiljön i dagsläget.||
+||module/web||hibernate.cfg.xml||hibernate.search.default.indexBase||Pekar ut var lucene-indexet ska ligga, ex `C:/webbisar/lucene/indexes`.||
+
+
+
 = Sätta upp sin lokala utvecklingsmiljö =
 
 Sätt upp utvecklingsmiljön enligt [http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo referensarkitekturens instruktioner]. 
