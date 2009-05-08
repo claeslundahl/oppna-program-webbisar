@@ -54,7 +54,7 @@ Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessut
 
 = Servning av bilder =
 
-Som en temporär lösning lagras bilder direkt på den lokala disken på Apache Tomcat-maskinen. För att dessa bilder ska kunna kommas åt via http har följande konfiguration gjorts i Tomcat: 
+Som en temporär lösning lagras bilder direkt på den lokala disken på Apache Tomcat-maskinen (t ex under `C:/webbisar/images`). För att dessa bilder ska kunna kommas åt via http behöver följande konfiguration göras i Tomcat: 
 
 Under .../tomcat/conf/Catalina/localhost/ finns filen images.xml med innehållet
 
@@ -64,7 +64,7 @@ Under .../tomcat/conf/Catalina/localhost/ finns filen images.xml med innehållet
 </Context>
 }}}
 
-Detta innebär att det går att komma åt bilder i den lokala katalogen `C:/webbisar/images` och dess underkataloger via Tomcat-servern: `http://<host>/images/`. 
+Denna konfiguration innebär att det går att komma åt bilder i den lokala katalogen `C:/webbisar/images` och dess underkataloger via Tomcat-servern: `http://<host>/images/`. 
 
 = Portlets - för att editera webbisar = 
 Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt för att uppdatera lucene-indexet. 
