@@ -16,19 +16,19 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
         
     <!-- Spring2 @AspectJ -->
-    <aop:aspectj-autoproxy/>
-    <!-- Override Annotation Transaction -->
-    <aop:config>
-    	<!-- Declare Aspect -->
-        <aop:advisor id="txnAspect" advice-ref="txnAdvice" pointcut="execution(* *..svc.impl.*ServiceImpl.*(..))"/>
-    </aop:config>
-    <tx:advice id="txnAdvice">
-        <tx:attributes>
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="find*" read-only="true"/>
-            <tx:method name="*"/>
-        </tx:attributes>
-    </tx:advice>
+<!--    <aop:aspectj-autoproxy/>-->
+<!--     Override Annotation Transaction -->
+<!--    <aop:config>-->
+<!--    	 Declare Aspect -->
+<!--        <aop:advisor id="txnAspect" advice-ref="txnAdvice" pointcut="execution(* *..svc.impl.*ServiceImpl.*(..))"/>-->
+<!--    </aop:config>-->
+<!--    <tx:advice id="txnAdvice">-->
+<!--        <tx:attributes>-->
+<!--            <tx:method name="get*" read-only="true"/>-->
+<!--            <tx:method name="find*" read-only="true"/>-->
+<!--            <tx:method name="*"/>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
     
     <server xmlns="http://mina.apache.org/ftpserver/spring/v1"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

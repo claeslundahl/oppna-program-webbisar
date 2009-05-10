@@ -15,10 +15,6 @@ This product includes/uses software, ASM
 License: BSD License
 (http://www.opensource.org/licenses/bsd-license.php)
 
-This product includes/uses software, AspectJ Weawer
-(http://www.eclipse.org/aspectj)
-License: Eclipse Public License - v 1.0
-(http://www.eclipse.org/legal/epl-v10.html)
 
 This product includes/uses software, CGLib
 (http://cglib.sourceforge.net/)
@@ -111,8 +107,8 @@ License: GNU Lesser General Public License (LGPL), Version 2.1
 
 This product includes/uses software, Javassist
 (http://www.csg.is.titech.ac.jp/~chiba/javassist/)
-License: Mozilla Public License, Version 1.1
-(http://www.mozilla.org/MPL/)
+License: GNU Lesser General Public License
+(http://www.gnu.org/copyleft/lesser.html)
 
 This product includes/uses software, Joda Time
 (http://joda-time.sourceforge.net/)

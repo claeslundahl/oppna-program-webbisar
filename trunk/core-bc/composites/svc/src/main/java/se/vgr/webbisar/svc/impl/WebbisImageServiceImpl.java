@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import se.vgr.webbisar.svc.Configuration;
 import se.vgr.webbisar.svc.WebbisImageService;
 
 @Service("webbisImageService")
+@Transactional
 public class WebbisImageServiceImpl implements WebbisImageService {
 
 	private Configuration cfg;

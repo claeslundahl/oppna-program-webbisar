@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import se.vgr.webbisar.svc.Configuration;
 import se.vgr.webbisar.svc.WebbisDao;
@@ -19,6 +20,7 @@ import se.vgr.webbisar.types.Webbis;
 import se.vgr.webbisar.util.CallContextUtil;
 
 @Service("webbisService")
+@Transactional
 public class WebbisServiceImpl implements WebbisService {
 	
 	private WebbisDao webbisDao;
@@ -34,18 +36,22 @@ public class WebbisServiceImpl implements WebbisService {
 		this.cfg = cfg;
 	} 
 	
+	@Transactional(readOnly=true)
 	public Webbis getById(Long webbisId) {
 		return this.webbisDao.get(webbisId);
 	}
 	
+	@Transactional(readOnly=true)
 	public long getNumberOfWebbisar() {
 		return this.webbisDao.getNumberOfWebbisar();
 	}
 
+	@Transactional(readOnly=true)
 	public List<Webbis> getWebbisar(final int firstResult, final int maxResult) {
 		return this.webbisDao.getWebbisar(firstResult, maxResult);
 	}
 	
+	@Transactional(readOnly=true)
 	public List<Webbis> getWebbisarForAuthorId(String userId) {
 		return this.webbisDao.getWebbisarForAuthorId(userId);
 	}
@@ -118,26 +124,32 @@ public class WebbisServiceImpl implements WebbisService {
 		TraceLog.log("DELETED", CallContextUtil.getContext(), webbis);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Webbis> searchWebbisar(String criteria, int firstResult, int maxResults) {
 		return this.webbisDao.searchWebbis(criteria, firstResult, maxResults, false);
 	}
 	
+	@Transactional(readOnly=true)
 	public List<Webbis> searchWebbisarIncludeDisabled(String criteria, int firstResult, int maxResults) {
 		return this.webbisDao.searchWebbis(criteria, firstResult, maxResults, true);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Webbis> getLatestWebbisar(Hospital hospital, int maxResult) {
 		return this.webbisDao.getLastestWebbis(hospital, maxResult);
 	}
 	
+	@Transactional(readOnly=true)
 	public List<Webbis> getLatestWebbisar(int maxResult) {
 		return this.webbisDao.getLastestWebbis(maxResult);
 	}
 
+	@Transactional(readOnly=true)
 	public Integer getNumberOfMatchesFor(String criteria) {
 		return this.webbisDao.getNumberOfMatchesFor(criteria, false);
 	}
 	
+	@Transactional(readOnly=true)
 	public Integer getNumberOfMatchesForIncludeDisabled(String criteria) {
 		return this.webbisDao.getNumberOfMatchesFor(criteria, true);
 	}
