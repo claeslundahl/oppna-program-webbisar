@@ -17,19 +17,19 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
         
     <!-- Spring2 @AspectJ -->
-    <aop:aspectj-autoproxy/>
+<!--    <aop:aspectj-autoproxy/>-->
     <!-- Override Annotation Transaction -->
-    <aop:config>
+<!--    <aop:config>-->
     	<!-- Declare Aspect -->
-        <aop:advisor id="txnAspect" advice-ref="txnAdvice" pointcut="execution(* *..service.*Manager.*(..))"/>
-    </aop:config>
-    <tx:advice id="txnAdvice">
-        <tx:attributes>
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="find*" read-only="true"/>
-            <tx:method name="*"/>
-        </tx:attributes>
-    </tx:advice>
+<!--        <aop:advisor id="txnAspect" advice-ref="txnAdvice" pointcut="execution(* *..svc.impl.*ServiceImpl.*(..))"/>-->
+<!--    </aop:config>-->
+<!--    <tx:advice id="txnAdvice">-->
+<!--        <tx:attributes>-->
+<!--            <tx:method name="get*" read-only="true"/>-->
+<!--            <tx:method name="find*" read-only="true"/>-->
+<!--            <tx:method name="*"/>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
     
     <bean id="configuration" class="se.vgr.webbisar.svc.impl.ConfigurationImpl">
       <property name="imageBaseDir" value="empty"/>

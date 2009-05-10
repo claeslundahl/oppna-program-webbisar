@@ -135,6 +135,8 @@ encoding/<project>=UTF-8]]>
         <artifactId>spring</artifactId>
         <version>${spring.fw.version}</version>
       </dependency>
+	  
+	  
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
