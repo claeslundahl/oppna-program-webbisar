@@ -181,7 +181,7 @@ Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka anv�
   * Kör tools/data-generator -> !WebbisGenerator.java (OBS tar lång tid! Kontrollera loggen efter "Closing JPA !EntityManagerFactory for persistence unit 'dbschema'", detta indikerar att skriptet är klart.)
   * Kör därefter tools/data-generator -> !WebbisIndexer.java för att indexera om - även detta tar lång tid. 
 
-TODO: Beskriv i detalj vilka bilder som behövs.
+Testskriptet skapar webbisar som länkar till ett antal [http://code.google.com/p/oppna-program-webbisar/source/browse/trunk/tools/data-generator/test-images/images.zip testbilder] som behöver läggas upp manuellt. Testbilderna (som heter 0-10.jpg) finns zippade under tools/data-generator/test-images. Packa upp [http://code.google.com/p/oppna-program-webbisar/source/browse/trunk/tools/data-generator/test-images/images.zip testbilderna] i roten på din lokala katalog för bilderna.
 
 Vill man inte köra skriptet för att fylla databasen med testdata kan man alltså lägga till webbisar via portletten. 
 
