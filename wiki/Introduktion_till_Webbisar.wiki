@@ -128,7 +128,7 @@ Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/
 ||core-bc/modules/web samt samt tools/data-generator||application-dev.properties resp application-prod.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
 ||core-bc/modules/web samt samt tools/datagenerator||application-dev.properties resp application-prod.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
 ||core-bc/composites/svc||users.properties|| - || Filen innehåller alla inställningar för respektive ftp-användare (denna fil pekas ut i den generella ftp-server-konfigen i services-config.xml). ||
-||core-bc/composites/svc||users.properties|| `ftpserver.user.<ftp-username>.userpassword` || MD5 encrypterat lösenord till ftp-användaren med användarnamn `<ftp-username>`. Ska matcha inställningen i `webbisar.ftpConfiguration` ovan. Se http://www.iwebtool.com/md5 för hur man encrypterar lösenordet. ||
+||core-bc/composites/svc||users.properties|| `ftpserver.user.<ftp-username>.userpassword` || MD5 krypterat lösenord till ftp-användaren med användarnamn `<ftp-username>`. Ska matcha inställningen i `webbisar.ftpConfiguration` ovan. Se http://www.iwebtool.com/md5 för hur man krypterar lösenordet. ||
 ||core-bc/composite/svc||users.properties|| `ftpserver.user.<ftp-username>.homedirectory` || I denna katalog lagras bilderna som ftp:as upp med denna användare. Ska alltså matcha inställningen i `webbisar.imageBaseDir` ovan. ||
 
 Se respektive konfigurationsfil samt källkoden för övrig konfig. 
