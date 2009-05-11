@@ -176,14 +176,14 @@ Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
 
-Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka användaren till felsidan. Endera lägger man upp testdata mha det medföljande skript som finns för detta syfte (eller så lägger man manuellt upp en eller flera webbisar via portletten - se nästa steg). Obs att detta skript lägger upp _mycket_ testdata och därför tar lite tid att köra: 
+Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka användaren till felsidan. Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klass) som finns för detta syfte eller så lägger man manuellt upp en eller flera webbisar via portletten (se nästa steg. Observera att testdataskriptet lägger upp _mycket_ testdata och därför tar relativt lång tid att köra: 
 
-Kör tools/data-generator -> WebbisGenerator.java (OBS tar lång tid!)
-Kör därefter tools/data-generator -> WebbisIndexer.java för att indexera om. 
+Kör tools/data-generator -> WebbisGenerator.java (OBS tar lång tid! Kontrollera loggen efter "Closing JPA EntityManagerFactory for persistence unit 'dbschema'", detta indikerar att skriptet är klart.)
+Kör därefter tools/data-generator -> WebbisIndexer.java för att indexera om - även detta tar lång tid. 
 
 TODO: Beskriv i detalj vilka bilder som behövs.
 
-Vill man inte köra skriptet för att fylla databasen med testdata kan man alltså gå in via portletten och lägga till webbisar. 
+Vill man inte köra skriptet för att fylla databasen med testdata kan man alltså lägga till webbisar via portletten. 
 
 == Testa portlets lokalt ==
 
