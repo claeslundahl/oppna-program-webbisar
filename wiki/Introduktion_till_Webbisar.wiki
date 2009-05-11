@@ -170,25 +170,28 @@ Skapa en katalog där bilderna kan sparas lokalt. Peka ut denna katalog ifrån p
 projekten core-bc/modules/web och tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseDir`. 
 
 == Konfigurera din lokala Tomcat att serva bilderna ==
-Följ instruktionerna [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]. 
+Följ instruktionerna [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan] för att låta Tomcat serva bilderna från disk via http. 
 
 Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseUrl`.
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
-Kör tools/data-generator -> WebbisGenerator.java (OBS tar ganska lång tid!)
+
+Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka användaren till felsidan. Endera lägger man upp testdata mha det medföljande skript som finns för detta syfte (eller så lägger man manuellt upp en eller flera webbisar via portletten - se nästa steg). Obs att detta skript lägger upp _mycket_ testdata och därför tar lite tid att köra: 
+
+Kör tools/data-generator -> WebbisGenerator.java (OBS tar lång tid!)
 Kör därefter tools/data-generator -> WebbisIndexer.java för att indexera om. 
 
 TODO: Beskriv i detalj vilka bilder som behövs.
 
-Not: Projektet bör gå att köra ändå, men i dagsläget verkar indexeringen inte fungera utan testdata.  
+Vill man inte köra skriptet för att fylla databasen med testdata kan man alltså gå in via portletten och lägga till webbisar. 
 
 == Testa portlets lokalt ==
 
-!OpenPortlet Container på Glassfish används för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets.
+!OpenPortlet Container på Glassfish används för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets och hur installationen av !OpenPortlet Container och Glassfish går till.
 
 === Deploy av portlets till !OpenPortlet Container === 
 
-TODO
+Starta Glassfish. Gå därefter till http://localhost:8080/portletdriver/admin. Välj webbisar-portlett.war och tryck på Deploy. Gå därefter till Portlets-fliken där default-portletfönstret automatiskt har uppdaterats med webbisar-portlettarna; _EditWebbis_ och _AdminEditWebbis_. 
 
 = Att bygga en release =
 
