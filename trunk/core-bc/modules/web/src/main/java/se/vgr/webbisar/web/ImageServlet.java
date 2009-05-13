@@ -53,6 +53,7 @@ public class ImageServlet extends HttpServlet {
     {
         // Get requested image by path info.
         String requestedImage = request.getPathInfo();
+        System.out.println("requestedImage" + requestedImage);
 
         if (requestedImage == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
@@ -60,6 +61,8 @@ public class ImageServlet extends HttpServlet {
         }
 
         File image = new File(imagePath, URLDecoder.decode(requestedImage, "UTF-8"));
+        System.out.println("image" + image.getAbsolutePath());
+        System.out.println("image" + image.getName());
 
         // Check if file exists 
         if (!image.exists()) {
@@ -68,7 +71,7 @@ public class ImageServlet extends HttpServlet {
         }
 
         // Get content type by filename.
-        String contentType = getServletContext().getMimeType(image.getName());
+        String contentType = getServletContext().getMimeType(image.getName().replace(".JPG", ".jpg"));
 
         if (contentType == null || !contentType.startsWith("image")) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
