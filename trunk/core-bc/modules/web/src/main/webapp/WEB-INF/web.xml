@@ -206,12 +206,12 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>Image Servlet</servlet-name>
+    <servlet-name>ImageServingServlet</servlet-name>
     <servlet-class>se.vgr.webbisar.web.ImageServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Image Servlet</servlet-name>
+    <servlet-name>ImageServingServlet</servlet-name>
     <url-pattern>/images/*</url-pattern>
   </servlet-mapping>
   
@@ -269,25 +269,12 @@
       <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
       <load-on-startup>1</load-on-startup>
   </servlet>
-  <servlet>
-  	<description>
-  	</description>
-  	<display-name>
-  	ImageServlet</display-name>
-  	<servlet-name>ImageServlet</servlet-name>
-  	<servlet-class>
-  	se.vgr.webbisar.web.ImageServlet</servlet-class>
-  </servlet>
-
+ 
   <servlet-mapping>
       <servlet-name>widget</servlet-name>
       <url-pattern>/widget.jsonp</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>ImageServlet</servlet-name>
-  	<url-pattern>/ImageServlet</url-pattern>
-  </servlet-mapping>
-  
+ 
   <error-page>
     <exception-type>javax.servlet.ServletException</exception-type>
     <location>/error.jsf</location>
