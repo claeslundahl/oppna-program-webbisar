@@ -32,7 +32,7 @@
 
 <div id="custom-doc">
 	<div id="hd">
-		<div class="yui-b" style="text-align: left"><h2>Webbisar (BETA)</h2></div>
+		<div class="yui-b" style="text-align: left"><h2>Webbisar</h2></div>
 		<div class="yui-b">
 			<div class="yui-gb header">
 				
