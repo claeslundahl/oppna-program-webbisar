@@ -34,8 +34,8 @@
 	  		"time" : "<c:out value="${w.smartTime}"/>",
 	  		"parents" : "<c:out value="${w.parentsShort}"/>",
 	  		"home" : "<c:out value="${w.home}"/>",
-	  		"link" : "http://vard.vgregion.se/sv/Webbisar2/Sok-webbisar/?_flowId=Webbisar.view-flow&webbisId=<c:out value="${w.id}"/>",
-	  		"linkall" : "http://vard.vgregion.se/sv/Webbisar2"
+	  		"link" : "http://vard.vgregion.se/sv/Webbisar/Sok-webbisar/?_flowId=Webbisar.view-flow&webbisId=<c:out value="${w.id}"/>",
+	  		"linkall" : "http://vard.vgregion.se/sv/Webbisar"
 	 	}<c:if test="${not w.last}">,</c:if>      	
       	</c:forEach>
    ]	
