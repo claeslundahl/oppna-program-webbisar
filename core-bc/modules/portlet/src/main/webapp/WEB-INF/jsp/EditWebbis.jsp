@@ -23,7 +23,7 @@
 <%@ page import="javax.portlet.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
+<%@ taglib uri="http://java.sun.com/portlet_2_0"  prefix="portlet" %>
 
 <portlet:defineObjects />	
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
