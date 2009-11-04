@@ -53,10 +53,13 @@
     <!--
       dependency> <groupId>se.vgr.javg</groupId>
       <artifactId>javg-rt-support</artifactId>
-      <version>${javg.version}</version> </dependency> <dependency>
-      <groupId>taglibs</groupId> <artifactId>standard</artifactId>
-      <version>1.1.2</version> </dependency
+      <version>${javg.version}</version> </dependency>
     -->
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <version>1.1.2</version>
+    </dependency>
 
 
     <dependency>
@@ -89,6 +92,13 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
       <version>1.2</version>
+<!--      <scope>provided</scope>-->
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.portal</groupId>
+      <artifactId>portlet-container</artifactId>
+      <version>2.1</version>
       <scope>provided</scope>
     </dependency>
 
