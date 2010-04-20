@@ -386,5 +386,7 @@
 			</form>
 		</div>
 	</div>
-	<div id="ft"></div>
+	<div id="ft" style="margin-left: 1.2em; padding-top: 0px;">
+    <a target = "_blank" href="http://localhost:8080/tyck-till-core-bc-module-web/xforms-jsp/index.jsp?context=webbisar&reportMethod=pivotaltracker&reportEmail=anders.bergkvist%40omegapoint.se">Förbättringsförslag och synpunkter</a>
+  </div>
 </div>

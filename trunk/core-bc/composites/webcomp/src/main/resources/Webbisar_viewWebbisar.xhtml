@@ -18,434 +18,385 @@
       Boston, MA 02111-1307  USA
 
 -->
-<div xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jstl/core">
-	<ui:composition template="/template.xhtml">
-	<ui:define name="body">
-		<div id="custom-doc">
-            <div class="wrapper">
-			<div id="hd">
-				<div class="yui-b header"><h2>Webbisar</h2></div>
-                <div class="yui-b topinfo">
-                   <p>
-                      Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
-                      och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
-                  </p>
-                </div>
-				<div class="yui-b">
-					<div class="yui-gb header">
-						<div class="yui-u first"><p>&#160;</p></div>
-						<div class="yui-u searchfield">
-		                    <form name="addressEntryForm" id="addressEntryForm" jsfc="h:form">
-								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
-								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
-							</form>
-						</div>
-						<div class="yui-u" style="text-align: right">
-                          <p>
-                            <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
-						  </p>
-                        </div>
-					</div>
-				</div>
-            <div class="yui-b searchinfo">Exempel: 20090211 +Erik -Johan Svensson Östra</div>
-			</div>
-			<div id="bd">
-				<div id="yui-main">
-					<div class="yui-b">
-						<div class="yui-g">
-							<div class="yui-u first badge">								
-								<c:if test="#{W.webbisar[0] != null}">
-			 					<h3 class="badge" title="#{W.webbisar[0].header}">#{W.webbisar[0].truncHeader}</h3>
-			       				<div class="yui-g">
-			  						<div class="yui-u first">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[0].id}">
-                                            <c:choose>
-                                              <c:when test="#{not empty W.webbisar[0].imageUrls}">
-                                                <img class="thumb" alt="#{W.webbisar[0].header}" src="#{W.webbisar[0].imageUrls[0]}"/>                                              
-                                              </c:when>
-                                              <c:otherwise>
-                                                <img class="thumb" alt="ingen bild" src="images/no-image.jpg"/>                                                                                              
-                                              </c:otherwise>
-                                            </c:choose>
-           								</a>
-           							</div>
-			       					<div class="yui-u badge-text">
-			       						<p><b>Tid:</b> #{W.webbisar[0].time}</p>
-                                        <p><b>Vikt:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[0].weight != '0g'}"> #{W.webbisar[0].weight}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			       						<p><b>Längd:</b> 
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[0].length != '0cm'}"> #{W.webbisar[0].length}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			         					<br/>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[0].truncParent1 or not empty W.webbisar[0].truncParent2}">
-                                            <b>Föräldrar:</b><br/>
-                                            <span title="#{W.webbisar[0].parent1}">#{W.webbisar[0].truncParent1}</span><br/>
-                                            <span title="#{W.webbisar[0].parent2}">#{W.webbisar[0].truncParent2}</span><br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/><br/><br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<br/>
-                                        </p>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[0].home}">
-                                            <b>Från:</b> #{W.webbisar[0].home}<br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<b>Sjukhus:</b> #{W.webbisar[0].hospital}
-                                        </p>
-			         				</div>           				
-			         			</div>
-			         			</c:if>
-			          		</div>
-			           		<div class="yui-u badge">
-								<c:if test="#{W.webbisar[1] != null}">
-			 					<h3 class="badge" title="#{W.webbisar[1].header}">#{W.webbisar[1].truncHeader}</h3>
-			       				<div class="yui-g">
-			  						<div class="yui-u first">
-                                      <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}">
-                                            <c:choose>
-                                              <c:when test="#{not empty W.webbisar[1].imageUrls}">
-                                                <img class="thumb" alt="#{W.webbisar[1].header}" src="#{W.webbisar[1].imageUrls[0]}"/>                                              
-                                              </c:when>
-                                              <c:otherwise>
-                                                <img class="thumb" alt="ingen bild" src="images/no-image.jpg"/>                                                                                              
-                                              </c:otherwise>
-                                            </c:choose>
-                                      </a>
-                                    </div>
-			       					<div class="yui-u badge-text">
-			       						<p><b>Tid:</b> #{W.webbisar[1].time}</p>
-                                        <p><b>Vikt:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[1].weight != '0g'}"> #{W.webbisar[1].weight}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			       						<p><b>Längd:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[1].length != '0cm'}"> #{W.webbisar[1].length}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			         					<br/>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[1].truncParent1 or not empty W.webbisar[1].truncParent2}">
-                                            <b>Föräldrar:</b><br/>
-                                            <span title="#{W.webbisar[1].parent1}">#{W.webbisar[1].truncParent1}</span><br/>
-                                            <span title="#{W.webbisar[1].parent2}">#{W.webbisar[1].truncParent2}</span><br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/><br/><br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<br/>
-                                        </p>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[1].home}">
-                                            <b>Från:</b> #{W.webbisar[1].home}<br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<b>Sjukhus:</b> #{W.webbisar[1].hospital}
-                                        </p>
-			         				</div>           				
-			         			</div>
-			         			</c:if>
-			          		</div>
-						</div>
-			         	<div class="yui-g">
-							<div class="yui-u first badge">
-								<c:if test="#{W.webbisar[2] != null}">
-			 					<h3 class="badge" title="#{W.webbisar[2].header}">#{W.webbisar[2].truncHeader}</h3>
-			       				<div class="yui-g">
-			  						<div class="yui-u first">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[2].id}">
-                                            <c:choose>
-                                              <c:when test="#{not empty W.webbisar[2].imageUrls}">
-                                                <img class="thumb" alt="#{W.webbisar[2].header}" src="#{W.webbisar[2].imageUrls[0]}"/>                                              
-                                              </c:when>
-                                              <c:otherwise>
-                                                <img class="thumb" alt="ingen bild" src="images/no-image.jpg"/>                                                                                              
-                                              </c:otherwise>
-                                            </c:choose>
-           								</a>
-                                    </div>
-			       					<div class="yui-u badge-text">
-			       						<p><b>Tid:</b> #{W.webbisar[2].time}</p>
-                                        <p><b>Vikt:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[2].weight != '0g'}"> #{W.webbisar[2].weight}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			       						<p><b>Längd:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[2].length != '0cm'}"> #{W.webbisar[2].length}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			         					<br/>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[2].truncParent1 or not empty W.webbisar[2].truncParent2}">
-                                            <b>Föräldrar:</b><br/>
-                                            <span title="#{W.webbisar[2].parent1}">#{W.webbisar[2].truncParent1}</span><br/>
-                                            <span title="#{W.webbisar[2].parent2}">#{W.webbisar[2].truncParent2}</span><br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/><br/><br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<br/>
-                                        </p>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[2].home}">
-                                            <b>Från:</b> #{W.webbisar[2].home}<br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<b>Sjukhus:</b> #{W.webbisar[2].hospital}
-                                        </p>
-			         				</div>           				
-			         			</div>
-			         			</c:if>
-			          		</div>
-			           		<div class="yui-u badge">
-								<c:if test="#{W.webbisar[3] != null}">
-			 					<h3 class="badge" title="#{W.webbisar[3].header}">#{W.webbisar[3].truncHeader}</h3>
-			       				<div class="yui-g">
-			  						<div class="yui-u first">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[3].id}">
-                                            <c:choose>
-                                              <c:when test="#{not empty W.webbisar[3].imageUrls}">
-                                                <img class="thumb" alt="#{W.webbisar[3].header}" src="#{W.webbisar[3].imageUrls[0]}"/>                                              
-                                              </c:when>
-                                              <c:otherwise>
-                                                <img class="thumb" alt="ingen bild" src="images/no-image.jpg"/>                                                                                              
-                                              </c:otherwise>
-                                            </c:choose>
-           								</a>
-                                    </div>
-			       					<div class="yui-u badge-text">
-			       						<p><b>Tid:</b> #{W.webbisar[3].time}</p>
-                                        <p><b>Vikt:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[3].weight != '0g'}"> #{W.webbisar[3].weight}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			       						<p><b>Längd:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[3].length != '0cm'}"> #{W.webbisar[3].length}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			         					<br/>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[3].truncParent1 or not empty W.webbisar[3].truncParent2}">
-                                            <b>Föräldrar:</b><br/>
-                                            <span title="#{W.webbisar[3].parent1}">#{W.webbisar[3].truncParent1}</span><br/>
-                                            <span title="#{W.webbisar[3].parent2}">#{W.webbisar[3].truncParent2}</span><br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/><br/><br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<br/>
-                                        </p>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[3].home}">
-                                            <b>Från:</b> #{W.webbisar[3].home}<br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<b>Sjukhus:</b> #{W.webbisar[3].hospital}
-                                        </p>
-			         				</div>           				
-			         			</div>
-			         			</c:if>
-			          		</div>
-			         	</div>
-			         	<div class="yui-g">
-							<div class="yui-u first badge">
-								<c:if test="#{W.webbisar[4] != null}">
-			 					<h3 class="badge" title="#{W.webbisar[4].header}">#{W.webbisar[4].truncHeader}</h3>
-			       				<div class="yui-g">
-			  						<div class="yui-u first">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[4].id}">
-                                            <c:choose>
-                                              <c:when test="#{not empty W.webbisar[4].imageUrls}">
-                                                <img class="thumb" alt="#{W.webbisar[4].header}" src="#{W.webbisar[4].imageUrls[0]}"/>                                              
-                                              </c:when>
-                                              <c:otherwise>
-                                                <img class="thumb" alt="ingen bild" src="images/no-image.jpg"/>                                                                                              
-                                              </c:otherwise>
-                                            </c:choose>
-           								</a>
-                                    </div>
-			       					<div class="yui-u badge-text">
-			       						<p><b>Tid:</b> #{W.webbisar[4].time}</p>
-                                        <p><b>Vikt:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[4].weight != '0g'}"> #{W.webbisar[4].weight}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			       						<p><b>Längd:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[4].length != '0cm'}"> #{W.webbisar[4].length}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			         					<br/>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[4].truncParent1 or not empty W.webbisar[4].truncParent2}">
-                                            <b>Föräldrar:</b><br/>
-                                            <span title="#{W.webbisar[4].parent1}">#{W.webbisar[4].truncParent1}</span><br/>
-                                            <span title="#{W.webbisar[4].parent2}">#{W.webbisar[4].truncParent2}</span><br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/><br/><br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<br/>
-                                        </p>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[4].home}">
-                                            <b>Från:</b> #{W.webbisar[4].home}<br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<b>Sjukhus:</b> #{W.webbisar[4].hospital}
-                                        </p>
-			         				</div>           				
-			         			</div>
-			         			</c:if>
-			          		</div>
-			           		<div class="yui-u badge">
-								<c:if test="#{W.webbisar[5] != null}">
-			 					<h3 class="badge" title="#{W.webbisar[5].header}">#{W.webbisar[5].truncHeader}</h3>
-			       				<div class="yui-g">
-			  						<div class="yui-u first">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[5].id}">
-                                            <c:choose>
-                                              <c:when test="#{not empty W.webbisar[5].imageUrls}">
-                                                <img class="thumb" alt="#{W.webbisar[5].header}" src="#{W.webbisar[5].imageUrls[0]}"/>                                              
-                                              </c:when>
-                                              <c:otherwise>
-                                                <img class="thumb" alt="ingen bild" src="images/no-image.jpg"/>                                                                                              
-                                              </c:otherwise>
-                                            </c:choose>
-           								</a>
-                                    </div>
-			       					<div class="yui-u badge-text">
-			       						<p><b>Tid:</b> #{W.webbisar[5].time}</p>
-                                        <p><b>Vikt:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[5].weight != '0g'}"> #{W.webbisar[5].weight}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			       						<p><b>Längd:</b>
-                                        <c:choose>
-                                          <c:when test="#{W.webbisar[5].length != '0cm'}"> #{W.webbisar[5].length}</c:when>
-                                          <c:otherwise> -</c:otherwise>
-                                        </c:choose>
-                                        </p>
-			         					<br/>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[5].truncParent1 or not empty W.webbisar[5].truncParent2}">
-                                            <b>Föräldrar:</b><br/>
-                                            <span title="#{W.webbisar[5].parent1}">#{W.webbisar[5].truncParent1}</span><br/>
-                                            <span title="#{W.webbisar[5].parent2}">#{W.webbisar[5].truncParent2}</span><br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/><br/><br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<br/>
-                                        </p>
-                                        <p>
-                                        <c:choose>
-                                          <c:when test="#{not empty W.webbisar[5].home}">
-                                            <b>Från:</b> #{W.webbisar[5].home}<br/>
-                                          </c:when>
-                                          <c:otherwise>
-                                            <br/>
-                                          </c:otherwise>
-                                        </c:choose>
-			         					<b>Sjukhus:</b> #{W.webbisar[5].hospital}
-                                        </p>
-			         				</div>           				
-			         			</div>
-			         			</c:if>
-			          		</div>
-			         	</div>
-					</div>
-				</div>
-			</div>
-            <div class="push"></div>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"><ui:composition template="/template.xhtml">
+  <ui:define name="body">
+    <div id="custom-doc">
+      <div class="wrapper">
+        <div id="hd">
+          <div class="yui-b header">
+            <h2>Webbisar</h2>
+          </div>
+          <div class="yui-b topinfo">
+            <p>Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst
+            som ägs och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a
+              href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.
+            </p>
+          </div>
+          <div class="yui-b">
+            <div class="yui-gb header">
+              <div class="yui-u first">
+                <p>&#160;</p>
+              </div>
+              <div class="yui-u searchfield">
+                <form name="addressEntryForm" id="addressEntryForm" jsfc="h:form"><input type="text"
+                  name="searchCriteria" id="searchCriteria" jsfc="h:inputText" value="#{SearchCriteria.text}" /> <input
+                  class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta"
+                  jsfc="h:commandButton" /></form>
+              </div>
+              <div class="yui-u" style="text-align: right">
+                <p><a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till /
+                Redigera webbis</a></p>
+              </div>
             </div>
-			<div id="ft" class="footer">
-				<div class="yui-b">
-					<div class="yui-ge">
-						<div class="yui-u first"> 
-                           <c:if test="#{!W.firstPage}">
-                            <p>
-                              <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">
-                              Tidigare webbisar
-                              </a>
-                            </p>
-                           </c:if>
-                        </div>
-						<div class="yui-u" style="text-align: right">
-                          <c:if test="#{!W.lastPage}">
-                            <p>  
-  							  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction">
-								Fler webbisar
-    						  </a>
-                            </p>
-                          </c:if>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</ui:define>
-</ui:composition>
-</div>
+          </div>
+          <div class="yui-b searchinfo">Exempel: 20090211 +Erik -Johan Svensson Östra</div>
+        </div>
+        <div id="bd">
+          <div id="yui-main">
+            <div class="yui-b">
+            <div class="yui-g">
+            <div class="yui-u first badge"><c:if test="#{W.webbisar[0] != null}">
+              <h3 class="badge" title="#{W.webbisar[0].header}">#{W.webbisar[0].truncHeader}</h3>
+              <div class="yui-g">
+              <div class="yui-u first"><a
+                href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[0].id}">
+              <c:choose>
+                <c:when test="#{not empty W.webbisar[0].imageUrls}">
+                  <img class="thumb" alt="#{W.webbisar[0].header}" src="#{W.webbisar[0].imageUrls[0]}" />
+                </c:when>
+                <c:otherwise>
+                  <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                </c:otherwise>
+              </c:choose> </a></div>
+              <div class="yui-u badge-text">
+              <p><b>Tid:</b> #{W.webbisar[0].time}</p>
+              <p><b>Vikt:</b> <c:choose>
+                <c:when test="#{W.webbisar[0].weight != '0g'}"> #{W.webbisar[0].weight}</c:when>
+                <c:otherwise> -</c:otherwise>
+              </c:choose></p>
+              <p><b>Längd:</b> <c:choose>
+                <c:when test="#{W.webbisar[0].length != '0cm'}"> #{W.webbisar[0].length}</c:when>
+                <c:otherwise> -</c:otherwise>
+              </c:choose></p>
+              <br />
+              <p><c:choose>
+                <c:when test="#{not empty W.webbisar[0].truncParent1 or not empty W.webbisar[0].truncParent2}">
+                  <b>Föräldrar:</b>
+                  <br />
+                  <span title="#{W.webbisar[0].parent1}">#{W.webbisar[0].truncParent1}</span>
+                  <br />
+                  <span title="#{W.webbisar[0].parent2}">#{W.webbisar[0].truncParent2}</span>
+                  <br />
+                </c:when>
+                <c:otherwise>
+                  <br />
+                  <br />
+                  <br />
+                </c:otherwise>
+              </c:choose> <br />
+              </p>
+              <p><c:choose>
+                <c:when test="#{not empty W.webbisar[0].home}">
+                  <b>Från:</b> #{W.webbisar[0].home}<br />
+                </c:when>
+                <c:otherwise>
+                  <br />
+                </c:otherwise>
+              </c:choose> <b>Sjukhus:</b> #{W.webbisar[0].hospital}</p>
+              </div>
+              </div>
+            </c:if></div>
+            <div class="yui-u badge"><c:if test="#{W.webbisar[1] != null}">
+              <h3 class="badge" title="#{W.webbisar[1].header}">#{W.webbisar[1].truncHeader}</h3>
+              <div class="yui-g">
+              <div class="yui-u first"><a
+                href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}">
+              <c:choose>
+                <c:when test="#{not empty W.webbisar[1].imageUrls}">
+                  <img class="thumb" alt="#{W.webbisar[1].header}" src="#{W.webbisar[1].imageUrls[0]}" />
+                </c:when>
+                <c:otherwise>
+                  <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                </c:otherwise>
+              </c:choose> </a></div>
+              <div class="yui-u badge-text">
+              <p><b>Tid:</b> #{W.webbisar[1].time}</p>
+              <p><b>Vikt:</b> <c:choose>
+                <c:when test="#{W.webbisar[1].weight != '0g'}"> #{W.webbisar[1].weight}</c:when>
+                <c:otherwise> -</c:otherwise>
+              </c:choose></p>
+              <p><b>Längd:</b> <c:choose>
+                <c:when test="#{W.webbisar[1].length != '0cm'}"> #{W.webbisar[1].length}</c:when>
+                <c:otherwise> -</c:otherwise>
+              </c:choose></p>
+              <br />
+              <p><c:choose>
+                <c:when test="#{not empty W.webbisar[1].truncParent1 or not empty W.webbisar[1].truncParent2}">
+                  <b>Föräldrar:</b>
+                  <br />
+                  <span title="#{W.webbisar[1].parent1}">#{W.webbisar[1].truncParent1}</span>
+                  <br />
+                  <span title="#{W.webbisar[1].parent2}">#{W.webbisar[1].truncParent2}</span>
+                  <br />
+                </c:when>
+                <c:otherwise>
+                  <br />
+                  <br />
+                  <br />
+                </c:otherwise>
+              </c:choose> <br />
+              </p>
+              <p><c:choose>
+                <c:when test="#{not empty W.webbisar[1].home}">
+                  <b>Från:</b> #{W.webbisar[1].home}<br />
+                </c:when>
+                <c:otherwise>
+                  <br />
+                </c:otherwise>
+              </c:choose> <b>Sjukhus:</b> #{W.webbisar[1].hospital}</p>
+              </div>
+              </div>
+            </c:if></div>
+            </div>
+            <div class="yui-g">
+              <div class="yui-u first badge">
+                <c:if test="#{W.webbisar[2] != null}">
+                  <h3 class="badge" title="#{W.webbisar[2].header}">#{W.webbisar[2].truncHeader}</h3>
+                  <div class="yui-g">
+                  <div class="yui-u first"><a
+                    href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[2].id}">
+                  <c:choose>
+                    <c:when test="#{not empty W.webbisar[2].imageUrls}">
+                      <img class="thumb" alt="#{W.webbisar[2].header}" src="#{W.webbisar[2].imageUrls[0]}" />
+                    </c:when>
+                    <c:otherwise>
+                      <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                    </c:otherwise>
+                  </c:choose> </a></div>
+                  <div class="yui-u badge-text">
+                  <p><b>Tid:</b> #{W.webbisar[2].time}</p>
+                  <p><b>Vikt:</b> <c:choose>
+                    <c:when test="#{W.webbisar[2].weight != '0g'}"> #{W.webbisar[2].weight}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <p><b>Längd:</b> <c:choose>
+                    <c:when test="#{W.webbisar[2].length != '0cm'}"> #{W.webbisar[2].length}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <br />
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[2].truncParent1 or not empty W.webbisar[2].truncParent2}">
+                      <b>Föräldrar:</b>
+                      <br />
+                      <span title="#{W.webbisar[2].parent1}">#{W.webbisar[2].truncParent1}</span>
+                      <br />
+                      <span title="#{W.webbisar[2].parent2}">#{W.webbisar[2].truncParent2}</span>
+                      <br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                      <br />
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <br />
+                  </p>
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[2].home}">
+                      <b>Från:</b> #{W.webbisar[2].home}<br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <b>Sjukhus:</b> #{W.webbisar[2].hospital}</p>
+                  </div>
+                  </div>
+                </c:if>
+              </div>
+              <div class="yui-u badge">
+                <c:if test="#{W.webbisar[3] != null}">
+                  <h3 class="badge" title="#{W.webbisar[3].header}">#{W.webbisar[3].truncHeader}</h3>
+                  <div class="yui-g">
+                  <div class="yui-u first"><a
+                    href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[3].id}">
+                  <c:choose>
+                    <c:when test="#{not empty W.webbisar[3].imageUrls}">
+                      <img class="thumb" alt="#{W.webbisar[3].header}" src="#{W.webbisar[3].imageUrls[0]}" />
+                    </c:when>
+                    <c:otherwise>
+                      <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                    </c:otherwise>
+                  </c:choose> </a></div>
+                  <div class="yui-u badge-text">
+                  <p><b>Tid:</b> #{W.webbisar[3].time}</p>
+                  <p><b>Vikt:</b> <c:choose>
+                    <c:when test="#{W.webbisar[3].weight != '0g'}"> #{W.webbisar[3].weight}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <p><b>Längd:</b> <c:choose>
+                    <c:when test="#{W.webbisar[3].length != '0cm'}"> #{W.webbisar[3].length}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <br />
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[3].truncParent1 or not empty W.webbisar[3].truncParent2}">
+                      <b>Föräldrar:</b>
+                      <br />
+                      <span title="#{W.webbisar[3].parent1}">#{W.webbisar[3].truncParent1}</span>
+                      <br />
+                      <span title="#{W.webbisar[3].parent2}">#{W.webbisar[3].truncParent2}</span>
+                      <br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                      <br />
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <br />
+                  </p>
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[3].home}">
+                      <b>Från:</b> #{W.webbisar[3].home}<br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <b>Sjukhus:</b> #{W.webbisar[3].hospital}</p>
+                  </div>
+                  </div>
+                </c:if>
+              </div>
+            </div>
+            <div class="yui-g">
+              <div class="yui-u first badge">
+                <c:if test="#{W.webbisar[4] != null}">
+                  <h3 class="badge" title="#{W.webbisar[4].header}">#{W.webbisar[4].truncHeader}</h3>
+                  <div class="yui-g">
+                  <div class="yui-u first"><a
+                    href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[4].id}">
+                  <c:choose>
+                    <c:when test="#{not empty W.webbisar[4].imageUrls}">
+                      <img class="thumb" alt="#{W.webbisar[4].header}" src="#{W.webbisar[4].imageUrls[0]}" />
+                    </c:when>
+                    <c:otherwise>
+                      <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                    </c:otherwise>
+                  </c:choose> </a></div>
+                  <div class="yui-u badge-text">
+                  <p><b>Tid:</b> #{W.webbisar[4].time}</p>
+                  <p><b>Vikt:</b> <c:choose>
+                    <c:when test="#{W.webbisar[4].weight != '0g'}"> #{W.webbisar[4].weight}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <p><b>Längd:</b> <c:choose>
+                    <c:when test="#{W.webbisar[4].length != '0cm'}"> #{W.webbisar[4].length}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <br />
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[4].truncParent1 or not empty W.webbisar[4].truncParent2}">
+                      <b>Föräldrar:</b>
+                      <br />
+                      <span title="#{W.webbisar[4].parent1}">#{W.webbisar[4].truncParent1}</span>
+                      <br />
+                      <span title="#{W.webbisar[4].parent2}">#{W.webbisar[4].truncParent2}</span>
+                      <br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                      <br />
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <br />
+                  </p>
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[4].home}">
+                      <b>Från:</b> #{W.webbisar[4].home}<br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <b>Sjukhus:</b> #{W.webbisar[4].hospital}</p>
+                  </div>
+                  </div>
+                </c:if>
+              </div>
+              <div class="yui-u badge">
+                <c:if test="#{W.webbisar[5] != null}">
+                  <h3 class="badge" title="#{W.webbisar[5].header}">#{W.webbisar[5].truncHeader}</h3>
+                  <div class="yui-g">
+                  <div class="yui-u first"><a
+                    href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[5].id}">
+                  <c:choose>
+                    <c:when test="#{not empty W.webbisar[5].imageUrls}">
+                      <img class="thumb" alt="#{W.webbisar[5].header}" src="#{W.webbisar[5].imageUrls[0]}" />
+                    </c:when>
+                    <c:otherwise>
+                      <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                    </c:otherwise>
+                  </c:choose> </a></div>
+                  <div class="yui-u badge-text">
+                  <p><b>Tid:</b> #{W.webbisar[5].time}</p>
+                  <p><b>Vikt:</b> <c:choose>
+                    <c:when test="#{W.webbisar[5].weight != '0g'}"> #{W.webbisar[5].weight}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <p><b>Längd:</b> <c:choose>
+                    <c:when test="#{W.webbisar[5].length != '0cm'}"> #{W.webbisar[5].length}</c:when>
+                    <c:otherwise> -</c:otherwise>
+                  </c:choose></p>
+                  <br />
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[5].truncParent1 or not empty W.webbisar[5].truncParent2}">
+                      <b>Föräldrar:</b>
+                      <br />
+                      <span title="#{W.webbisar[5].parent1}">#{W.webbisar[5].truncParent1}</span>
+                      <br />
+                      <span title="#{W.webbisar[5].parent2}">#{W.webbisar[5].truncParent2}</span>
+                      <br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                      <br />
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <br />
+                  </p>
+                  <p><c:choose>
+                    <c:when test="#{not empty W.webbisar[5].home}">
+                      <b>Från:</b> #{W.webbisar[5].home}<br />
+                    </c:when>
+                    <c:otherwise>
+                      <br />
+                    </c:otherwise>
+                  </c:choose> <b>Sjukhus:</b> #{W.webbisar[5].hospital}</p>
+                  </div>
+                  </div>
+                </c:if>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="push"></div>
+      </div>
+      <div id="ft" class="footer">
+        <div class="yui-b">
+          <div class="yui-ge">
+            <div class="yui-u first">
+              <c:if test="#{!W.firstPage}">
+                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction"> Föregående </a></p>
+              </c:if>
+            </div>
+            <div class="yui-u" style="text-align: right">
+              <c:if test="#{!W.lastPage}">
+                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction"> Nästa </a></p>
+              </c:if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition></div>
