@@ -23,10 +23,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
                           http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
 
-    <input-mapper>
-      <input-attribute name="webbisId" scope="flow" />
-      <input-attribute name="SearchCriteria" scope="flow" />
-    </input-mapper>
+  <input-mapper>
+    <input-attribute name="webbisId" scope="flow" />
+    <input-attribute name="SearchCriteria" scope="flow" />
+  </input-mapper>
   
 	<start-state idref="showWebbis" />
 
@@ -42,15 +42,18 @@
 	</action-state>
 
 	<view-state id="viewPage" view="/Webbisar_viewWebbis.xhtml">
-        <transition on="selectWebbisImageAction" to="showWebbis">
-          <set attribute="selectedImage" scope="flow" value="requestParameters.selectedImage" />
-        </transition>
-		<transition on="backToWebbisarAction" to="finish" />
-        <transition on="searchForWebbisAction" to="search"/>
+    <transition on="selectWebbisImageAction" to="showWebbis">
+      <set attribute="selectedImage" scope="flow" value="requestParameters.selectedImage" />
+    </transition>
+		<transition on="backToWebbisarAction" to="back" />
+    <transition on="backToWebbisarStartAction" to="backToStart" />
+    <transition on="searchForWebbisAction" to="search"/>
 	</view-state>
 	
-    <end-state id="search"/>
+  <end-state id="search"/>
   
-	<end-state id="finish" />
+	<end-state id="back" />
+  
+  <end-state id="backToStart" />
 
 </flow>

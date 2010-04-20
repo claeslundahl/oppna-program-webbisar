@@ -32,35 +32,35 @@
           <div id="custom-doc">
           	<div id="hd">
           		<div class="yui-b header"><h2>Webbisar</h2></div>
-                <div class="yui-b topinfo">
-                   <p>
-                      Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
-                      och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
-                  </p>
-                </div>
+              <div class="yui-b topinfo">
+                 <p>
+                    Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
+                    och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
+                </p>
+              </div>
           		<div class="yui-b">
           			<div class="yui-gb header">
           				<div class="yui-u first">
-                          <p>	
-    				  		<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">
-    				  			Till webbis-startsidan
-    				  		</a>
-                          </p>
+                    <p>	
+        				  		<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">
+        				  			Till startsidan
+        				  		</a>
+                    </p>
           				</div>
           				<div class="yui-u searchfield">
-		                    <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
-								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
-								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
-							</form>
+                    <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
+      								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
+      								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
+      							</form>
           				</div>
-						<div class="yui-u" style="text-align: right">
-                          <p>
-                            <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
-						  </p>
-                        </div>
+						      <div class="yui-u" style="text-align: right">
+                    <p>
+                      <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
+					          </p>
+                  </div>
         			</div>
           		</div>	
-                <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+              <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
           	</div>
           	<div id="bd">
           		<div id="yui-main">
@@ -100,7 +100,7 @@
                     <c:if test="#{!SearchResultPage.firstPage}">
                       <p>
                         <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">
-                           Tidigare sökrsultat
+                           Tidigare sökresultat
                         </a>
                       </p>
                     </c:if>

@@ -32,137 +32,141 @@
 			<div id="custom-doc">
 				<div id="hd">
 					<div class="yui-b header"><h2>Webbisar</h2></div>
-                    <div class="yui-b topinfo">
-                      <p>
-                      Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
-                      och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
-                      </p>
-                    </div>
+            <div class="yui-b topinfo">
+              <p>
+              Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
+              och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
+              </p>
+            </div>
 					<div class="yui-b">
 						<div class="yui-gb header">
 							<div class="yui-u first">	
-                              <p>			
-						  		<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">
-						  			Till webbis-startsidan
-						  		</a>
-                              </p>
+                <p>			
+                  <a href="getlink?_linkeventid=backToWebbisarStartAction">Till startsidan</a>
+						  		<br/>
+                  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">Tillbaka</a>
+                </p>
 							</div>
 							<div class="yui-u searchfield">
-    		                    <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
-    								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
-    								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
-    							</form>
+                <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
+  								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
+  								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
+  							</form>
 							</div>
     						<div class="yui-u" style="text-align: right">
-                              <p>
-                                <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
+                  <p>
+                    <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
     						  </p>
-                            </div>
+                </div>
 						</div>
 					</div>	
-                    <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+        <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
 				</div>
 				<div id="bd">
 					<div id="yui-main">
 						<div class="yui-b webbis">
 			 				<h3 class="webbis">#{Webbis.header}</h3>
 							<div class="yui-gc">
-								<div class="yui-u first"><img class="full" src="#{Webbis.selectedImageUrl}"></img></div>
+								<div class="yui-u first">
+                  <!-- <embed src="/videos/2010-04-19/Wildlife.wmv" /> -->
+                  <img class="full" src="#{Webbis.selectedImageUrl}"></img>
+                  <!-- <a href="/videos/2010-04-19/Wildlife.wmv">Kan din webbläsare inte visa filmen? Direktlänk till filmen finns här.</a> -->
+                </div>
 								<div class="yui-u" style="margin-left:0;">
 									<p><b>Född:</b> #{Webbis.longDate}</p>
-                                    <c:if test="#{Webbis.weight != '0g'}">
-                                      <p><b>Vikt:</b> #{Webbis.weight}</p>
-                                    </c:if>
-                                    <c:if test="#{Webbis.length != '0cm'}">
+                  <c:if test="#{Webbis.weight != '0g'}">
+                    <p><b>Vikt:</b> #{Webbis.weight}</p>
+                  </c:if>
+                  <c:if test="#{Webbis.length != '0cm'}">
  									  <p><b>Längd:</b> #{Webbis.length}</p>
-                                    </c:if>
+                  </c:if>
 									<br/>
-                                    <c:if test="#{not empty Webbis.parent1 or not empty Webbis.parent2}">
-                                      <p>
-                                        <b>Föräldrar:</b><br/>
-                                        #{Webbis.parent1}<br/>
-                                        #{Webbis.parent2}<br/>
-                                      </p>
-                                    </c:if>
-                                    <br/>
-                                    <p>
-                                    <c:if test="#{not empty Webbis.siblings}">
-                                    <b>Syskon:</b><br/> 
-                                    #{Webbis.siblings}                                    
-                                    </c:if>
-                                    </p>
+                  <c:if test="#{not empty Webbis.parent1 or not empty Webbis.parent2}">
+                    <p>
+                      <b>Föräldrar:</b><br/>
+                      #{Webbis.parent1}<br/>
+                      #{Webbis.parent2}<br/>
+                    </p>
+                  </c:if>
+                  <br/>
+                  <p>
+                  <c:if test="#{not empty Webbis.siblings}">
+                  <b>Syskon:</b><br/> 
+                  #{Webbis.siblings}                                    
+                  </c:if>
+                  </p>
 									<br/>
-                                    <c:if test="#{not empty Webbis.home}">
+                  <c:if test="#{not empty Webbis.home}">
 									<p><b>Från:</b> #{Webbis.home}</p>
-                                    </c:if>
+                  </c:if>
 									<p><b>Sjukhus:</b> #{Webbis.hospital}</p>
 									<br/>
 									<p>#{Webbis.message}</p>
 									<br/>
-                                    <c:if test="#{not empty Webbis.homePage}">
+                  <c:if test="#{not empty Webbis.homePage}">
 									<p><b><a href="#{Webbis.homePage}" target="new">Länk till egen webbsida</a></b></p>
-                                    </c:if>
-                                    <br/>
-                                    <!-- Was removed during review. Considered difficult to understand. PW 090206 
-                                    <p>
-                                      <a href="http://vard.vgregion.se/sv/Webbisar2/Sok-webbisar/?_flowId=Webbisar.view-flow&amp;webbisId=#{Webbis.id}" target="new">Direktlänk till webbisen</a>
+                  </c:if>
+                  <br/>
+                  <!-- Was removed during review. Considered difficult to understand. PW 090206 
+                  <p>
+                    <a href="http://vard.vgregion.se/sv/Webbisar2/Sok-webbisar/?_flowId=Webbisar.view-flow&amp;webbisId=#{Webbis.id}" target="new">Direktlänk till webbisen</a>
 								    </p>
-                                    -->
-                                </div>
+                    -->
+                </div>
 							</div>
 							<div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
-                                <div class="yui-u first" style="width: 42%">
-                                  <p>
-                                    <c:choose>
-                                      <c:when test="#{not empty Webbis.selectedImageComment}">
-                                        #{Webbis.selectedImageComment}
-                                      </c:when>
-                                      <c:otherwise>
-                                        &#160;
-                                      </c:otherwise>  
-                                    </c:choose>
-                                  </p>
-                                </div>
+                <div class="yui-u first" style="width: 42%">
+                  <p>
+                    <c:choose>
+                      <c:when test="#{not empty Webbis.selectedImageComment}">
+                        #{Webbis.selectedImageComment}
+                      </c:when>
+                      <c:otherwise>
+                        &#160;
+                      </c:otherwise>  
+                    </c:choose>
+                  </p>
+                </div>
 								<div class="yui-u" style="width: 22%">
-                                  <p style="text-align: right">
-                                    <!-- img src="resources/images/magnifying-glass.png" style="height:1.2em; padding-right:0.5em;"/ -->
-                                    <a href="#{Webbis.selectedImageUrl}" target="new">Visa större bild</a>
-                                  </p>
-                                </div>
+                  <p style="text-align: right">
+                    <!-- img src="resources/images/magnifying-glass.png" style="height:1.2em; padding-right:0.5em;"/ -->
+                    <a href="#{Webbis.selectedImageUrl}" target="new">Visa större bild</a>
+                  </p>
+                </div>
 								<div class="yui-u"></div>
 							</div>
 							<div class="yui-g piclist">
 								<div class="yui-g first">
 									<div class="yui-u first">
-                                      <c:if test="#{Webbis.imageUrls[0] != null}">
+                    <c:if test="#{Webbis.imageUrls[0] != null}">
 			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=0">
-                                          <img class="#{Webbis.style[0]}" src="#{Webbis.imageUrls[0]}"/>
-                                        </a>
-                                      </c:if>
-                                    </div>
+                        <img class="#{Webbis.style[0]}" src="#{Webbis.imageUrls[0]}"/>
+                      </a>
+                    </c:if>
+                  </div>
 									<div class="yui-u">
-                                      <c:if test="#{Webbis.imageUrls[1] != null}">
+                    <c:if test="#{Webbis.imageUrls[1] != null}">
 			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=1">
-                                          <img class="#{Webbis.style[1]}" src="#{Webbis.imageUrls[1]}"/>
-                                        </a>
-                                       </c:if>
-                                     </div>
+                        <img class="#{Webbis.style[1]}" src="#{Webbis.imageUrls[1]}"/>
+                      </a>
+                     </c:if>
+                   </div>
 								</div>
 								<div class="yui-g">
 									<div class="yui-u first">
-                                      <c:if test="#{Webbis.imageUrls[2] != null}">
+                    <c:if test="#{Webbis.imageUrls[2] != null}">
 			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=2">
-                                          <img class="#{Webbis.style[2]}" src="#{Webbis.imageUrls[2]}"/>
-                                        </a>
-                                       </c:if>
-                                    </div>
+                        <img class="#{Webbis.style[2]}" src="#{Webbis.imageUrls[2]}"/>
+                      </a>
+                     </c:if>
+                  </div>
 									<div class="yui-u">
-                                      <c:if test="#{Webbis.imageUrls[3] != null}">
+                    <c:if test="#{Webbis.imageUrls[3] != null}">
 			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=3">
-                                          <img class="#{Webbis.style[3]}" src="#{Webbis.imageUrls[3]}"/>
-                                        </a>
-                                       </c:if>
-                                    </div>
+                        <img class="#{Webbis.style[3]}" src="#{Webbis.imageUrls[3]}"/>
+                      </a>
+                     </c:if>
+                  </div>
 								</div>
 							</div>
 						</div>
