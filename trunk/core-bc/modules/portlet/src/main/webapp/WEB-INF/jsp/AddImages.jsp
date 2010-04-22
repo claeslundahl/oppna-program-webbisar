@@ -68,7 +68,6 @@
 							<br/>
 							<br/>
 						</div>
-						<div class="yui-u"></div>
 					</div>
 					<div class="yui-g">
 						<div class="yui-u first"></div>

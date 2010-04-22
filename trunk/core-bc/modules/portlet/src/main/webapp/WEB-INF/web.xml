@@ -19,7 +19,7 @@
 
 -->
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>EditWebbisPortlet</display-name>
+  <display-name>WebbisarPortlets</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -29,16 +29,36 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-    <listener>
+  <listener>
     <listener-class>com.liferay.portal.kernel.servlet.PortletContextListener</listener-class>
   </listener>
   
-<!--  <jsp-config>-->
-  		<!-- <taglib>
-			<taglib-uri>http://java.sun.com/portlet_2_0</taglib-uri>
-			<taglib-location>/WEB-INF/tld/sun-portlet_2_0.tld</taglib-location>
-		</taglib> -->
-<!--  </jsp-config>-->
+  <servlet>
+    <servlet-name>EditWebbis</servlet-name>
+    <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+    <init-param>
+        <param-name>portlet-class</param-name>
+        <param-value>se.vgr.webbisar.portlet.EditWebbisPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditWebbis</servlet-name>
+    <url-pattern>/EditWebbis/*</url-pattern>
+  </servlet-mapping>
   
+  <servlet>
+    <servlet-name>AdminEditWebbis</servlet-name>
+    <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+    <init-param>
+        <param-name>portlet-class</param-name>
+        <param-value>se.vgr.webbisar.portlet.AdminEditWebbisPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminEditWebbis</servlet-name>
+    <url-pattern>/AdminEditWebbis/*</url-pattern>
+  </servlet-mapping>
   
 </web-app>

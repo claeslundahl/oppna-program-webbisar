@@ -68,9 +68,55 @@
 			 				<h3 class="webbis">#{Webbis.header}</h3>
 							<div class="yui-gc">
 								<div class="yui-u first">
-                  <!-- <embed src="/videos/2010-04-19/Wildlife.wmv" /> -->
+                  <!-- 
+                  <embed src="/videos/2010-04-19/Wildlife.wmv" autostart="false" height="300px" width="444px" > 
+                    <noembed>
+                      Din webbläsare kan inte visa filmen. <a href="/videos/2010-04-19/Wildlife.wmv">Direktlänk till filmen finns här.</a>
+                    </noembed>
+                  </embed>
+                   -->
+                  
+                  <!--[if !IE]>
+                      <object id="mediaplayer" type="application/x-ms-wmp" data="/videos/2010-04-19/Wildlife.wmv" width="444" height="320">
+                          <param name="src" value="/videos/2010-04-19/Wildlife.wmv" valuetype="ref" type="/videos/2010-04-19/Wildlife.wmv"/>
+                          <param name="animationatStart" value="1"/>
+                          <param name="transparentatStart" value="1"/>
+                          <param name="autoStart" value="0"/>
+                          <param name="ShowControls" value="1"/>
+                          <param name="ShowDisplay" value="0"/>
+                          <param name="ShowStatusBar" value="0"/>
+                          <param name="autoRewind" value="0"/>
+                          <param name="displaysize" value="0"/>
+                          <param name="stretchtofit" value="1"/>
+                          <param name="enableContextMenu" value="0"/>
+                            <b> Fel: </b>Du behöver en inbäddad mediaspelare (plugin) för att kunna se filmen i webbläsaren.
+                            <br/><br/>
+                            <a href="/videos/2010-04-19/Wildlife.wmv"> Direktlänk till filmen finns här.</a>
+                      </object>
+                  <![endif]-->
+                  <!--[if IE]>
+                      <object id="mediaplayer" type="video/x-ms-wmv" classid="CLSID:6BF52A52-394A-11D3-B153-00C04F79FAA6" width="444" height="320">
+                          <param name="url" value="/videos/2010-04-19/Wildlife.wmv" valuetype="ref" type="video/x-ms-wmv"/>
+                          <param name="animationatStart" value="1"/>
+                          <param name="transparentatStart" value="1"/>
+                          <param name="autoStart" value="0"/>
+                          <param name="ShowControls" value="1"/>
+                          <param name="ShowDisplay" value="0"/>
+                          <param name="ShowStatusBar" value="0"/>
+                          <param name="clickToPlay" value="1"/>
+                          <param name="autoRewind" value="0"/>
+                          <param name="displaysize" value="0"/>
+                          <param name="stretchtofit" value="1"/>
+                          <param name="enableContextMenu" value="0"/>
+                            <b> Fel: </b>Du behöver <a href="http://www.microsoft.com/windows/windowsmedia/download/plugin.aspx">Windows Media Player Plugin</a> för att kunna se filmen.
+                            <br/><br/>
+                            <a href="/videos/2010-04-19/Wildlife.wmv"> Direktlänk till filmen finns här.</a>
+                      </object>
+                  <![endif]-->
+                  
+                  <!-- 
                   <img class="full" src="#{Webbis.selectedImageUrl}"></img>
-                  <!-- <a href="/videos/2010-04-19/Wildlife.wmv">Kan din webbläsare inte visa filmen? Direktlänk till filmen finns här.</a> -->
+                   -->
                 </div>
 								<div class="yui-u" style="margin-left:0;">
 									<p><b>Född:</b> #{Webbis.longDate}</p>

@@ -212,7 +212,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ImageServingServlet</servlet-name>
-    <url-pattern>/images/*</url-pattern>
+    <url-pattern>/webbisimages/*</url-pattern>
   </servlet-mapping>
   
 
