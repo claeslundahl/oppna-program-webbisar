@@ -120,17 +120,31 @@ div.searchfield {
 }
 div.badge {
 	height: 15em;
-	border: thin solid #D1D1D1;
+	border: 1px solid #D1D1D1;
 	margin-bottom:0.8em;
+}
+
+div.badge:hover {
+  border: 1px solid #9C132F;
 }
 
 div.badge-text {
 	font-size: 0.8em;
 }
 
+div.birthmultiplicityparent {
+  position: relative;
+}
+
 div.webbis {
 	border: thin solid #D1D1D1;
 	margin-bottom:0.8em;
+}
+
+div.birthmultiplicity {
+  position: absolute; 
+  right: 0; 
+  top: 0;
 }
 
 div.addwebbis {
@@ -186,14 +200,13 @@ img.icon {
 	
 img.thumb {
 	width: 14em;
-	padding-top:0.1em;
-	padding-bottom:0.4em;
-	padding-left:0.8em;
+	margin-top:0.1em;
+	margin-bottom:0.4em;
+	margin-left:0.8em;
 	
 }
 img.full {
 	width: 43em;
 	margin-bottom:0.4em;
 	margin-left:0.8em;
-	
 }
