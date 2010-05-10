@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2009 Vastra Gotalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+-->
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+
+  <var name="MailMessage" class="se.vgr.webbisar.presentation.MailMessageBean"/>
+  <var name="EmptyMailMessageResult" class="se.vgr.webbisar.presentation.MailMessageResultBean"/>
+
+  <input-mapper>
+    <input-attribute name="webbisId" scope="flow" />
+  </input-mapper>
+  
+	<start-state idref="viewPage" />
+
+	<action-state id="sendWebbis">
+    <bean-action bean="Webbisar.WebbisarFlowSupport" method="sendWebbis">
+      <method-arguments>
+        <argument expression="flowScope.webbisId" />
+        <argument expression="flowScope.MailMessage" />
+      </method-arguments>
+      <method-result name="MailMessageResult" scope="flow" />
+    </bean-action>
+    
+    <evaluate-action expression="flowScope.MailMessageResult.success" />
+    <transition on="yes" to="mailSent"/>
+    <transition on="no" to="viewPage"/>
+  
+  </action-state>
+
+  <view-state id="viewPage" view="/Webbisar_sendWebbis.xhtml">
+    <transition on="cancelSendWebbisAction" to="cancelSend"/>
+    <transition on="sendWebbisAction" to="sendWebbis" />
+  </view-state>
+  
+  <end-state id="cancelSend">
+    <output-mapper>
+      <mapping source="${flowScope.EmptyMailMessageResult}" target="MailMessageResult"/>
+    </output-mapper>
+  </end-state>
+  
+	<end-state id="mailSent">
+    <output-mapper>
+      <mapping source="${flowScope.MailMessageResult}" target="MailMessageResult"/>
+    </output-mapper>
+  </end-state>
+
+</flow>

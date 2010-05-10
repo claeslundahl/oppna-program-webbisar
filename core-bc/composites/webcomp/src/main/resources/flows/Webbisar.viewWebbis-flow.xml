@@ -34,7 +34,7 @@
 		<bean-action bean="Webbisar.WebbisarFlowSupport" method="getWebbis">
 			<method-arguments>
 				<argument expression="flowScope.webbisId" />
-                <argument expression="flowScope.selectedImage" parameter-type="java.lang.Integer"/>
+        <argument expression="flowScope.selectedImage" parameter-type="java.lang.Integer"/>
 			</method-arguments>
 			<method-result name="Webbis" scope="flow" />
 		</bean-action>
@@ -48,7 +48,21 @@
 		<transition on="backToWebbisarAction" to="back" />
     <transition on="backToWebbisarStartAction" to="backToStart" />
     <transition on="searchForWebbisAction" to="search"/>
+    <transition on="showSendWebbisAction" to="showSendWebbis"/>
 	</view-state>
+  
+  <subflow-state id="showSendWebbis" flow="Webbisar.sendWebbis-flow">
+    <attribute-mapper>
+      <input-mapper>
+        <mapping source="requestParameters.webbisId" target="webbisId" from="string" to="long" />
+      </input-mapper>
+      <output-mapper>
+         <mapping source="${MailMessageResult}" target="flowScope.MailMessageResult"/>
+      </output-mapper>
+    </attribute-mapper>
+    <transition on="cancelSend" to="viewPage" />
+    <transition on="mailSent" to="viewPage" />
+  </subflow-state>
 	
   <end-state id="search"/>
   

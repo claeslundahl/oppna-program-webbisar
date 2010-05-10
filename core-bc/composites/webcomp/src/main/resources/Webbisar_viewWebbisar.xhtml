@@ -22,6 +22,38 @@
   xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
   xmlns:c="http://java.sun.com/jstl/core"><ui:composition template="/template.xhtml">
   <ui:define name="body">
+  
+    <script type="text/javascript" src="http://jquery.com/src/jquery-latest.js"></script>
+    
+    <script type="text/javascript">
+      /* <![CDATA[ */
+      
+      function showHoverFrames(divIds) {
+          var divIdArray = divIds.split(',');
+          var currentClass, currentElement;
+          for (i = 0; i < divIdArray.length; i++) {
+              currentElement = document.getElementById(divIdArray[i]);
+              if (currentElement) {
+                  currentClass = currentElement.className;
+                  currentElement.className = currentClass + ' badgeHover';
+              }
+          }
+      }
+      
+      function hideHoverFrames(divIds) {
+          var divIdArray = divIds.split(',');
+          var currentClass, currentElement;
+          for (i = 0; i < divIdArray.length; i++) {
+              currentElement = document.getElementById(divIdArray[i]);
+              if (currentElement) {
+                  currentClass = currentElement.className;
+                  currentElement.className = currentClass.replace(' badgeHover', '');
+              }
+          }
+      }
+      /* ]]> */
+    </script>
+  
     <div id="custom-doc">
       <div class="wrapper">
       
@@ -41,13 +73,19 @@
                 <p>&#160;</p>
               </div>
               <div class="yui-u searchfield">
-                <form name="addressEntryForm" id="addressEntryForm" jsfc="h:form"><input type="text"
-                  name="searchCriteria" id="searchCriteria" jsfc="h:inputText" value="#{SearchCriteria.text}" /> <input
-                  class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta"
-                  jsfc="h:commandButton" /></form>
+                <form name="addressEntryForm" id="addressEntryForm" jsfc="h:form">
+                  <input type="text" name="searchCriteria" id="searchCriteria" 
+                    jsfc="h:inputText" value="#{SearchCriteria.text}" />
+                  <input class="btn" type="submit" action="searchForWebbisAction" 
+                    immidiate="false" value="Hitta" jsfc="h:commandButton" />
+                </form>
               </div>
               <div class="yui-u" style="text-align: right">
+                <!-- 
+                TODO: CHANGE TO PRODUCTION LINK AT REGIONPORTALEN!?
                 <p><a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till /
+                Redigera webbis</a></p> -->
+                <p><a href="http://antonio.vgregion.se:8080/web/extern/webbisar" target="_blank">Lägg till /
                 Redigera webbis</a></p>
               </div>
             </div>
@@ -58,10 +96,9 @@
         <div id="bd">
           <div id="yui-main">
             <div class="yui-b">
-            
               <div class="yui-g">
                 <c:if test="#{W.webbisar[0] != null}">
-                  <div class="yui-u first badge">
+                  <div id="#{W.webbisar[0].id}" class="yui-u first badge" onmouseover="showHoverFrames('#{W.webbisar[0].allWebbisIds}');" onmouseout="hideHoverFrames('#{W.webbisar[0].allWebbisIds}');">
                     <h3 class="badge" title="#{W.webbisar[0].header}">#{W.webbisar[0].truncHeader}</h3>
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
@@ -70,7 +107,7 @@
                           <c:when test="#{W.webbisar[0].triplet}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a
+                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[0].allWebbisIds}');return true;"
                         href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[0].id}">
                       <c:choose>
                         <c:when test="#{not empty W.webbisar[0].imageUrls}">
@@ -122,7 +159,7 @@
                   </div>
                 </c:if>
                 <c:if test="#{W.webbisar[1] != null}">
-                  <div class="yui-u badge">
+                  <div id="#{W.webbisar[1].id}" class="yui-u badge" onmouseover="showHoverFrames('#{W.webbisar[1].allWebbisIds}');" onmouseout="hideHoverFrames('#{W.webbisar[1].allWebbisIds}');">
                     <h3 class="badge" title="#{W.webbisar[1].header}">#{W.webbisar[1].truncHeader}</h3>
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
@@ -132,7 +169,8 @@
                         </c:choose>
                       </div>
                       <div class="yui-u first">
-                        <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}">
+                        <a onclick="hideHoverFrames('#{W.webbisar[1].allWebbisIds}');return true;"
+                          href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}">
                           <c:choose>
                             <c:when test="#{not empty W.webbisar[1].imageUrls}">
                               <img class="thumb" alt="#{W.webbisar[1].header}" src="#{W.webbisar[1].imageUrls[0]}" />
@@ -186,7 +224,7 @@
               
               <div class="yui-g">
                 <c:if test="#{W.webbisar[2] != null}">
-                  <div class="yui-u first badge">
+                  <div id="#{W.webbisar[2].id}" class="yui-u first badge" onmouseover="showHoverFrames('#{W.webbisar[2].allWebbisIds}');" onmouseout="hideHoverFrames('#{W.webbisar[2].allWebbisIds}');">
                     <h3 class="badge" title="#{W.webbisar[2].header}">#{W.webbisar[2].truncHeader}</h3>
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
@@ -195,7 +233,7 @@
                           <c:when test="#{W.webbisar[2].triplet}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a
+                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[2].allWebbisIds}');return true;"
                         href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[2].id}">
                       <c:choose>
                         <c:when test="#{not empty W.webbisar[2].imageUrls}">
@@ -245,7 +283,7 @@
                   </div>
                 </c:if>
                 <c:if test="#{W.webbisar[3] != null}">
-                  <div class="yui-u badge">
+                  <div id="#{W.webbisar[3].id}" class="yui-u badge" onmouseover="showHoverFrames('#{W.webbisar[3].allWebbisIds}');" onmouseout="hideHoverFrames('#{W.webbisar[3].allWebbisIds}');">
                     <h3 class="badge" title="#{W.webbisar[3].header}">#{W.webbisar[3].truncHeader}</h3>
                     <div class="yui-g birthmultiplicityparent">
   
@@ -256,7 +294,7 @@
                         </c:choose>
                       </div>
                     
-                      <div class="yui-u first"><a
+                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[3].allWebbisIds}');return true;"
                         href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[3].id}">
                       <c:choose>
                         <c:when test="#{not empty W.webbisar[3].imageUrls}">
@@ -309,7 +347,7 @@
               
               <div class="yui-g">
                 <c:if test="#{W.webbisar[4] != null}">
-                  <div class="yui-u first badge birthmultiplicityparent">
+                  <div id="#{W.webbisar[4].id}" class="yui-u first badge birthmultiplicityparent" onmouseover="showHoverFrames('#{W.webbisar[4].allWebbisIds}');" onmouseout="hideHoverFrames('#{W.webbisar[4].allWebbisIds}');">
                     <h3 class="badge" title="#{W.webbisar[4].header}">#{W.webbisar[4].truncHeader}</h3>
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
@@ -318,7 +356,7 @@
                           <c:when test="#{W.webbisar[4].triplet}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a
+                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[4].allWebbisIds}');return true;"
                         href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[4].id}">
                       <c:choose>
                         <c:when test="#{not empty W.webbisar[4].imageUrls}">
@@ -368,7 +406,7 @@
                   </div>
                 </c:if>
                 <c:if test="#{W.webbisar[5] != null}">
-                  <div class="yui-u badge">
+                  <div id="#{W.webbisar[5].id}" class="yui-u badge" onmouseover="showHoverFrames('#{W.webbisar[5].allWebbisIds}');" onmouseout="hideHoverFrames('#{W.webbisar[5].allWebbisIds}');">
                     <h3 class="badge" title="#{W.webbisar[5].header}">#{W.webbisar[5].truncHeader}</h3>
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
@@ -377,7 +415,7 @@
                           <c:when test="#{W.webbisar[5].triplet}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a
+                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[5].allWebbisIds}');return true;"
                         href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[5].id}">
                       <c:choose>
                         <c:when test="#{not empty W.webbisar[5].imageUrls}">

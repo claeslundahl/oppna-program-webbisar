@@ -29,12 +29,19 @@
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
 
 <style type="text/css">
-    <%@ include file="/style/style.css" %>
+  <%@ include file="/style/style.css" %>
 </style>
 
 <div id="custom-doc">
 	<div id="hd">
-		<div class="yui-b" style="text-align: left"><h2>Webbisar</h2></div>
+    <div class="yui-g">
+  		<div class="yui-u first" style="text-align: left">
+        <h2>Webbisar</h2>
+      </div>
+      <div class="yui-u" style="text-align: right; padding-top: 4px;">
+        <a target = "_blank" href="http://tycktill.vgregion.se/tyck-till-core-bc-module-web/xforms-jsp/index.jsp?context=webbisar&reportMethod=pivotaltracker&reportEmail=tycktill%40vgregion.se">Förbättringsförslag och synpunkter</a>
+      </div>
+    </div>
 	</div>
 	<div id="bd">
 		<div id="yui-main">
@@ -392,7 +399,5 @@
 			</form>
 		</div>
 	</div>
-	<div id="ft" style="padding-top: 0px;">
-    <a target = "_blank" href="http://tycktill.vgregion.se/tyck-till-core-bc-module-web/xforms-jsp/index.jsp?context=webbisar&reportMethod=pivotaltracker&reportEmail=tycktill%40vgregion.se">Förbättringsförslag och synpunkter</a>
-  </div>
+	<div id="ft"></div>
 </div>
