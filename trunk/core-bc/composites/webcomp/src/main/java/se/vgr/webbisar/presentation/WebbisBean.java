@@ -21,8 +21,10 @@ import static org.apache.commons.lang.StringUtils.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import se.vgr.webbisar.types.BirthMultiplicity;
+import se.vgr.webbisar.types.BirthMultiplicityMapping;
 import se.vgr.webbisar.types.Image;
 import se.vgr.webbisar.types.Sex;
 import se.vgr.webbisar.types.Webbis;
@@ -54,6 +56,7 @@ public class WebbisBean implements Serializable {
     private String[] styles = new String[] { "selected", "notselected", "notselected", "notselected" };
     private String imageBaseUrl;
     private BirthMultiplicity birthMultiplicity;
+    private List<BirthMultiplicityMapping> birthMultiplicitySiblings;
 
     public WebbisBean(String imageBaseUrl, Webbis webbis, int selectedImage) {
 
@@ -85,6 +88,7 @@ public class WebbisBean implements Serializable {
         this.message = webbis.getMessage();
         this.imageBaseUrl = imageBaseUrl;
         this.birthMultiplicity = webbis.getBirthMultiplicity();
+        this.birthMultiplicitySiblings = webbis.getBirthMultiplicitySiblings();
     }
 
     public WebbisBean(String imageBaseUrl, Webbis webbis) {
@@ -253,4 +257,24 @@ public class WebbisBean implements Serializable {
         return BirthMultiplicity.TRIPLET.equals(birthMultiplicity);
     }
 
+    public String getSiblingIds() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < birthMultiplicitySiblings.size(); i++) {
+            if (i > 0) {
+                sb.append(",");
+            }
+            sb.append(birthMultiplicitySiblings.get(i).getSiblingId());
+        }
+        return sb.toString();
+    }
+
+    public String getAllWebbisIds() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id);
+        for (int i = 0; i < birthMultiplicitySiblings.size(); i++) {
+            sb.append(",");
+            sb.append(birthMultiplicitySiblings.get(i).getSiblingId());
+        }
+        return sb.toString();
+    }
 }

@@ -37,6 +37,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -165,6 +166,15 @@ public class Webbis implements Serializable {
     private Date created;
 
     private Date lastModified;
+
+    @CollectionOfElements(fetch = FetchType.EAGER)
+    @IndexColumn(name = "idx", base = 0)
+    @IndexedEmbedded
+    @JoinTable(name = "WebbisBirthMultiplicityMapping", joinColumns = @JoinColumn(name = "webbis_id"), uniqueConstraints = { @UniqueConstraint(columnNames = {
+            "webbis_id", "sibling_id" }) })
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Valid
+    private List<BirthMultiplicityMapping> birthMultiplicitySiblings = new ArrayList<BirthMultiplicityMapping>();
 
     protected Webbis() { /* empty */
     }
@@ -316,6 +326,10 @@ public class Webbis implements Serializable {
         return lastModified;
     }
 
+    public List<BirthMultiplicityMapping> getBirthMultiplicitySiblings() {
+        return birthMultiplicitySiblings;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -425,5 +439,4 @@ public class Webbis implements Serializable {
         sb.append("lastModified=").append(sdf.format(lastModified));
         return sb.toString();
     }
-
 }

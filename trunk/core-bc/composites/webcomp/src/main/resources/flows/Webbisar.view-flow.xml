@@ -81,11 +81,14 @@
 		<attribute-mapper>
 			<input-mapper>
 				<mapping source="requestParameters.webbisId" target="webbisId" from="string" to="long" />
-                <mapping source="flowScope.SearchCriteria" target="SearchCriteria"/>
+        <mapping source="flowScope.SearchCriteria" target="SearchCriteria"/>
 			</input-mapper>
 		</attribute-mapper>
 		<transition on="back" to="actionLoadPage" />
-    <transition on="backToStart" to="viewPage" />
+    <transition on="backToStart" to="actionLoadPage">
+      <!-- Resetting so first page is reloaded regardless of current page -->
+      <set attribute="W" scope="flow" value="null" /> 
+    </transition>
     <transition on="search" to="searchWebbis"/>
 	</subflow-state>
   

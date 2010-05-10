@@ -118,13 +118,14 @@ div.searchinfo {
 div.searchfield {
 	text-align: center;
 }
+
 div.badge {
 	height: 15em;
 	border: 1px solid #D1D1D1;
 	margin-bottom:0.8em;
 }
 
-div.badge:hover {
+div.badgeHover {
   border: 1px solid #9C132F;
 }
 

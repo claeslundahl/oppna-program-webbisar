@@ -42,7 +42,7 @@
 						<div class="yui-gb header">
 							<div class="yui-u first">	
                 <p>			
-                  <a href="getlink?_linkeventid=backToWebbisarStartAction">Till startsidan</a>
+                  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarStartAction">Till startsidan</a>
 						  		<br/>
                   <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">Tillbaka</a>
                 </p>
@@ -111,6 +111,10 @@
                     <a href="http://vard.vgregion.se/sv/Webbisar2/Sok-webbisar/?_flowId=Webbisar.view-flow&amp;webbisId=#{Webbis.id}" target="new">Direktlänk till webbisen</a>
 								    </p>
                     -->
+                  <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showSendWebbisAction&amp;webbisId=#{Webbis.id}">Skicka webbis till vän</a></p>
+                  <c:if test="#{not empty MailMessageResult.message}">
+                    <p>#{MailMessageResult.message}</p>
+                  </c:if>  
                 </div>
 							</div>
 							<div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
