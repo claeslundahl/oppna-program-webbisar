@@ -23,8 +23,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import se.vgr.webbisar.types.BirthMultiplicity;
-import se.vgr.webbisar.types.BirthMultiplicityMapping;
 import se.vgr.webbisar.types.Image;
 import se.vgr.webbisar.types.Sex;
 import se.vgr.webbisar.types.Webbis;
@@ -55,8 +53,8 @@ public class WebbisBean implements Serializable {
     private String selectedImageComment;
     private String[] styles = new String[] { "selected", "notselected", "notselected", "notselected" };
     private String imageBaseUrl;
-    private BirthMultiplicity birthMultiplicity;
-    private List<BirthMultiplicityMapping> birthMultiplicitySiblings;
+    private Webbis mainMultipleBirthWebbis;
+    private List<Webbis> multipleBirthSiblings;
 
     public WebbisBean(String imageBaseUrl, Webbis webbis, int selectedImage) {
 
@@ -87,8 +85,8 @@ public class WebbisBean implements Serializable {
         this.homePage = webbis.getHomePage();
         this.message = webbis.getMessage();
         this.imageBaseUrl = imageBaseUrl;
-        this.birthMultiplicity = webbis.getBirthMultiplicity();
-        this.birthMultiplicitySiblings = webbis.getBirthMultiplicitySiblings();
+        this.mainMultipleBirthWebbis = webbis.getMainMultipleBirthWebbis();
+        this.multipleBirthSiblings = webbis.getMultipleBirthSiblings();
     }
 
     public WebbisBean(String imageBaseUrl, Webbis webbis) {
@@ -249,31 +247,41 @@ public class WebbisBean implements Serializable {
         return imageUrls;
     }
 
-    public boolean isTwin() {
-        return BirthMultiplicity.TWIN.equals(birthMultiplicity);
+    public int getMultipleBirthSiblingCount() {
+        if (mainMultipleBirthWebbis != null) {
+            return mainMultipleBirthWebbis.getMultipleBirthSiblings().size();
+        } else if (multipleBirthSiblings != null) {
+            return multipleBirthSiblings.size();
+        }
+        return 0;
     }
 
-    public boolean isTriplet() {
-        return BirthMultiplicity.TRIPLET.equals(birthMultiplicity);
-    }
-
-    public String getSiblingIds() {
+    public String getMultipleBirthSiblingIds() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < birthMultiplicitySiblings.size(); i++) {
-            if (i > 0) {
-                sb.append(",");
+        List<Webbis> siblingList = null;
+        if (mainMultipleBirthWebbis != null) {
+            siblingList = mainMultipleBirthWebbis.getMultipleBirthSiblings();
+        } else if (multipleBirthSiblings != null) {
+            siblingList = multipleBirthSiblings;
+        }
+        if (siblingList != null) {
+            for (int i = 0; i < siblingList.size(); i++) {
+                if (i > 0) {
+                    sb.append(",");
+                }
+                sb.append(siblingList.get(i).getId());
             }
-            sb.append(birthMultiplicitySiblings.get(i).getSiblingId());
         }
         return sb.toString();
     }
 
     public String getAllWebbisIds() {
+        String siblingsIds = getMultipleBirthSiblingIds();
         StringBuilder sb = new StringBuilder();
         sb.append(id);
-        for (int i = 0; i < birthMultiplicitySiblings.size(); i++) {
+        if (siblingsIds.length() > 0) {
             sb.append(",");
-            sb.append(birthMultiplicitySiblings.get(i).getSiblingId());
+            sb.append(siblingsIds);
         }
         return sb.toString();
     }

@@ -38,7 +38,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import se.vgr.webbisar.svc.WebbisDao;
-import se.vgr.webbisar.types.BirthMultiplicity;
 import se.vgr.webbisar.types.BirthTime;
 import se.vgr.webbisar.types.Hospital;
 import se.vgr.webbisar.types.Image;
@@ -77,6 +76,8 @@ public class WebbisDaoTest {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddZ");
 
+    // TODO: AndersB - fixa testfall för tvilling/trilling!
+
     @Test
     @Rollback(false)
     public void testInsert() throws Exception {
@@ -87,9 +88,9 @@ public class WebbisDaoTest {
         parents.add(new Name("Jenny", "Lind"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        webbisDao.save(new Webbis("Kalle", "someId", Sex.Male, BirthMultiplicity.SINGLETON, new BirthTime(2009, 1,
-                2, 14, 33), 2345, 55, Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande",
-                "email@email.se", "http://www.blog.se/mamma"));
+        webbisDao.save(new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55,
+                Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma"));
 
         parents = new ArrayList<Name>();
         images = new ArrayList<Image>();
@@ -98,9 +99,9 @@ public class WebbisDaoTest {
         parents.add(new Name("Jenny", "Nilsson"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        webbisDao.save(new Webbis("Gunnar", "someId", Sex.Male, BirthMultiplicity.SINGLETON, new BirthTime(2009,
-                1, 4, 0, 0), 3453, 49, Hospital.OSTRA, "Göteborg", parents, images, "Lisa och Nisse",
-                "Ett meddelande", "email@email.se", "http://www.blog.se/mamma"));
+        webbisDao.save(new Webbis("Gunnar", "someId", Sex.Male, new BirthTime(2009, 1, 4, 0, 0), 3453, 49,
+                Hospital.OSTRA, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma"));
 
         parents = new ArrayList<Name>();
         images = new ArrayList<Image>();
@@ -109,9 +110,9 @@ public class WebbisDaoTest {
         parents.add(new Name("Emma", "Svensson"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        webbisDao.save(new Webbis("Kalle", "someOtherId", Sex.Male, BirthMultiplicity.SINGLETON, new BirthTime(
-                2009, 1, 2, 14, 34), 2345, 55, Hospital.KSS, "Mölndal", parents, images, "Johanna",
-                "Ett meddelande", "email@email.se", "http://www.blog.se/mamma"));
+        webbisDao.save(new Webbis("Kalle", "someOtherId", Sex.Male, new BirthTime(2009, 1, 2, 14, 34), 2345, 55,
+                Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma"));
 
         parents = new ArrayList<Name>();
         images = new ArrayList<Image>();
@@ -120,9 +121,9 @@ public class WebbisDaoTest {
         parents.add(new Name("Jenny", "Nilsson"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        Webbis webbis = new Webbis("Gunnar", "someId", Sex.Male, BirthMultiplicity.SINGLETON, new BirthTime(2009,
-                1, 4, 0, 23), 3453, 49, Hospital.NAL, "Göteborg", parents, images, "Lisa och Nisse",
-                "Ett meddelande", "email@email.se", "http://www.blog.se/mamma");
+        Webbis webbis = new Webbis("Gunnar", "someId", Sex.Male, new BirthTime(2009, 1, 4, 0, 23), 3453, 49,
+                Hospital.NAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma");
         webbis.disable();
         webbisDao.save(webbis);
 
@@ -133,9 +134,9 @@ public class WebbisDaoTest {
         parents.add(new Name("Anna", "Örland"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
         images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        webbisDao.save(new Webbis("Berra", "someOtherId", Sex.Male, BirthMultiplicity.SINGLETON, new BirthTime(
-                2009, 1, 5, 0, 24), 3453, 49, Hospital.MOLNDAL, "Göteborg", parents, images, "Lisa och Nisse",
-                "Ett meddelande", "email@email.se", "http://www.blog.se/mamma"));
+        webbisDao.save(new Webbis("Berra", "someOtherId", Sex.Male, new BirthTime(2009, 1, 5, 0, 24), 3453, 49,
+                Hospital.MOLNDAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande",
+                "email@email.se", "http://www.blog.se/mamma"));
 
     }
 

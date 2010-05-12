@@ -58,6 +58,7 @@ public class EditWebbisPortlet extends GenericPortlet {
     private static final String SHOW_WEBBIS_LIST_VIEW = "SHOW_WEBBIS_LIST_VIEW";
     private static final String CONFIRM_DELETE_WEBBIS_VIEW = "CONFIRM_DELETE_WEBBIS_VIEW";
     private static final String PREVIEW_VIEW = "PREVIEW_VIEW";
+    private static final int SUPPORTED_MULTIPLE_BIRTH_SIBLINGS = 3; // Triplets
 
     private WebbisPortletHelper helper = null;
     private WebbisServiceProxy webbisServiceProxy = null;
@@ -204,27 +205,8 @@ public class EditWebbisPortlet extends GenericPortlet {
                     // rely on javascript we have to handle this on the server.
                     helper.saveWebbisFormInSession(request);
                     response.setRenderParameter(VIEW, MAIN_VIEW);
-                    if (request.getParameter("remove-image1") != null) {
-                        helper.removeImage(1, request);
-                    } else if (request.getParameter("remove-image2") != null) {
-                        helper.removeImage(2, request);
-                    } else if (request.getParameter("remove-image3") != null) {
-                        helper.removeImage(3, request);
-                    } else if (request.getParameter("remove-image4") != null) {
-                        helper.removeImage(4, request);
-                    } else if (request.getParameter("remove-image5") != null) {
-                        helper.removeImage(5, request);
-                    } else if (request.getParameter("image1-main-image") != null) {
-                        helper.setMainImage(1, request);
-                    } else if (request.getParameter("image2-main-image") != null) {
-                        helper.setMainImage(2, request);
-                    } else if (request.getParameter("image3-main-image") != null) {
-                        helper.setMainImage(3, request);
-                    } else if (request.getParameter("image4-main-image") != null) {
-                        helper.setMainImage(4, request);
-                    } else if (request.getParameter("image5-main-image") != null) {
-                        helper.setMainImage(5, request);
-                    }
+                    // Check which image operation that should be performed
+                    handleImageOperations(request);
                 }
             }
         } finally {
@@ -241,6 +223,43 @@ public class EditWebbisPortlet extends GenericPortlet {
             FileHandler fileHandler = new FileHandler(ftpCfg);
 
             helper = new WebbisPortletHelper(baseUrl, fileHandler);
+        }
+    }
+
+    private void handleImageOperations(ActionRequest request) {
+        // TODO: AndersB - handle sibling images!!
+        for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
+            if (request.getParameter("w" + i + "_remove-image0") != null) {
+                helper.removeImage(i, 0, request);
+                break;
+            } else if (request.getParameter("w" + i + "_remove-image1") != null) {
+                helper.removeImage(i, 1, request);
+                break;
+            } else if (request.getParameter("w" + i + "_remove-image2") != null) {
+                helper.removeImage(i, 2, request);
+                break;
+            } else if (request.getParameter("w" + i + "_remove-image3") != null) {
+                helper.removeImage(i, 3, request);
+                break;
+            } else if (request.getParameter("w" + i + "_remove-image4") != null) {
+                helper.removeImage(i, 4, request);
+                break;
+            } else if (request.getParameter("w" + i + "_image0-main-image") != null) {
+                helper.setMainImage(i, 0, request);
+                break;
+            } else if (request.getParameter("w" + i + "_image1-main-image") != null) {
+                helper.setMainImage(i, 1, request);
+                break;
+            } else if (request.getParameter("w" + i + "_image2-main-image") != null) {
+                helper.setMainImage(i, 2, request);
+                break;
+            } else if (request.getParameter("w" + i + "_image3-main-image") != null) {
+                helper.setMainImage(i, 3, request);
+                break;
+            } else if (request.getParameter("w" + i + "_image4-main-image") != null) {
+                helper.setMainImage(i, 4, request);
+                break;
+            }
         }
     }
 }
