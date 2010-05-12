@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,10 +35,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -93,11 +95,6 @@ public class Webbis implements Serializable {
     @Column(name = "sex", nullable = false, updatable = true)
     @NotNull
     private Sex sex;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "birth_multiplicity", nullable = false, updatable = true, columnDefinition = "VARCHAR default 'SINGLETON'")
-    @NotNull
-    private BirthMultiplicity birthMultiplicity = BirthMultiplicity.SINGLETON;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Fields( {
@@ -167,34 +164,36 @@ public class Webbis implements Serializable {
 
     private Date lastModified;
 
-    @CollectionOfElements(fetch = FetchType.EAGER)
-    @IndexColumn(name = "idx", base = 0)
-    @IndexedEmbedded
-    @JoinTable(name = "WebbisBirthMultiplicityMapping", joinColumns = @JoinColumn(name = "webbis_id"), uniqueConstraints = { @UniqueConstraint(columnNames = {
-            "webbis_id", "sibling_id" }) })
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @Valid
-    private List<BirthMultiplicityMapping> birthMultiplicitySiblings = new ArrayList<BirthMultiplicityMapping>();
+    // Holding multiple birth sibling webbisar, if any. List will contain one or two other webbisar
+    // in case of twin/triplet
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "multiple_birth_main_webbis_id")
+    private List<Webbis> multipleBirthSiblings;
+
+    // Holding main multiple birth webbis, if any. The main webbis will contain one or two other
+    // webbisar in case of twin/triplet
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "multiple_birth_main_webbis_id")
+    private Webbis multipleBirthMainWebbis;
 
     protected Webbis() { /* empty */
     }
 
-    public Webbis(Long id, String name, String authorId, Sex sex, BirthMultiplicity birthMultiplicity,
-            BirthTime birthTime, int weight, int length, Hospital hospital, String home, List<Name> parents,
-            List<Image> images, String siblings, String message, String email, String homePage) {
-        this(name, authorId, sex, birthMultiplicity, birthTime, weight, length, hospital, home, parents, images,
-                siblings, message, email, homePage);
+    public Webbis(Long id, String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,
+            Hospital hospital, String home, List<Name> parents, List<Image> images, String siblings,
+            String message, String email, String homePage) {
+        this(name, authorId, sex, birthTime, weight, length, hospital, home, parents, images, siblings, message,
+                email, homePage);
 
         this.id = id;
     }
 
-    public Webbis(String name, String authorId, Sex sex, BirthMultiplicity birthMultiplicity, BirthTime birthTime,
-            int weight, int length, Hospital hospital, String home, List<Name> parents, List<Image> images,
-            String siblings, String message, String email, String homePage) {
+    public Webbis(String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,
+            Hospital hospital, String home, List<Name> parents, List<Image> images, String siblings,
+            String message, String email, String homePage) {
         this.name = capitalize(trimToEmpty(name));
         this.authorId = trimToEmpty(authorId);
         this.sex = sex;
-        this.birthMultiplicity = birthMultiplicity;
         this.birthTime = birthTime.getTimeAsDate();
         this.weight = weight;
         this.length = length;
@@ -248,10 +247,6 @@ public class Webbis implements Serializable {
 
     public Sex getSex() {
         return sex;
-    }
-
-    public BirthMultiplicity getBirthMultiplicity() {
-        return birthMultiplicity;
     }
 
     public BirthTime getBirthTime() {
@@ -326,8 +321,20 @@ public class Webbis implements Serializable {
         return lastModified;
     }
 
-    public List<BirthMultiplicityMapping> getBirthMultiplicitySiblings() {
-        return birthMultiplicitySiblings;
+    public Webbis getMainMultipleBirthWebbis() {
+        return multipleBirthMainWebbis;
+    }
+
+    public void setMainMultipleBirthWebbis(Webbis mainWebbis) {
+        this.multipleBirthMainWebbis = mainWebbis;
+    }
+
+    public List<Webbis> getMultipleBirthSiblings() {
+        return multipleBirthSiblings;
+    }
+
+    public void setMultipleBirthSiblings(List<Webbis> siblingWebbisars) {
+        this.multipleBirthSiblings = siblingWebbisars;
     }
 
     @Override
@@ -415,7 +422,6 @@ public class Webbis implements Serializable {
         sb.append("authorId=").append(authorId).append(",");
         sb.append("name=").append(name).append(",");
         sb.append("sex=").append(sex).append(",");
-        sb.append("birthMultiplicity=").append(birthMultiplicity).append(",");
         sb.append("birthTime=").append(sdf.format(birthTime)).append(",");
         sb.append("weight=").append(weight).append(",");
         sb.append("length=").append(length).append(",");

@@ -17,8 +17,8 @@
  */
 package se.vgr.webbisar.svc.impl;
 
-import static org.hibernate.search.Search.getFullTextSession;
-import static org.hibernate.search.jpa.Search.getFullTextEntityManager;
+import static org.hibernate.search.Search.*;
+import static org.hibernate.search.jpa.Search.*;
 
 import java.util.List;
 import java.util.StringTokenizer;
@@ -116,8 +116,7 @@ public class WebbisDaoHibernate implements WebbisDao {
             if (token.startsWith("+") && token.length() > 1) {
                 token = token.substring(1);
                 clause = BooleanClause.Occur.MUST;
-            }
-            else if (token.startsWith("-") && token.length() > 1) {
+            } else if (token.startsWith("-") && token.length() > 1) {
                 token = token.substring(1);
                 clause = BooleanClause.Occur.MUST_NOT;
             }
@@ -225,16 +224,11 @@ public class WebbisDaoHibernate implements WebbisDao {
     public List<Webbis> getWebbisarForAuthorId(final String authorId) {
         Object results = getJpaTemplate().execute(new JpaCallback() {
             public Object doInJpa(EntityManager em) throws PersistenceException {
-                FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(em);
-
-                BooleanQuery query = new BooleanQuery();
-                TermQuery tq = new TermQuery(new Term("authorId", authorId));
-                query.add(new BooleanClause(tq, BooleanClause.Occur.MUST));
-
-                FullTextQuery fq = fullTextEntityManager.createFullTextQuery(query, Webbis.class);
-                fq.enableFullTextFilter("enabledWebbis");
-
-                return fq.getResultList();
+                Query q = em
+                        .createQuery("SELECT w FROM Webbis w WHERE w.authorId = :author AND w.disabled = false AND w.multipleBirthMainWebbis IS NULL");
+                q.setParameter("author", authorId);
+                q.setHint("org.hibernate.cacheable", true);
+                return q.getResultList();
             }
         });
         return (List<Webbis>) results;
@@ -259,7 +253,6 @@ public class WebbisDaoHibernate implements WebbisDao {
                 int index = 0;
                 while (results.next()) {
                     index++;
-                    Webbis w = (Webbis) results.get(0);
                     fullTextSession.index(results.get(0)); // index each element
                     if (index % BATCH_SIZE == 0) {
                         fullTextSession.flushToIndexes(); // apply changes to indexes
