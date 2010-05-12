@@ -17,8 +17,6 @@
  */
 package se.vgr.webbisar.tool;
 
-import static se.vgr.webbisar.tool.NameGenerator.*;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -32,7 +30,6 @@ import org.springframework.context.support.AbstractRefreshableApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import se.vgr.webbisar.svc.WebbisService;
-import se.vgr.webbisar.types.BirthMultiplicity;
 import se.vgr.webbisar.types.BirthTime;
 import se.vgr.webbisar.types.Hospital;
 import se.vgr.webbisar.types.Image;
@@ -85,7 +82,7 @@ public class WebbisGenerator {
     }
 
     private Webbis generateWebbis() {
-        String n = generateWebbisName();
+        String n = NameGenerator.generateWebbisName();
         String name = (rand.nextInt(5) != 0) ? n.substring(1) : null;
         Sex sex = n.charAt(0) == 'f' ? Sex.Female : Sex.Male;
 
@@ -98,8 +95,8 @@ public class WebbisGenerator {
         String home = "Göteborg";
 
         List<Name> parents = new ArrayList<Name>();
-        parents.add(generateFemaleName());
-        parents.add(generateMaleName());
+        parents.add(NameGenerator.generateFemaleName());
+        parents.add(NameGenerator.generateMaleName());
 
         List<Image> images = new ArrayList<Image>();
         images.add(generateImage());
@@ -113,10 +110,9 @@ public class WebbisGenerator {
         String message = "Välkommen till världen, åh vad vi har längtat efter dig!";
         String email = "mamma@pappa.se";
         String homePage = "http://www.blogg.se./mamma";
-        BirthMultiplicity birthMultiplicity = BirthMultiplicity.SINGLETON;
 
-        return new Webbis(name, authorId, sex, birthMultiplicity, birthTime, weight, length, hospital, home,
-                parents, images, siblings, message, email, homePage);
+        return new Webbis(name, authorId, sex, birthTime, weight, length, hospital, home, parents, images,
+                siblings, message, email, homePage);
     }
 
     private String generateSiblings() {
@@ -137,7 +133,7 @@ public class WebbisGenerator {
     }
 
     private String generateWebbisNameNoGender() {
-        return generateWebbisName().substring(1);
+        return NameGenerator.generateWebbisName().substring(1);
     }
 
     private Hospital generateHospital() {
