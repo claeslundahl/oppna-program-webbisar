@@ -176,7 +176,7 @@ public class Webbis implements Serializable {
     @JoinColumn(name = "multiple_birth_main_webbis_id")
     private Webbis multipleBirthMainWebbis;
 
-    protected Webbis() { /* empty */
+    public Webbis() { /* empty */
     }
 
     public Webbis(Long id, String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,

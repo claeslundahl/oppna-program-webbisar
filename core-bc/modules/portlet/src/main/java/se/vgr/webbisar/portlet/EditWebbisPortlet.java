@@ -19,6 +19,7 @@ package se.vgr.webbisar.portlet;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -89,21 +90,18 @@ public class EditWebbisPortlet extends GenericPortlet {
                     helper.storeMyWebbisarInSession(request, webbisar);
                     request.setAttribute("webbisar", webbisar);
                     dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ShowWebbisList.jsp");
-
                 } else {
                     // show an empty main edit webbis page - for adding a new webbis
-                    helper.populateDefaults(request.getPortletSession(true));
-                    request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR)); // this is
-                    // used in the
-                    // jsp
+                    helper.populateDefaults(request.getPortletSession(true), null);
+                    // this is used in the jsp
+                    request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
                     request.setAttribute("hospitals", Hospital.values());
                     dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
                 }
-
             } else if (view.equals(MAIN_VIEW)) {
-                helper.populateDefaults(request.getPortletSession(true));
-                // this is used in EditWebbis.jsp TODO find a smarter way to do this, preferably directly in the
-                // jsp
+                helper.populateDefaults(request.getPortletSession(true), request.getParameter("noOfSiblings"));
+
+                // this is used in the jsp
                 request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
                 request.setAttribute("hospitals", Hospital.values());
                 // show the main edit webbis page
@@ -146,15 +144,14 @@ public class EditWebbisPortlet extends GenericPortlet {
                     response.setRenderParameter(VIEW, ADD_IMAGES_VIEW);
                 }
             } else {
-                // check which button was pressed and handle each request
-                // accordingly
+                // check which button was pressed and handle each request accordingly
                 if (request.getParameter("preview") != null) {
-                    helper.saveWebbisFormInSession(request);
+                    helper.saveWebbisFormInSession(request, null);
                     Webbis webbis;
                     try {
                         webbis = helper.createWebbis(request);
                         helper.saveWebbisInSession(request.getPortletSession(), webbis);
-                        request.setAttribute("webbis", helper.createPreviewWebbisBean(request, webbis));
+                        request.setAttribute("previewWebbis", helper.createPreviewWebbisBean(request, webbis));
                         response.setRenderParameter(VIEW, PREVIEW_VIEW);
                     } catch (WebbisValidationException wve) {
                         request.setAttribute("validationMessages", wve.getValidationMessages());
@@ -165,7 +162,7 @@ public class EditWebbisPortlet extends GenericPortlet {
                     // has the user accepted the terms?
                     if (request.getParameter("accept") == null) {
                         request.setAttribute("validationMessages", "Villkoren måste accepteras");
-                        request.setAttribute("webbis", helper.createPreviewWebbisBean(request, helper
+                        request.setAttribute("previewWebbis", helper.createPreviewWebbisBean(request, helper
                                 .getWebbisFromSession(request.getPortletSession())));
                         response.setRenderParameter(VIEW, PREVIEW_VIEW);
                     } else {
@@ -186,7 +183,7 @@ public class EditWebbisPortlet extends GenericPortlet {
                     response.setRenderParameter(VIEW, MAIN_VIEW);
                 } else if (request.getParameter("deleteWebbis") != null) {
                     // show the confirmDelete Page
-                    request.setAttribute("webbisId", request.getParameter("webbisId"));
+                    request.setAttribute("webbisId", request.getParameter("w0_webbisId"));
                     response.setRenderParameter(VIEW, CONFIRM_DELETE_WEBBIS_VIEW);
                 } else if (request.getParameter("cancelDeleteWebbis") != null) {
                     response.setRenderParameter(VIEW, MAIN_VIEW);
@@ -198,15 +195,31 @@ public class EditWebbisPortlet extends GenericPortlet {
                     helper.cleanUp(request.getPortletSession(true));
                     webbisServiceProxy.cleanUpTempDir(request.getPortletSession(true).getId());
                     response.setRenderParameter(VIEW, SHOW_WEBBIS_LIST_VIEW);
-                } else if (request.getParameter("addImages") != null) {
-                    helper.saveWebbisFormInSession(request);
-                    response.setRenderParameter(VIEW, ADD_IMAGES_VIEW);
-                } else { // handle remove image and setting of main image Note: because we cannot
-                    // rely on javascript we have to handle this on the server.
-                    helper.saveWebbisFormInSession(request);
-                    response.setRenderParameter(VIEW, MAIN_VIEW);
-                    // Check which image operation that should be performed
-                    handleImageOperations(request);
+                } else {
+                    // Image: Add, remove or change main
+                    // Note: because we cannot rely on javascript we have to handle this on the server.
+
+                    // Check if user wants to add image
+                    boolean addingNewImage = false;
+                    Enumeration<String> paramNames = request.getParameterNames();
+                    while (paramNames.hasMoreElements()) {
+                        String paramName = paramNames.nextElement();
+                        if (paramName.startsWith("addImages")) {
+                            addingNewImage = true;
+                            String webbisIndex = paramName.replace("addImages_w", "");
+                            helper.saveWebbisFormInSession(request, Integer.valueOf(webbisIndex));
+                            response.setRenderParameter(VIEW, ADD_IMAGES_VIEW);
+                            break;
+                        }
+                    }
+
+                    // Not adding new image, handle remove image or setting of main image
+                    if (!addingNewImage) {
+                        helper.saveWebbisFormInSession(request, null);
+                        response.setRenderParameter(VIEW, MAIN_VIEW);
+                        // Check which image operation that should be performed
+                        handleImageOperations(request);
+                    }
                 }
             }
         } finally {
@@ -227,7 +240,6 @@ public class EditWebbisPortlet extends GenericPortlet {
     }
 
     private void handleImageOperations(ActionRequest request) {
-        // TODO: AndersB - handle sibling images!!
         for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
             if (request.getParameter("w" + i + "_remove-image0") != null) {
                 helper.removeImage(i, 0, request);

@@ -50,7 +50,7 @@
 					
 						<div class="yui-u first" style="margin-left: 0.4em">
 
-							<c:if test="${empty portletSessionScope['webbis.availableImageIds']}">
+							<c:if test="${empty portletSessionScope['webbisForm.availableImageIds']}">
 								<p>Det är endast tillåtet att lägga till fyra bilder. Ta bort någon befintlig bild för att kunna ladda upp ytterligare bilder.</p>
 							</c:if>
 							<c:if test="${not empty validationMessages}">
@@ -58,7 +58,7 @@
 									<c:out value="${validationMessages[0]}"/>
 								</p>
 							</c:if>
-							<c:forEach var="current" items="${portletSessionScope['webbis.availableImageIds']}">
+							<c:forEach var="current" items="${portletSessionScope['webbisForm.availableImageIds']}">
 								<br/>
 								<p>
 									<label for="<c:out value="${current}"/>">Välj bild: </label>
@@ -73,11 +73,11 @@
 						<div class="yui-u first"></div>
 						<div class="yui-u" style="text-align: right">
 							
-							<c:if test="${not empty portletSessionScope['webbis.availableImageIds']}">
+							<c:if test="${not empty portletSessionScope['webbisForm.availableImageIds']}">
 								<input name="cancelAddImages" value="Avbryt" type="submit"/>
 								<input name="saveImages" value="Lägg till" type="submit"/>
 							</c:if>
-							<c:if test="${empty portletSessionScope['webbis.availableImageIds']}">
+							<c:if test="${empty portletSessionScope['webbisForm.availableImageIds']}">
 								<input name="cancelAddImages" value="Tillbaka" type="submit"/>
 							</c:if>
 						</div>

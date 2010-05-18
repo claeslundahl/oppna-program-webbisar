@@ -54,9 +54,14 @@
       							</form>
           				</div>
 						      <div class="yui-u" style="text-align: right">
+                    <!-- 
+                    TODO: CHANGE TO PRODUCTION LINK AT REGIONPORTALEN!?
                     <p>
                       <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
-					          </p>
+                    </p> -->
+                    <p>
+                      <a href="http://antonio.vgregion.se:8080/web/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
+                    </p>
                   </div>
         			</div>
           		</div>	
@@ -100,7 +105,7 @@
                     <c:if test="#{!SearchResultPage.firstPage}">
                       <p>
                         <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">
-                           &lt;&lt; Tidigare sökresultat
+                           &lt; Föregående
                         </a>
                       </p>
                     </c:if>
@@ -109,7 +114,7 @@
                     <c:if test="#{!SearchResultPage.lastPage}">
                       <p>
                         <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction">
-                          Fler sökresultat &gt;&gt;
+                          Nästa &gt;
                         </a>
                       </p>
                     </c:if>

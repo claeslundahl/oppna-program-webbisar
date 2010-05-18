@@ -75,6 +75,14 @@ h3.webbis{
 	margin-left:0.8em;
 }
 
+h4.webbis{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  font-weight:bold;
+  color:#2a6344; 
+  margin-bottom:0.2em;
+}
+
 span.bold {
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.1em;
@@ -161,7 +169,7 @@ div.search_info {
 }
 
 img.selected {
-	border: 0.4em solid yellow;
+	border: 1px solid #9C132F;
 	width:14em;
 	margin-top:0.2em;
 	margin-bottom:0.2em;

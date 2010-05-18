@@ -21,20 +21,22 @@
     "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-	    <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-      <!--  
-      <property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>
- 	     -->
-     	<property name="hibernate.search.default.indexBase">C:/Temp/webbisarIndex</property> 
- 
+    <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+    <!--  
+    <property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>
+    
+    <property name="hibernate.search.default.indexBase">D:/webbisar/index</property>
+     -->       
+    <property name="hibernate.search.default.indexBase">C:/Temp/webbisarIndex</property>
+       
  		<property name="hibernate.search.default.batch.merge_factor">10</property>
 		<property name="hibernate.search.default.batch.max_buffered_docs">10</property>
-        <property name="hibernate.cache.use_second_level_cache">true</property>
-        <property name="hibernate.cache.use_query_cache">true</property>
-        <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
- 
-        <!-- Uncomment this when validation is in place -->
-        <property name="hibernate.validator.autoregister_listeners">false</property>
+    <property name="hibernate.cache.use_second_level_cache">true</property>
+    <property name="hibernate.cache.use_query_cache">true</property>
+    <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+
+    <!-- Uncomment this when validation is in place -->
+    <property name="hibernate.validator.autoregister_listeners">false</property>
         
  		<mapping class="se.vgr.webbisar.types.Webbis" />
 	</session-factory>
