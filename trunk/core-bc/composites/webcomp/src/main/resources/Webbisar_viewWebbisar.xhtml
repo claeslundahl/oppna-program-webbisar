@@ -83,10 +83,12 @@
               <div class="yui-u" style="text-align: right">
                 <!-- 
                 TODO: CHANGE TO PRODUCTION LINK AT REGIONPORTALEN!?
-                <p><a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till /
-                Redigera webbis</a></p> -->
-                <p><a href="http://antonio.vgregion.se:8080/web/extern/webbisar" target="_blank">Lägg till /
-                Redigera webbis</a></p>
+                <p>
+                  <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
+                </p> -->
+                <p>
+                  <a href="http://antonio.vgregion.se:8080/web/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
+                </p>
               </div>
             </div>
           </div>
@@ -103,7 +105,7 @@
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
                         <c:choose>
-                          <c:when test="#{W.webbisar[0].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/twins.png" /><br /></c:when>
+                          <c:when test="#{W.webbisar[0].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
                           <c:when test="#{W.webbisar[0].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
@@ -164,7 +166,7 @@
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
                         <c:choose>
-                          <c:when test="#{W.webbisar[1].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/twins.png" /><br /></c:when>
+                          <c:when test="#{W.webbisar[1].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
                           <c:when test="#{W.webbisar[1].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
@@ -229,7 +231,7 @@
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
                         <c:choose>
-                          <c:when test="#{W.webbisar[2].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/twins.png" /><br /></c:when>
+                          <c:when test="#{W.webbisar[2].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
                           <c:when test="#{W.webbisar[2].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
@@ -289,7 +291,7 @@
   
                       <div class="birthmultiplicity">
                         <c:choose>
-                          <c:when test="#{W.webbisar[3].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/twins.png" /><br /></c:when>
+                          <c:when test="#{W.webbisar[3].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
                           <c:when test="#{W.webbisar[3].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
@@ -352,7 +354,7 @@
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
                         <c:choose>
-                          <c:when test="#{W.webbisar[4].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/twins.png" /><br /></c:when>
+                          <c:when test="#{W.webbisar[4].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
                           <c:when test="#{W.webbisar[4].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
@@ -411,7 +413,7 @@
                     <div class="yui-g birthmultiplicityparent">
                       <div class="birthmultiplicity">
                         <c:choose>
-                          <c:when test="#{W.webbisar[5].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/twins.png" /><br /></c:when>
+                          <c:when test="#{W.webbisar[5].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
                           <c:when test="#{W.webbisar[5].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
@@ -476,12 +478,12 @@
           <div class="yui-ge">
             <div class="yui-u first">
               <c:if test="#{!W.firstPage}">
-                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">&lt;&lt; Föregående </a></p>
+                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">&lt; Föregående </a></p>
               </c:if>
             </div>
             <div class="yui-u" style="text-align: right">
               <c:if test="#{!W.lastPage}">
-                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction"> Nästa &gt;&gt;</a></p>
+                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction"> Nästa &gt;</a></p>
               </c:if>
             </div>
           </div>

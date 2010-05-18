@@ -22,11 +22,11 @@ import static org.apache.commons.lang.StringUtils.*;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -59,8 +59,9 @@ public class WebbisPortletHelper {
     private ClassValidator webbisValidator = new ClassValidator(Webbis.class, ResourceBundle.getBundle(
             "se.vgr.webbisar.types.ValidatorMessages", new Locale("sv")));
 
-    public static final String WEBBIS_MAINFORM_SESSION_PREFIX = "webbis.mainform.";
-    public static final String WEBBIS_SESSION_PREFIX = "webbis.";
+    public static final String WEBBIS_SESSION_PREFIX = "webbisForm.";
+    public static final String WEBBIS_INDEX_PREFIX = "w";
+    public static int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle triplets
 
     private String baseUrl;
     private DiskFileItemFactory diskFileItemFactory;
@@ -146,17 +147,24 @@ public class WebbisPortletHelper {
                                     "Bildfilen måste vara av typen JPeg, GIF eller PNG");
                         }
 
+                        // Add temp image
                         String suffix = item.getName().substring(item.getName().indexOf('.'));
                         String filename = generateGUID() + suffix;
                         fileHandler.writeTempFile(filename, session.getId(), item.getInputStream());
                         imageFiles.add("temp/" + session.getId() + "/" + filename);
 
-                        session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + item.getFieldName(), baseUrl
-                                + "temp/" + session.getId() + "/" + filename);
+                        // Check if "main" or multiple birth sibling webbis
+                        Integer webbisIndex = 0;
+                        if (session.getAttribute(WEBBIS_SESSION_PREFIX + "webbisIndex") != null) {
+                            webbisIndex = (Integer) session.getAttribute(WEBBIS_SESSION_PREFIX + "webbisIndex");
+                        }
 
-                        if (!isMainImageSet(request)) {
-                            // TODO: AndersB - Handle multiple sibling!
-                            setMainImage(0, Integer.parseInt(item.getFieldName().substring(
+                        // Set temp path on webbis
+                        setImageOnWebbisInSession(webbisIndex, session, filename);
+
+                        // If main image not set
+                        if (!isMainImageSet(webbisIndex, request)) {
+                            setMainImage(webbisIndex, Integer.parseInt(item.getFieldName().substring(
                                     item.getFieldName().length() - 1)), request);
                         }
                     }
@@ -174,6 +182,23 @@ public class WebbisPortletHelper {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    private void setImageOnWebbisInSession(Integer webbisIndex, PortletSession session, String filename) {
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
+                + "mainWebbisBean");
+
+        Webbis webbis = null;
+        if (webbisIndex == 0) {
+            webbis = mainWebbisBean.getMainWebbis();
+        } else {
+            webbis = mainWebbisBean.getMultipleBirthWebbisSiblings().get(webbisIndex - 1);
+        }
+        Image image = new Image();
+        image.setLocation("temp/" + session.getId() + "/" + filename);
+        webbis.getImages().add(image);
+
+        session.setAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
     }
 
     /**
@@ -202,21 +227,26 @@ public class WebbisPortletHelper {
      * @param request
      *            the ActionRequest object
      */
-    public void saveWebbisFormInSession(ActionRequest request) {
+    public void saveWebbisFormInSession(ActionRequest request, Integer webbisIndex) {
         PortletSession session = request.getPortletSession(true);
-        Enumeration<String> paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String nextName = paramNames.nextElement();
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + nextName, request.getParameter(nextName));
-        }
+
+        // Cache webbis info
+        Webbis webbis = parseWebbisInfo(request);
+        putWebbisDataInSession(session, webbis);
+
+        // Cache info about number of availabe images etc
+        // Check if we got any sibling, if no index supplied we assume it is the "main" webbis
         ArrayList<String> availableImageIds = new ArrayList<String>();
-        for (int i = 1; i <= 4; i++) {
-            if (request.getParameter("image" + i) == null) {
-                availableImageIds.add("image" + i);
+        if (webbisIndex == null) {
+            webbisIndex = 0;
+        }
+        for (int i = 0; i <= MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; i++) {
+            if (request.getParameter(WEBBIS_INDEX_PREFIX + webbisIndex + "_image" + i) == null) {
+                availableImageIds.add(WEBBIS_INDEX_PREFIX + webbisIndex + "_image" + i);
             }
         }
-
         session.setAttribute(WEBBIS_SESSION_PREFIX + "availableImageIds", availableImageIds);
+        session.setAttribute(WEBBIS_SESSION_PREFIX + "webbisIndex", webbisIndex);
     }
 
     /**
@@ -229,22 +259,26 @@ public class WebbisPortletHelper {
     public void removeImage(int webbisIndex, int imageNumber, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
 
-        session.removeAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "image" + imageNumber);
-        session.removeAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "image" + imageNumber + "-text");
-        ArrayList availableImageIds = (ArrayList) session.getAttribute(WEBBIS_SESSION_PREFIX + "w" + webbisIndex
-                + "availableImageIds");
-        availableImageIds.add("w" + webbisIndex + "image" + imageNumber);
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "w" + webbisIndex + "availableImageIds", availableImageIds);
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
+                + "mainWebbisBean");
 
-        if (session.getAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "w" + webbisIndex + "main-image").equals(
-                "w" + webbisIndex + "image" + imageNumber)) {
-            // set the first available image as the main image
-            for (int i = 1; i <= 5; i++) {
-                if (session.getAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "w" + webbisIndex + "image" + i) != null) {
-                    session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "w" + webbisIndex + "main-image", "w"
-                            + webbisIndex + "image" + i);
+        Webbis webbis = null;
+        if (webbisIndex == 0) {
+            webbis = mainWebbisBean.getMainWebbis();
+        } else {
+            webbis = mainWebbisBean.getMultipleBirthWebbisSiblings().get(webbisIndex - 1);
+        }
+
+        if (webbis.getImages() != null && webbis.getImages().size() > imageNumber) {
+            int index = 0;
+            Iterator itr = webbis.getImages().iterator();
+            while (itr.hasNext()) {
+                itr.next(); // We don't need the object...
+                if (index == imageNumber) {
+                    itr.remove();
                     break;
                 }
+                index++;
             }
         }
     }
@@ -257,12 +291,13 @@ public class WebbisPortletHelper {
      */
     public void setMainImage(int webbisIndex, int imageNumber, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
-        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_MAINFORM_SESSION_PREFIX
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
                 + "mainWebbisBean");
 
-        mainWebbisBean.getSelectedMainImages()[webbisIndex] = "w" + webbisIndex + "_image" + imageNumber;
+        mainWebbisBean.getSelectedMainImages()[webbisIndex] = WEBBIS_INDEX_PREFIX + webbisIndex + "_image"
+                + imageNumber;
 
-        session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
+        session.setAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
     }
 
     /**
@@ -272,10 +307,13 @@ public class WebbisPortletHelper {
      *            the ActionRequest
      * @return true of the main image has been set in the session
      */
-    private boolean isMainImageSet(ActionRequest request) {
-        Object mainImage = request.getPortletSession(true).getAttribute(
-                WEBBIS_MAINFORM_SESSION_PREFIX + "main-image");
-        return ((mainImage != null) && (mainImage.toString().startsWith("image")));
+    private boolean isMainImageSet(int webbisIndex, ActionRequest request) {
+        PortletSession session = request.getPortletSession(true);
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
+                + "mainWebbisBean");
+        Object mainImage = mainWebbisBean.getSelectedMainImages()[webbisIndex];
+        return ((mainImage != null) && (mainImage.toString().startsWith(WEBBIS_INDEX_PREFIX + webbisIndex
+                + "_image")));
 
     }
 
@@ -299,29 +337,32 @@ public class WebbisPortletHelper {
     public Webbis createWebbis(ActionRequest request) throws WebbisValidationException {
         List<String> validationMessages = new ArrayList<String>();
 
-        String id = htmlStrip(request.getParameter("webbisId"));
-        String name = parseName(request.getParameter("webbisname"));
-        Sex sex;
-        if ("Female".equals(request.getParameter("gender"))) {
-            sex = Sex.Female;
-        } else {
-            sex = Sex.Male;
+        // Parse info from request
+        Webbis mainWebbis = parseWebbisInfo(request);
+
+        // Validate input
+        if (mainWebbis.getHospital() == null) {
+            validationMessages.add("Sjukhus måste väljas ur listan");
         }
-        int year = parseInt(request, "year");
-        int month = parseInt(request, "month");
-        int day = parseInt(request, "day");
-        int hour = parseInt(request, "hour");
-        int minute = parseInt(request, "min");
-        BirthTime birthTime = new BirthTime(year, month, day, hour, minute);
+        InvalidValue[] invalidValues = webbisValidator.getInvalidValues(mainWebbis);
+        for (InvalidValue invalidValue : invalidValues) {
+            validationMessages.add(createInvalidMessage(invalidValue));
+        }
+        // Throw if any validation failed
+        if (validationMessages.size() != 0) {
+            throw new WebbisValidationException(mainWebbis, validationMessages);
+        }
 
-        int weight = parseInt(request, "weight");
-        int length = parseInt(request, "length");
+        return mainWebbis;
+    }
 
+    private Webbis parseWebbisInfo(ActionRequest request) {
+
+        // Common info first, shared between multiple birth siblings (if any)
         Hospital hospital = null;
         try {
             hospital = Hospital.fromLongString(request.getParameter("hospital"));
         } catch (ParseException e) {
-            validationMessages.add("Sjukhus måste väljas ur listan");
         }
 
         String home = htmlStrip(request.getParameter("hometown"));
@@ -329,49 +370,82 @@ public class WebbisPortletHelper {
         parseParentName(request, parents, "parentfname1", "parentlname1");
         parseParentName(request, parents, "parentfname2", "parentlname2");
 
-        List<Image> images = new ArrayList<Image>();
-
-        // put the main image first in the list of images
-
-        int mainImage = (request.getParameter("main-image") == null || "".equals(request
-                .getParameter("main-image"))) ? 1 : Integer.parseInt(request.getParameter("main-image").substring(
-                5));
-        for (int i = mainImage; i <= 4; i++) {
-            parseImage(request, images, "image" + i);
-        }
-        for (int i = 1; i < mainImage; i++) {
-            parseImage(request, images, "image" + i);
-        }
-
         String siblings = htmlStrip(request.getParameter("siblings"));
 
         String email = htmlStrip(request.getParameter("e-mail"));
         String message = parseMessage(request.getParameter("message"));
         String webpage = request.getParameter("webpage");
 
-        // TODO: AndersB - Handle birth siblings!
+        // Webbis multiple birth sibling loop, handling any twins/triplets as well
+        Webbis mainWebbis = null;
+        List<Webbis> multipleBirthSiblings = new ArrayList<Webbis>();
+        for (int idx = 0; idx < MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; idx++) {
+            // Check if we got any sibling
+            if (request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_webbisId") == null) {
+                break;
+            }
 
-        Webbis webbis;
-        if (id != null && !id.equals("")) {
-            webbis = new Webbis(Long.parseLong(id), name, getUserId(request), sex, birthTime, weight, length,
-                    hospital, home, parents, images, siblings, message, email, webpage);
-        } else {
-            webbis = new Webbis(name, getUserId(request), sex, birthTime, weight, length, hospital, home, parents,
-                    images, siblings, message, email, webpage);
+            String webbisId = htmlStrip(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_webbisId"));
+            String webbisName = parseName(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_webbisname"));
+            Sex webbisGender;
+            if ("Female".equals(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_gender"))) {
+                webbisGender = Sex.Female;
+            } else {
+                webbisGender = Sex.Male;
+            }
+            int webbisYear = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_year");
+            int webbisMonth = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_month");
+            int webbisDay = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_day");
+            int webbisHour = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_hour");
+            int webbisMinute = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_min");
+            BirthTime webbisBirthTime = new BirthTime(webbisYear, webbisMonth, webbisDay, webbisHour, webbisMinute);
+
+            int webbisWeight = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_weight");
+            int webbisLength = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_length");
+
+            List<Image> webbisImages = new ArrayList<Image>();
+
+            // Get index of main image
+            int webbisMainImage = (request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_main-image") == null || ""
+                    .equals(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_main-image"))) ? 0 : Integer
+                    .parseInt(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_main-image").substring(8));
+            // Put the main image first in the list of images
+            parseImage(request, webbisImages, WEBBIS_INDEX_PREFIX + idx + "_image" + webbisMainImage);
+            // Place other images after main
+            for (int i = 0; i <= MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; i++) {
+                if (i != webbisMainImage) {
+                    parseImage(request, webbisImages, WEBBIS_INDEX_PREFIX + idx + "_image" + i);
+                }
+            }
+
+            Webbis webbis;
+            if (webbisId != null && !webbisId.equals("")) {
+                webbis = new Webbis(Long.parseLong(webbisId), webbisName, getUserId(request), webbisGender,
+                        webbisBirthTime, webbisWeight, webbisLength, hospital, home, parents, webbisImages,
+                        siblings, message, email, webpage);
+            } else {
+                webbis = new Webbis(webbisName, getUserId(request), webbisGender, webbisBirthTime, webbisWeight,
+                        webbisLength, hospital, home, parents, webbisImages, siblings, message, email, webpage);
+            }
+
+            // Set main webbis (always index == 0) or couple multiple birth sibling and main webbis
+            if (idx == 0) {
+                mainWebbis = webbis;
+            } else {
+                webbis.setMainMultipleBirthWebbis(mainWebbis);
+                multipleBirthSiblings.add(webbis);
+            }
+        }
+
+        // If we got any multiple birth siblings we need to add the list to "main" webbis
+        if (multipleBirthSiblings.size() > 0) {
+            mainWebbis.setMultipleBirthSiblings(multipleBirthSiblings);
         }
 
         // move all image files to the final dir (equals todays date)
         // this.copyWebbisImagesToDir(ImageUtil.getDirForTodaysDate(baseDir), webbis);
 
-        InvalidValue[] invalidValues = webbisValidator.getInvalidValues(webbis);
-        for (InvalidValue invalidValue : invalidValues) {
-            validationMessages.add(createInvalidMessage(invalidValue));
-        }
-        if (validationMessages.size() != 0) {
-            throw new WebbisValidationException(webbis, validationMessages);
-        }
-        return webbis;
-
+        return mainWebbis;
     }
 
     static class FieldMap {
@@ -562,74 +636,34 @@ public class WebbisPortletHelper {
 
         MainWebbisBean mainWebbisBean = new MainWebbisBean(webbis, baseUrl);
 
-        // TODO: AndersB - Handle main images!!!
-
-        session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
-
-        // the first image in the list is always the main image (when read from database, can be changed in
-        // session).
-
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "webbisId", webbis.getId());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "webbisname", webbis.getName());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "gender", webbis.getSex().toString());
-        //
-        // BirthTime time = webbis.getBirthTime();
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "day", time.getDay());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "month", time.getMonth());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "year", time.getYear());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "hour", time.getHour());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "min", time.getMinutes());
-        //
-        // if (webbis.getWeight() != 0) {
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "weight", webbis.getWeight());
-        // }
-        // if (webbis.getLength() != 0) {
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "length", webbis.getLength());
-        // }
-        //
-        // List<Name> parents = webbis.getParents();
-        // int i = 1;
-        // for (Name name : parents) {
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "parentfname" + i, name.getFirstName());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "parentlname" + i, name.getLastName());
-        // i++;
-        // }
-        //
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "siblings", webbis.getSiblings());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "hospital", webbis.getHospital() != null ? webbis
-        // .getHospital().getLongName() : "");
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "hometown", webbis.getHome());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "message", webbis.getMessage());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "webpage", webbis.getHomePage());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "e-mail", webbis.getEmail());
-        //
-        // List<Image> images = webbis.getImages();
-        // i = 1;
-        // for (Image image : images) {
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "image" + i, baseUrl + image.getLocation());
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "image" + i + "-text", image.getText());
-        // i++;
-        // }
-        // // the first image in the list is always the main image.
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "main-image", "image1");
-        //
-        // // TODO: AndersB - Testing multipleBirthSiblings
-        // session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "multipleBirthSiblings", webbis
-        // .getMultipleBirthSiblings());
+        session.setAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
     }
 
-    public void populateDefaults(PortletSession session) {
-        Calendar cal = new GregorianCalendar();
-        if (session.getAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "day") == null) {
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "day", cal.get(Calendar.DAY_OF_MONTH));
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "month", cal.get(Calendar.MONTH) + 1);
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "year", cal.get(Calendar.YEAR));
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "hour", cal.get(Calendar.HOUR_OF_DAY));
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "min", cal.get(Calendar.MINUTE));
+    public MainWebbisBean getWebbisDataFromSession(PortletSession session) {
+        return (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean");
+    }
+
+    public void populateDefaults(PortletSession session, String noOfSiblings) {
+        Webbis webbis = null;
+
+        if (session.getAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean") == null) {
+            BirthTime birthTimeDefaultToday = new BirthTime(new Date());
+            List<Name> parentsDefaultEmptyList = new ArrayList<Name>();
+            List<Image> imagesDefaultEmptyList = new ArrayList<Image>();
+
+            webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
+                    parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
+        } else {
+            MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
+                    + "mainWebbisBean");
+            webbis = mainWebbisBean.getMainWebbis();
         }
-        if (session.getAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "gender") == null) {
-            session.setAttribute(WEBBIS_MAINFORM_SESSION_PREFIX + "gender", "Male");
+
+        if (webbis != null && noOfSiblings != null) {
+            webbis = addDefaultSiblingWebbisar(webbis, Integer.valueOf(noOfSiblings));
         }
+
+        putWebbisDataInSession(session, webbis);
     }
 
     public Webbis getWebbisFromSession(PortletSession session) {
@@ -644,4 +678,25 @@ public class WebbisPortletHelper {
         return new PreviewWebbisBean(baseUrl, webbis, 0);
     }
 
+    private Webbis addDefaultSiblingWebbisar(Webbis mainWebbis, Integer noOfSiblings) {
+
+        if (noOfSiblings != null) {
+            BirthTime birthTimeDefaultToday = new BirthTime(new Date());
+            List<Name> parentsDefaultEmptyList = new ArrayList<Name>();
+            List<Image> imagesDefaultEmptyList = new ArrayList<Image>();
+
+            List<Webbis> multipleBirthSiblings = new ArrayList<Webbis>();
+            for (int i = 0; i < noOfSiblings; i++) {
+                Webbis webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
+                        parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
+
+                webbis.setMainMultipleBirthWebbis(mainWebbis);
+                multipleBirthSiblings.add(webbis);
+            }
+
+            mainWebbis.setMultipleBirthSiblings(multipleBirthSiblings);
+        }
+
+        return mainWebbis;
+    }
 }

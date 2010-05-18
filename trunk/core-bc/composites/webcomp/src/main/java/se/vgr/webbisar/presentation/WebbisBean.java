@@ -52,7 +52,7 @@ public class WebbisBean implements Serializable {
     private int selectedImage;
     private String selectedImageComment;
     private String[] styles = new String[] { "selected", "notselected", "notselected", "notselected" };
-    private String imageBaseUrl;
+    // private String imageBaseUrl;
     private Webbis mainMultipleBirthWebbis;
     private List<Webbis> multipleBirthSiblings;
 
@@ -84,7 +84,7 @@ public class WebbisBean implements Serializable {
         }
         this.homePage = webbis.getHomePage();
         this.message = webbis.getMessage();
-        this.imageBaseUrl = imageBaseUrl;
+        // this.imageBaseUrl = imageBaseUrl;
         this.mainMultipleBirthWebbis = webbis.getMainMultipleBirthWebbis();
         this.multipleBirthSiblings = webbis.getMultipleBirthSiblings();
     }
@@ -230,7 +230,7 @@ public class WebbisBean implements Serializable {
 
     public String getSelectedImageUrl() {
         if (imageUrls.length == 0) {
-            return imageBaseUrl + "/no-image.jpg";
+            return "images/no-image.jpg"; // imageBaseUrl + "/no-image.jpg";
         }
         return imageUrls[selectedImage];
     }
@@ -266,10 +266,10 @@ public class WebbisBean implements Serializable {
         }
         if (siblingList != null) {
             for (int i = 0; i < siblingList.size(); i++) {
-                if (i > 0) {
+                if (siblingList.get(i).getId() != id) {
                     sb.append(",");
+                    sb.append(siblingList.get(i).getId());
                 }
-                sb.append(siblingList.get(i).getId());
             }
         }
         return sb.toString();
@@ -279,8 +279,11 @@ public class WebbisBean implements Serializable {
         String siblingsIds = getMultipleBirthSiblingIds();
         StringBuilder sb = new StringBuilder();
         sb.append(id);
-        if (siblingsIds.length() > 0) {
+        if (mainMultipleBirthWebbis != null && id != mainMultipleBirthWebbis.getId()) {
             sb.append(",");
+            sb.append(mainMultipleBirthWebbis.getId());
+        }
+        if (siblingsIds.length() > 0) {
             sb.append(siblingsIds);
         }
         return sb.toString();

@@ -17,7 +17,7 @@
  */
 package se.vgr.webbisar.svc.impl;
 
-import static org.apache.commons.io.FilenameUtils.separatorsToUnix;
+import static org.apache.commons.io.FilenameUtils.*;
 
 import java.io.File;
 import java.util.List;
@@ -83,12 +83,22 @@ public class WebbisServiceImpl implements WebbisService {
 
             // Remove any unused images
             removeImageFiles(w.getUnusedImages(previousWebbis));
+            // Handle images for multiple birth siblings as well, if any.
+            if (previousWebbis.getMultipleBirthSiblings() != null && w.getMultipleBirthSiblings() != null
+                    && previousWebbis.getMultipleBirthSiblings().size() == w.getMultipleBirthSiblings().size()) {
+                Webbis siblingWebbis = null;
+                Webbis previousSiblingWebbis = null;
+                for (int i = 0; i < previousWebbis.getMultipleBirthSiblings().size(); i++) {
+                    siblingWebbis = w.getMultipleBirthSiblings().get(i);
+                    previousSiblingWebbis = previousWebbis.getMultipleBirthSiblings().get(i);
+                    removeImageFiles(siblingWebbis.getUnusedImages(previousSiblingWebbis));
+                }
+            }
 
             // Save it.
             w = this.webbisDao.merge(w);
             TraceLog.log("UPDATED", CallContextUtil.getContext(), w);
-        }
-        else {
+        } else {
             this.webbisDao.save(w);
             TraceLog.log("CREATED", CallContextUtil.getContext(), w);
         }
@@ -118,6 +128,13 @@ public class WebbisServiceImpl implements WebbisService {
 
             image.setLocation(separatorsToUnix(toImageFile.getPath()).replace(
                     separatorsToUnix(cfg.getImageBaseDir()), ""));
+        }
+
+        // Handle images for multiple birth siblings as well, if any.
+        if (webbis.getMultipleBirthSiblings() != null) {
+            for (Webbis w : webbis.getMultipleBirthSiblings()) {
+                copyWebbisImagesToDir(newDir, w);
+            }
         }
     }
 
