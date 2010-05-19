@@ -17,11 +17,21 @@
  */
 package se.vgr.webbisar.presentation;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 import se.vgr.webbisar.svc.Configuration;
 import se.vgr.webbisar.svc.WebbisService;
@@ -93,7 +103,7 @@ public class WebbisarFlowSupportBean {
         return new WebbisBean(cfg.getImageBaseUrl(), webbis, imageId);
     }
 
-    public MailMessageResultBean sendWebbis(Long webbisId, MailMessageBean mailMessageBean) {
+    public MailMessageResultBean sendWebbis(final Long webbisId, final MailMessageBean mailMessageBean) {
         MailMessageResultBean result = new MailMessageResultBean();
 
         // Do proper validation
@@ -112,20 +122,83 @@ public class WebbisarFlowSupportBean {
                     return result;
                 }
             }
-            // Check subject
-            if (StringUtils.isBlank(mailMessageBean.getSubject())) {
-                result.setSuccess(Boolean.FALSE);
-                result.setMessage("Ämne måste anges.");
-                return result;
-            }
-            // Check message
-            if (StringUtils.isBlank(mailMessageBean.getMessage())) {
-                result.setSuccess(Boolean.FALSE);
-                result.setMessage("Meddelande måste anges.");
-                return result;
-            }
-            // Seems OK, try to send mail...
 
+            // // Check subject
+            // if (StringUtils.isBlank(mailMessageBean.getSubject())) {
+            // result.setSuccess(Boolean.FALSE);
+            // result.setMessage("Ämne måste anges.");
+            // return result;
+            // }
+            // // Check message
+            // if (StringUtils.isBlank(mailMessageBean.getMessage())) {
+            // result.setSuccess(Boolean.FALSE);
+            // result.setMessage("Meddelande måste anges.");
+            // return result;
+            // }
+
+            final StringBuffer strBuff = new StringBuffer();
+
+            strBuff.append("<html><body>");
+
+            strBuff.append("<p>");
+            strBuff.append(mailMessageBean.getMessage());
+            strBuff.append("</p>");
+
+            WebbisBean webbisBean = getWebbis(webbisId, null);
+
+            strBuff.append("<a href='");
+            strBuff.append(cfg.getBaseUrl());
+            strBuff.append("?webbisId=");
+            strBuff.append(webbisBean.getId());
+            strBuff.append("'>");
+            strBuff.append(webbisBean.getName());
+            strBuff.append("</a>");
+            strBuff.append("<br/>");
+
+            Map<Long, String> siblingIdNames = webbisBean.getMultipleBirthSiblingIdsAndNames();
+            for (Entry<Long, String> entry : siblingIdNames.entrySet()) {
+                strBuff.append("<a href='");
+                strBuff.append(cfg.getBaseUrl());
+                strBuff.append("?webbisId=");
+                strBuff.append(entry.getKey());
+                strBuff.append("'>");
+                strBuff.append(entry.getValue());
+                strBuff.append("</a>");
+                strBuff.append("<br/>");
+            }
+
+            strBuff.append("</html></body>");
+
+            // Seems OK, try to send mail...
+            JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+            mailSender.setHost("mailhost.vgregion.se");
+
+            try {
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                InternetAddress fromAddress = null;
+                try {
+                    fromAddress = new InternetAddress("no-reply@vgregion.se", "Webbisar - Västra Götaland");
+                } catch (UnsupportedEncodingException e) {
+                    fromAddress = new InternetAddress("no-reply@vgregion.se");
+                }
+                helper.setTo(mailAddresses);
+                helper.setFrom(fromAddress);
+                helper.setSubject(mailMessageBean.getSubject());
+                helper.setText(strBuff.toString(), true);
+
+                mailSender.send(mimeMessage);
+            } catch (MailException ex) {
+                System.err.println(ex.getMessage());
+                result.setSuccess(Boolean.FALSE);
+                result.setMessage("Internt fel, webbis kunde inte skickas.");
+                return result;
+            } catch (MessagingException e) {
+                System.err.println(e.getMessage());
+                result.setSuccess(Boolean.FALSE);
+                result.setMessage("Internt fel, webbis kunde inte skickas.");
+                return result;
+            }
         }
 
         // ...and all was well...

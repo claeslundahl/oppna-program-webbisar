@@ -65,6 +65,7 @@
       <property name="imageSize" value="${webbisar.imageSize}"/>
       <property name="imageQuality" value="${webbisar.imageQuality}"/>
       <property name="ftpConfiguration" value="${webbisar.ftpConfiguration}"/>
+      <property name="baseUrl" value="${webbisar.baseUrl}"/>
     </bean>
        
 </beans>

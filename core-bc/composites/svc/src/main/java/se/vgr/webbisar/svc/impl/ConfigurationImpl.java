@@ -22,57 +22,65 @@ import java.io.File;
 import se.vgr.webbisar.svc.Configuration;
 import se.vgr.webbisar.svc.ImageSize;
 
-
 public class ConfigurationImpl implements Configuration {
 
-	String imageBaseDir;
-	String imageBaseUrl;
-	ImageSize imageSize;
-	float imageQuality;
-	String ftpConfiguration;
-	
-	public String getFtpConfiguration() {
-		return ftpConfiguration;
-	}
+    String baseUrl;
+    String imageBaseDir;
+    String imageBaseUrl;
+    ImageSize imageSize;
+    float imageQuality;
+    String ftpConfiguration;
 
-	public void setFtpConfiguration(String ftpConfiguration) {
-		this.ftpConfiguration = ftpConfiguration;
-	}
+    public String getFtpConfiguration() {
+        return ftpConfiguration;
+    }
 
-	public String getImageBaseDir() {
-		return imageBaseDir;
-	}
+    public void setFtpConfiguration(String ftpConfiguration) {
+        this.ftpConfiguration = ftpConfiguration;
+    }
 
-	public String getImageTempDir() {
-		return new File(getImageBaseDir(),"temp").getAbsolutePath();
-	}
-	
-	public void setImageBaseDir(String dir) {
-		imageBaseDir = dir;
-	}
+    public String getImageBaseDir() {
+        return imageBaseDir;
+    }
 
-	public ImageSize getImageSize() {
-		return imageSize;
-	}
+    public String getImageTempDir() {
+        return new File(getImageBaseDir(), "temp").getAbsolutePath();
+    }
 
-	public void setImageSize(ImageSize imageSize) {
-		this.imageSize = imageSize;
-	}
+    public void setImageBaseDir(String dir) {
+        imageBaseDir = dir;
+    }
 
-	public float getImageQuality() {
-		return imageQuality;
-	}
+    public ImageSize getImageSize() {
+        return imageSize;
+    }
 
-	public void setImageQuality(float imageQuality) {
-		this.imageQuality = imageQuality;
-	}
+    public void setImageSize(ImageSize imageSize) {
+        this.imageSize = imageSize;
+    }
 
-	public String getImageBaseUrl() {
-		return imageBaseUrl;
-	}
+    public float getImageQuality() {
+        return imageQuality;
+    }
 
-	public void setImageBaseUrl(String imageBaseUrl) {
-		this.imageBaseUrl = imageBaseUrl;
-	}
-	
+    public void setImageQuality(float imageQuality) {
+        this.imageQuality = imageQuality;
+    }
+
+    public String getImageBaseUrl() {
+        return imageBaseUrl;
+    }
+
+    public void setImageBaseUrl(String imageBaseUrl) {
+        this.imageBaseUrl = imageBaseUrl;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
 }
