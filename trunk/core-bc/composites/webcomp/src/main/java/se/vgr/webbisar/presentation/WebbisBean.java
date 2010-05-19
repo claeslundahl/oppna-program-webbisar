@@ -54,7 +54,7 @@ public class WebbisBean implements Serializable {
     private int selectedImage;
     private String selectedImageComment;
     private String[] styles = new String[] { "selected", "notselected", "notselected", "notselected" };
-    // private String imageBaseUrl;
+    private String imageBaseUrl;
     private Webbis mainMultipleBirthWebbis;
     private List<Webbis> multipleBirthSiblings;
 
@@ -86,7 +86,7 @@ public class WebbisBean implements Serializable {
         }
         this.homePage = webbis.getHomePage();
         this.message = webbis.getMessage();
-        // this.imageBaseUrl = imageBaseUrl;
+        this.imageBaseUrl = imageBaseUrl;
         this.mainMultipleBirthWebbis = webbis.getMainMultipleBirthWebbis();
         this.multipleBirthSiblings = webbis.getMultipleBirthSiblings();
     }
@@ -232,7 +232,7 @@ public class WebbisBean implements Serializable {
 
     public String getSelectedImageUrl() {
         if (imageUrls.length == 0) {
-            return "images/no-image.jpg"; // imageBaseUrl + "/no-image.jpg";
+            return imageBaseUrl + "/no-image.jpg";
         }
         return imageUrls[selectedImage];
     }
@@ -291,7 +291,7 @@ public class WebbisBean implements Serializable {
         return sb.toString();
     }
 
-    public Map<Long, String> getMultipleBirthSiblingIdName() {
+    public Map<Long, String> getMultipleBirthSiblingIdsAndNames() {
         Map<Long, String> retMap = new HashMap<Long, String>();
 
         if (mainMultipleBirthWebbis != null) {

@@ -22,11 +22,10 @@ import se.vgr.webbisar.svc.Configuration;
  * Servlet implementation class ImageServlet
  */
 public class ImageServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-     
+    private static final long serialVersionUID = 1L;
+
     private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
 
-  
     private String imagePath;
 
     /**
@@ -36,21 +35,17 @@ public class ImageServlet extends HttpServlet {
         super();
     }
 
-	
+    @Override
+    public void init() throws ServletException {
+        WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        Configuration config = (Configuration) ctx.getBean("configuration");
+        imagePath = config.getImageBaseDir();
+        super.init();
+    }
 
-	@Override
-	public void init() throws ServletException {
-		WebApplicationContext ctx  = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-	    Configuration config = (Configuration)ctx.getBean("configuration");  
-	    imagePath = config.getImageBaseDir();
-		super.init();
-	}
-
-
-    
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException
-    {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
         // Get requested image by path info.
         String requestedImage = request.getPathInfo();
         System.out.println("requestedImage" + requestedImage);
@@ -64,7 +59,7 @@ public class ImageServlet extends HttpServlet {
         System.out.println("image" + image.getAbsolutePath());
         System.out.println("image" + image.getName());
 
-        // Check if file exists 
+        // Check if file exists
         if (!image.exists()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
             return;
@@ -81,9 +76,13 @@ public class ImageServlet extends HttpServlet {
         // Init servlet response.
         response.reset();
         response.setBufferSize(DEFAULT_BUFFER_SIZE);
-        response.setHeader("Content-Type", contentType);
-        response.setHeader("Content-Length", String.valueOf(image.length()));
-        response.setHeader("Content-Disposition", "inline; filename=\"" + image.getName() + "\"");
+        response.addHeader("Content-Type", contentType);
+        response.addHeader("Content-Length", String.valueOf(image.length()));
+
+        response.addHeader("Expires", "Sun, 17 Jan 2038 19:14:07 GMT");
+        response.addHeader("Cache-Control", "public");
+
+        response.addHeader("Content-Disposition", "inline; filename=\"" + image.getName() + "\"");
 
         // Prepare streams.
         BufferedInputStream input = null;
@@ -110,7 +109,6 @@ public class ImageServlet extends HttpServlet {
         }
     }
 
- 
     private static void close(Closeable resource) {
         if (resource != null) {
             try {
@@ -121,4 +119,3 @@ public class ImageServlet extends HttpServlet {
         }
     }
 }
-

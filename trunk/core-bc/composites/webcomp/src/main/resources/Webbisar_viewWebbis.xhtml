@@ -89,15 +89,15 @@
                   </c:if>
                   <br/>
                   <p>
-                  <c:if test="#{not empty Webbis.siblings or not empty Webbis.multipleBirthSiblingIdName}">
+                  <c:if test="#{not empty Webbis.siblings or not empty Webbis.multipleBirthSiblingIdsAndNames}">
                     <b>Syskon:</b>
                     <br/>
-                    <c:forEach var="siblingInfo" items="#{Webbis.multipleBirthSiblingIdName}" begin="0" varStatus="refRow">
+                    <c:forEach var="siblingInfo" items="#{Webbis.multipleBirthSiblingIdsAndNames}" begin="0" varStatus="refRow">
                        <c:if test="#{refRow.index > 0}">,</c:if>
-                       <a href="http://localhost:8080/webbisar-core-bc-module-web/?webbisId=#{siblingInfo.key}">#{siblingInfo.value}</a>
+                       <a href="http://vgwb0067.vgregion.se/webbisar/?webbisId=#{siblingInfo.key}">#{siblingInfo.value}</a>
                     </c:forEach>
                     <c:if test="#{not empty Webbis.siblings}">
-                      <c:if test="#{not empty Webbis.multipleBirthSiblingIdName}">,</c:if>
+                      <c:if test="#{not empty Webbis.multipleBirthSiblingIdsAndNames}">,</c:if>
                       #{Webbis.siblings}
                     </c:if>
                   </c:if>

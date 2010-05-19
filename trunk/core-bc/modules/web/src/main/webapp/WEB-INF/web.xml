@@ -212,10 +212,9 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ImageServingServlet</servlet-name>
-    <url-pattern>/webbisimages/*</url-pattern>
+    <url-pattern>/images/*</url-pattern>
   </servlet-mapping>
   
-
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
