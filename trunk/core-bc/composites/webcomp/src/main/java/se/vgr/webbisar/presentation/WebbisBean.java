@@ -21,7 +21,9 @@ import static org.apache.commons.lang.StringUtils.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import se.vgr.webbisar.types.Image;
 import se.vgr.webbisar.types.Sex;
@@ -256,7 +258,7 @@ public class WebbisBean implements Serializable {
         return 0;
     }
 
-    public String getMultipleBirthSiblingIds() {
+    public String getMultipleBirthSiblingIdString() {
         StringBuilder sb = new StringBuilder();
         List<Webbis> siblingList = null;
         if (mainMultipleBirthWebbis != null) {
@@ -275,8 +277,8 @@ public class WebbisBean implements Serializable {
         return sb.toString();
     }
 
-    public String getAllWebbisIds() {
-        String siblingsIds = getMultipleBirthSiblingIds();
+    public String getAllWebbisIdString() {
+        String siblingsIds = getMultipleBirthSiblingIdString();
         StringBuilder sb = new StringBuilder();
         sb.append(id);
         if (mainMultipleBirthWebbis != null && id != mainMultipleBirthWebbis.getId()) {
@@ -287,5 +289,37 @@ public class WebbisBean implements Serializable {
             sb.append(siblingsIds);
         }
         return sb.toString();
+    }
+
+    public Map<Long, String> getMultipleBirthSiblingIdName() {
+        Map<Long, String> retMap = new HashMap<Long, String>();
+
+        if (mainMultipleBirthWebbis != null) {
+            // If it has a main webbis, this is a sibling
+
+            retMap.put(mainMultipleBirthWebbis.getId(), mainMultipleBirthWebbis.getName());
+
+            // It might have another sibling as well (triplet)
+            if (mainMultipleBirthWebbis.getMultipleBirthSiblings() != null) {
+                Webbis webbis = null;
+                for (int i = 0; i < mainMultipleBirthWebbis.getMultipleBirthSiblings().size(); i++) {
+                    if (mainMultipleBirthWebbis.getMultipleBirthSiblings().get(i).getId() != id) {
+                        webbis = mainMultipleBirthWebbis.getMultipleBirthSiblings().get(i);
+                        retMap.put(webbis.getId(), webbis.getName());
+                    }
+                }
+            }
+        } else if (multipleBirthSiblings != null) {
+            // If this is a main webbis, it might still have siblings
+            Webbis webbis = null;
+            for (int i = 0; i < multipleBirthSiblings.size(); i++) {
+                if (multipleBirthSiblings.get(i).getId() != id) {
+                    webbis = multipleBirthSiblings.get(i);
+                    retMap.put(webbis.getId(), webbis.getName());
+                }
+            }
+        }
+
+        return retMap;
     }
 }

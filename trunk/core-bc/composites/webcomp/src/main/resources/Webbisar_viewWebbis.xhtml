@@ -89,9 +89,17 @@
                   </c:if>
                   <br/>
                   <p>
-                  <c:if test="#{not empty Webbis.siblings}">
-                  <b>Syskon:</b><br/> 
-                  #{Webbis.siblings}                                    
+                  <c:if test="#{not empty Webbis.siblings or not empty Webbis.multipleBirthSiblingIdName}">
+                    <b>Syskon:</b>
+                    <br/>
+                    <c:forEach var="siblingInfo" items="#{Webbis.multipleBirthSiblingIdName}" begin="0" varStatus="refRow">
+                       <c:if test="#{refRow.index > 0}">,</c:if>
+                       <a href="http://localhost:8080/webbisar-core-bc-module-web/?webbisId=#{siblingInfo.key}">#{siblingInfo.value}</a>
+                    </c:forEach>
+                    <c:if test="#{not empty Webbis.siblings}">
+                      <c:if test="#{not empty Webbis.multipleBirthSiblingIdName}">,</c:if>
+                      #{Webbis.siblings}
+                    </c:if>
                   </c:if>
                   </p>
 									<br/>
