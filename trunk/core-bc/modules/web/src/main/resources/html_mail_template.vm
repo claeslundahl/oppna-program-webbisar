@@ -1,0 +1,18 @@
+  <html>
+    <head>
+      <title>Webbisar - Västra Götaland</title>
+    </head>
+    <body>
+      <table>
+      <tr><td><p><font size="2" face="Verdana">$emailInfo.message</p></td></tr>
+      <tr><td>&nbsp;</td></tr>
+        #foreach($webbis in $webbisInfo.keySet())
+          <tr>
+            <td><p><font size="2" face="Verdana"><a href="$emailInfo.baseUrl ?webbisId= $webbis "> $webbisInfo.get($webbis)</a></p></td>
+          </tr>
+        #end
+      </table>
+      <hr/>
+      <img src='cid:imageIdentifier'>
+    </body>
+  </html>
