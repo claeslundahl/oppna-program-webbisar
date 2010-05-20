@@ -26,5 +26,16 @@
 
 	<bean id="Webbisar.WebbisarFlowSupport"
 		class="se.vgr.webbisar.presentation.WebbisarFlowSupportBean" autowire="byType">
+		<!-- <property name="velocityEngine" ref="velocityEngine"/> -->
 	</bean>
+	
+	<!-- <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+      <property name="velocityProperties">
+         <value>
+            resource.loader=class
+            class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+         </value>
+      </property>
+   </bean> -->
+	
 </beans>
