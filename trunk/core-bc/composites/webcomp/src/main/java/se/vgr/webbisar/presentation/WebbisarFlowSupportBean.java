@@ -36,9 +36,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import se.vgr.webbisar.svc.Configuration;
 import se.vgr.webbisar.svc.WebbisService;
@@ -49,10 +48,21 @@ public class WebbisarFlowSupportBean {
     private static final Pattern RFC2822_MAIL_PATTERN = Pattern
             .compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
 
+    private static final String ENCODING_UTF8 = "UTF-8";
     private static final int NUMBER_OF_WEBBIS_ON_BROWSE_PAGE = 6;
     private static final int NUMBER_OF_WEBBIS_ON_SEARCH_PAGE = 8;
     private WebbisService webbisService;
     private Configuration cfg;
+    private JavaMailSender mailSender;
+    private VelocityEngine velocityEngine;
+
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    public void setVelocityEngine(VelocityEngine velocityEngine) {
+        this.velocityEngine = velocityEngine;
+    }
 
     public WebbisService getAddressService() {
         return webbisService;
@@ -129,7 +139,6 @@ public class WebbisarFlowSupportBean {
                     return result;
                 }
             }
-
             // // Check subject
             // if (StringUtils.isBlank(mailMessageBean.getSubject())) {
             // result.setSuccess(Boolean.FALSE);
@@ -143,65 +152,62 @@ public class WebbisarFlowSupportBean {
             // return result;
             // }
 
-            //use this map to store the information that will be merged into the html template
-            Map<String,String> emailInformation = new HashMap<String,String>();
+            // use this map to store the information that will be merged into the html template
+            Map<String, String> emailInformation = new HashMap<String, String>();
             WebbisBean webbisBean = getWebbis(webbisId, null);
             Map<Long, String> webbisarIdNames = webbisBean.getMultipleBirthSiblingIdsAndNames();
-            
-            //add the current webbis to the list of siblings so that
-            //we have them all in the same Map
+
+            String messageText = mailMessageBean.getMessage();
+            if (!StringUtils.isEmpty(messageText)) {
+                messageText = messageText.replace("\r", "").replace("\n", "<br/>");
+            }
+
+            // add the current webbis to the list of siblings so that
+            // we have them all in the same Map
             webbisarIdNames.put(webbisBean.getId(), webbisBean.getName());
-            //add the message and the base url for html links
+            // add the message and the base url for html links
             emailInformation.put("baseUrl", cfg.getBaseUrl());
-            emailInformation.put("message", mailMessageBean.getMessage());
-            
-            //use velocity to create the html mail
-            VelocityEngine ve = new VelocityEngine();
-            ve.setProperty("resource.loader", "class");
-            ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            emailInformation.put("message", messageText);
 
             VelocityContext context = new VelocityContext();
             context.put("emailInfo", emailInformation);
             context.put("webbisInfo", webbisarIdNames);
-            
-            Template t = null;
-            StringWriter writer = null;
+
+            Template template = null;
+            StringWriter msgWriter = null;
             try {
-				ve.init();
-				t = ve.getTemplate( "html_mail_template.vm" );
-				writer = new StringWriter();
-				t.merge( context, writer );
-			} catch (Exception e1) {
-				System.err.println(e1.getMessage());
+                velocityEngine.init();
+                template = velocityEngine.getTemplate(cfg.getMailTemplate());
+                msgWriter = new StringWriter();
+                template.merge(context, msgWriter);
+            } catch (Exception e1) {
+                System.err.println(e1.getMessage());
                 result.setSuccess(Boolean.FALSE);
                 result.setMessage("Internt fel, webbis kunde inte skickas.");
                 return result;
-			}
-			
-			String text = writer.toString();
-			
-            // Seems OK, try to send mail...
-            JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-            mailSender.setHost("mailhost.vgregion.se");
+            }
+            String msgText = msgWriter.toString();
 
+            // Seems OK, try to send mail...
             try {
                 MimeMessage mimeMessage = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, ENCODING_UTF8);
                 InternetAddress fromAddress = null;
                 try {
-                    fromAddress = new InternetAddress("no-reply@vgregion.se", "Webbisar - Västra Götaland");
+                    fromAddress = new InternetAddress(cfg.getMailFromAddress(), cfg.getMailFromAddressName());
                 } catch (UnsupportedEncodingException e) {
-                    fromAddress = new InternetAddress("no-reply@vgregion.se");
+                    fromAddress = new InternetAddress(cfg.getMailFromAddress());
                 }
                 helper.setTo(mailAddresses);
                 helper.setFrom(fromAddress);
                 helper.setSubject(mailMessageBean.getSubject());
-                helper.setText(text,true);
+                helper.setText(msgText, true);
 
                 // include the vgr logo
-                FileSystemResource res = new FileSystemResource(new File("D:\\WebApplications\\Webbisar\\trunk\\core-bc\\modules\\web\\src\\main\\resources\\logga.gif"));
+                String logoPath = cfg.getImageBaseDir() + "/" + cfg.getMailLogo();
+                FileSystemResource res = new FileSystemResource(new File(logoPath));
                 helper.addInline("imageIdentifier", res);
-                
+
                 mailSender.send(mimeMessage);
             } catch (MailException ex) {
                 System.err.println(ex.getMessage());
@@ -221,7 +227,6 @@ public class WebbisarFlowSupportBean {
         result.setMessage("Webbis skickad!");
         return result;
     }
-
 
     public SearchResultPageBean search(SearchCriteriaBean searchCriteria) {
         int numberOfHits = webbisService.getNumberOfMatchesFor(searchCriteria.getText());

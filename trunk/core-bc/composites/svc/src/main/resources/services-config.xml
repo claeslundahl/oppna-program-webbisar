@@ -64,8 +64,16 @@
       <property name="imageBaseUrl" value="${webbisar.imageBaseUrl}"/>
       <property name="imageSize" value="${webbisar.imageSize}"/>
       <property name="imageQuality" value="${webbisar.imageQuality}"/>
+      
       <property name="ftpConfiguration" value="${webbisar.ftpConfiguration}"/>
       <property name="baseUrl" value="${webbisar.baseUrl}"/>
+      <property name="remoteEditUrl" value="${webbisar.remoteEditUrl}"/>
+      
+      <property name="mailHost" value="${webbisar.mailHost}"/>
+      <property name="mailFromAddress" value="${webbisar.mailFromAddress}"/>
+      <property name="mailFromAddressName" value="${webbisar.mailFromAddressName}"/>
+      <property name="mailLogo" value="${webbisar.mailLogo}"/>
+      <property name="mailTemplate" value="${webbisar.mailTemplate}"/>
     </bean>
        
 </beans>

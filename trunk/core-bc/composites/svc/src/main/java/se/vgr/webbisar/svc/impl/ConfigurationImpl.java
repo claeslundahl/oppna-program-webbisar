@@ -24,12 +24,20 @@ import se.vgr.webbisar.svc.ImageSize;
 
 public class ConfigurationImpl implements Configuration {
 
-    String baseUrl;
     String imageBaseDir;
     String imageBaseUrl;
     ImageSize imageSize;
     float imageQuality;
+
+    String baseUrl;
+    String remoteEditUrl;
     String ftpConfiguration;
+
+    String mailHost;
+    String mailFromAddress;
+    String mailFromAddressName;
+    String mailLogo;
+    String mailTemplate;
 
     public String getFtpConfiguration() {
         return ftpConfiguration;
@@ -81,6 +89,54 @@ public class ConfigurationImpl implements Configuration {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    public String getRemoteEditUrl() {
+        return remoteEditUrl;
+    }
+
+    public void setRemoteEditUrl(String remoteEditUrl) {
+        this.remoteEditUrl = remoteEditUrl;
+    }
+
+    public String getMailFromAddress() {
+        return mailFromAddress;
+    }
+
+    public void setMailFromAddress(String mailFromAddress) {
+        this.mailFromAddress = mailFromAddress;
+    }
+
+    public String getMailFromAddressName() {
+        return mailFromAddressName;
+    }
+
+    public void setMailFromAddressName(String mailFromAddressName) {
+        this.mailFromAddressName = mailFromAddressName;
+    }
+
+    public String getMailHost() {
+        return mailHost;
+    }
+
+    public void setMailHost(String mailHost) {
+        this.mailHost = mailHost;
+    }
+
+    public String getMailLogo() {
+        return mailLogo;
+    }
+
+    public void setMailLogo(String mailLogo) {
+        this.mailLogo = mailLogo;
+    }
+
+    public String getMailTemplate() {
+        return mailTemplate;
+    }
+
+    public void setMailTemplate(String mailTemplate) {
+        this.mailTemplate = mailTemplate;
     }
 
 }
