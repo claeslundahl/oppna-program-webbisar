@@ -31,4 +31,16 @@ public interface Configuration {
     String getFtpConfiguration();
 
     String getBaseUrl();
+
+    String getRemoteEditUrl();
+
+    String getMailHost();
+
+    String getMailFromAddress();
+
+    String getMailFromAddressName();
+
+    String getMailLogo();
+
+    String getMailTemplate();
 }

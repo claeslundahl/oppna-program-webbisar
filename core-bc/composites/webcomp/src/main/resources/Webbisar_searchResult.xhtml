@@ -33,9 +33,9 @@
           	<div id="hd">
           		<div class="yui-b header"><h2>Webbisar</h2></div>
               <div class="yui-b topinfo">
-                 <p>
-                    Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
-                    och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en <a href="http://e-legitimation.se/Elegitimation/Templates/LogolistPageTypeB.aspx?id=86" target="_blank">e-legitimation</a>.                 
+                <p>
+                  Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
+                  och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en&#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.                 
                 </p>
               </div>
           		<div class="yui-b">
@@ -54,13 +54,10 @@
       							</form>
           				</div>
 						      <div class="yui-u" style="text-align: right">
-                    <!-- 
-                    TODO: CHANGE TO PRODUCTION LINK AT REGIONPORTALEN!?
                     <p>
-                      <a href="http://portal.proxy.vgregion.se/wps/myportal/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
-                    </p> -->
-                    <p>
-                      <a href="http://antonio.vgregion.se:8080/web/extern/webbisar" target="_blank">Lägg till / Redigera webbis</a>
+                      <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
+                        Lägg till / Redigera webbis
+                      </h:outputLink>
                     </p>
                   </div>
         			</div>

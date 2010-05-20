@@ -31,6 +31,10 @@
 			org.springframework.webflow.executor.jsf.DelegatingFlowVariableResolver
 		</variable-resolver>
 		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+    
+    <message-bundle>
+      application-dev
+    </message-bundle>
 	</application>
 
 	<lifecycle>
