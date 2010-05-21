@@ -61,7 +61,6 @@
   
 	<view-state id="viewPage" view="/Webbisar_searchResult.xhtml">
     <transition on="showWebbisDetailsAction" to="showWebbisDetails"/>
-		<transition on="backToWebbisarAction" to="finish" />
     <transition on="showNextPageAction" to="actionNextPage"/>
     <transition on="showPrevPageAction" to="actionPrevPage"/>
     <transition on="searchForWebbisAction" to="searchWebbis"/>

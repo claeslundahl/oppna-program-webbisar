@@ -43,7 +43,9 @@
 						<div class="yui-gb header">
 							<div class="yui-u first">	
                 <p>			
-                  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarStartAction">Till startsidan</a>
+                  <h:outputLink value="#{msgBundle['webbisar.baseUrl']}">
+                    Till startsidan
+                  </h:outputLink>
 						  		<br/>
                   <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">Tillbaka</a>
                 </p>
