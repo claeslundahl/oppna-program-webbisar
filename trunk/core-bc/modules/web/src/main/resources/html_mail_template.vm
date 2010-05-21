@@ -8,7 +8,7 @@
       <tr><td>&nbsp;</td></tr>
         #foreach($webbis in $webbisInfo.keySet())
           <tr>
-            <td><p><font size="2" face="Verdana"><a href="$emailInfo.baseUrl ?webbisId= $webbis "> $webbisInfo.get($webbis)</a></p></td>
+            <td><p><font size="2" face="Verdana"><a href="$emailInfo.baseUrl?webbisId=$webbis">$webbisInfo.get($webbis)</a></p></td>
           </tr>
         #end
       </table>
