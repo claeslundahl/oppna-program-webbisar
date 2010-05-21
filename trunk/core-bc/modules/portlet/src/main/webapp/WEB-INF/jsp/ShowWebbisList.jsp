@@ -26,11 +26,16 @@
 <portlet:defineObjects />
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
-<link rel="stylesheet" type="text/css" href='<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/style/style.css")%>'/>
+
+<style type="text/css">
+  <%@ include file="/style/style.css" %>
+</style>
  
 <div id="custom-doc">
 	<div id="hd">
-		<div class="yui-b" style="text-align: left"><h2>Webbisar</h2></div>
+		<div class="yui-b" style="text-align: left">
+      <h2>Webbisar</h2>
+    </div>
 	</div>
 	<div id="bd">
 		<div id="yui-main">		
@@ -39,7 +44,20 @@
 					<h3 class="webbis">Välj webbis att uppdatera:</h3>
 					<div class="yui-u first" style="margin-left: 0.4em">
 						<c:forEach var="webbis" items="${requestScope.webbisar}">
-							<p><a href="<portlet:actionURL><portlet:param name="editWebbisId" value="${webbis.id}"/></portlet:actionURL>">Redigera webbis <c:if test="${webbis.name != null}"><c:out value="${webbis.name}"/> </c:if>med födelsedatum <c:out value="${webbis.birthTime}"/></a></p>
+							<p>
+                <a href="<portlet:actionURL><portlet:param name="editWebbisId" value="${webbis.mainWebbis.id}"/></portlet:actionURL>">
+                  <c:choose>
+                    <c:when test="${webbis.hasMultipleBirthSiblings}">Redigera webbisar</c:when>
+                    <c:otherwise>Redigera webbis</c:otherwise>
+                  </c:choose>
+                  <c:if test="${webbis.allWebbisNamesStringFromMain != null}">
+                    <c:out value="${webbis.allWebbisNamesStringFromMain}"/> 
+                  </c:if>
+                  <c:if test="${webbis.birthDateFromMain != null}">
+                   (<c:out value="${webbis.birthDateFromMain}"/>)
+                  </c:if>
+                </a>
+              </p>
 						</c:forEach>
 					</div>
 					<div class="yui-u"></div>
@@ -47,7 +65,11 @@
 				<div class="yui-g">
 					<h3 class="webbis">Lägg till ny webbis:</h3>		
 					<div class="yui-u first"  style="margin-left: 0.4em">
-						<p><a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/></portlet:renderURL>">Lägg till ny</a></p>
+						<p>
+              <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/></portlet:renderURL>">
+                Lägg till ny
+              </a>
+            </p>
 					</div>
 					<div class="yui-u"></div>
 				</div>

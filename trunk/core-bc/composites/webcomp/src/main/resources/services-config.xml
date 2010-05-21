@@ -36,5 +36,33 @@
       </value>
     </property>
   </bean>
+  
+  <bean id="webbisService" class="se.vgr.webbisar.svc.impl.WebbisServiceImpl"/>
+  
+  <bean id="webbisCacheLoader" class="se.vgr.webbisar.svc.sitemap.impl.WebbisCacheLoaderImpl">
+    <constructor-arg ref="webbisService"/>
+  </bean>
+  
+  <bean id="webbisCacheService" class="se.vgr.webbisar.svc.sitemap.impl.WebbisCacheServiceImpl">
+    <constructor-arg ref="webbisCacheLoader" />
+  </bean>
+  
+  <!-- bean id="sitemapCacheLoader" class="se.vgr.webbisar.svc.sitemap.impl.ExternalSitemapCacheLoaderImpl" -->
+  <bean id="sitemapCacheLoader" class="se.vgr.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
+    <constructor-arg ref="webbisCacheService"/>
+    <constructor-arg value="${webbisar.baseUrl}" />
+  </bean>
+  
+  <bean id="sitemapCacheService" class="se.vgr.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+    <constructor-arg ref="sitemapCacheLoader" />
+  </bean>
+  
+  <!-- bean id="sitemapGenerator" class="se.vgr.webbisar.svc.sitemap.ExternalSitemapGenerator" / -->
+  <bean id="sitemapGenerator" class="se.vgr.webbisar.svc.sitemap.InternalSitemapGenerator" />
+  
+  <bean id="sitemapSupportBean" class="se.vgr.webbisar.svc.sitemap.SitemapSupportBean">
+    <constructor-arg ref="sitemapCacheService" />
+    <constructor-arg ref="sitemapGenerator" />
+  </bean>
 
 </beans>

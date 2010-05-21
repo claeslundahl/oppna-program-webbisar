@@ -63,6 +63,11 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     @Transactional(readOnly = true)
+    public List<Webbis> getAllWebbisar() {
+        return this.webbisDao.findAllWebbis();
+    }
+
+    @Transactional(readOnly = true)
     public List<Webbis> getWebbisar(final int firstResult, final int maxResult) {
         return this.webbisDao.getWebbisar(firstResult, maxResult);
     }

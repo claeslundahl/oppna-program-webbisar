@@ -19,6 +19,7 @@ package se.vgr.webbisar.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import se.vgr.webbisar.types.Hospital;
@@ -200,39 +201,47 @@ public class MainWebbisBean implements Serializable {
         return parents;
     }
 
-    // /**
-    // * For use when creating new webbis objects. Will set "shared" properties and couple multiple birth sibling
-    // * webbisar if such exists.
-    // *
-    // * NOTE! Not to use when handling database fetched objects since these will already be properly populated.
-    // *
-    // * @return a populated (and possibly multiple birth sibling coupled) Webbis object
-    // */
-    // public Webbis generateFullyPopulatedMainWebbis() {
-    // Webbis returnWebbis = null;
-    //
-    // // Check if we are creating a new object or editing an old one
-    // if (mainWebbis.isPersisted()) {
-    // returnWebbis = mainWebbis;
-    // } else {
-    // // Create main webbis with full info with/for parent, hospital etc
-    // returnWebbis = new Webbis(mainWebbis.getName(), userId, mainWebbis.getSex(),
-    // mainWebbis.getBirthTime(), mainWebbis.getWeight(), mainWebbis.getLength(), hospital, homeTown,
-    // getParents(), mainWebbis.getImages(), siblings, message, email, webPage);
-    // }
-    //
-    // // Attach any multiple birth siblings
-    // for (Webbis multiBirthSibling : multipleBirthWebbisSiblings) {
-    // Webbis returnSibling = new Webbis(multiBirthSibling.getName(), userId, multiBirthSibling.getSex(),
-    // multiBirthSibling.getBirthTime(), multiBirthSibling.getWeight(),
-    // multiBirthSibling.getLength(), hospital, homeTown, getParents(), multiBirthSibling.getImages(),
-    // siblings, message, email, webPage);
-    // // Set main on sibling
-    // returnSibling.setMainMultipleBirthWebbis(returnWebbis);
-    // // Add sibling to main
-    // returnWebbis.getMultipleBirthSiblings().add(returnSibling);
-    // }
-    //
-    // return returnWebbis;
-    // }
+    public boolean isHasMultipleBirthSiblings() {
+        // Webbis is a sibling
+        if (mainWebbis.getMainMultipleBirthWebbis() != null) {
+            return true;
+        }
+        // Webbis is a main sibling
+        if (multipleBirthWebbisSiblings != null && multipleBirthWebbisSiblings.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Helper function, only to be used on "main" webbis if multiple birth siblings.
+     * 
+     * @return String listing webbis names (Alfa, Beta)
+     */
+    public String getAllWebbisNamesStringFromMain() {
+        StringBuilder sb = new StringBuilder();
+        if (mainWebbis != null) {
+            sb.append(mainWebbis.getName());
+            if (multipleBirthWebbisSiblings != null) {
+                for (Webbis w : multipleBirthWebbisSiblings) {
+                    sb.append(", ");
+                    sb.append(w.getName());
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Helper function, only to be used on "main" webbis if multiple birth siblings.
+     * 
+     * @return String Date of birth
+     */
+    public String getBirthDateFromMain() {
+        String s = "";
+        if (mainWebbis != null && mainWebbis.getBirthTime() != null) {
+            s = mainWebbis.getBirthTime().getSmartTime(new Date());
+        }
+        return s;
+    }
 }

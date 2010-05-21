@@ -609,19 +609,21 @@ public class WebbisPortletHelper {
         return UUID.randomUUID().toString();
     }
 
-    /**
-     * This will store the user's webbisar in the session. This is used between showing the link-list of
-     * "my webbisar" and the edit webbis main page (when the user has selected a webbis to edit). The list is also
-     * used when deleting a webbis or upon update to retrieve the "old" webbis' images.
-     * 
-     * @param request
-     * @param webbisar
-     *            a List<Webbis> of webbisar
-     */
-    public void storeMyWebbisarInSession(PortletRequest request, List<Webbis> webbisar) {
-        request.getPortletSession(true).setAttribute(WEBBIS_SESSION_PREFIX + "myWebbisar", webbisar);
-
-    }
+    // TODO: AndersB - Why? Never seems to be read from session...
+    // /**
+    // * This will store the user's webbisar in the session. This is used between showing the link-list of
+    // * "my webbisar" and the edit webbis main page (when the user has selected a webbis to edit). The list is
+    // also
+    // * used when deleting a webbis or upon update to retrieve the "old" webbis' images.
+    // *
+    // * @param request
+    // * @param webbisar
+    // * a List<Webbis> of webbisar
+    // */
+    // public void storeMyWebbisarInSession(PortletRequest request, List<MainWebbisBean> webbisar) {
+    // request.getPortletSession(true).setAttribute(WEBBIS_SESSION_PREFIX + "myWebbisar", webbisar);
+    //
+    // }
 
     /**
      * This method will put each individual field from the webbis in the session with the prefix 'webbis.mainform'.

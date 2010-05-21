@@ -17,10 +17,12 @@
  */
 package se.vgr.webbisar.helpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import se.vgr.webbisar.beans.MainWebbisBean;
 import se.vgr.webbisar.svc.WebbisImageService;
 import se.vgr.webbisar.svc.WebbisService;
 import se.vgr.webbisar.types.Webbis;
@@ -42,8 +44,15 @@ public class WebbisServiceProxy {
         webbisService.save(sessionId, webbis);
     }
 
-    public List<Webbis> getWebbisarForAuthorId(String userId) {
-        return webbisService.getWebbisarForAuthorId(userId);
+    public List<MainWebbisBean> getWebbisarForAuthorId(String userId) {
+        List<MainWebbisBean> mainBeans = new ArrayList<MainWebbisBean>();
+        // Only returning "main" webbisar
+        List<Webbis> webbisars = webbisService.getWebbisarForAuthorId(userId);
+        // Return webbis wrapper bean instead
+        for (Webbis w : webbisars) {
+            mainBeans.add(new MainWebbisBean(w, null));
+        }
+        return mainBeans;
     }
 
     public void deleteWebbis(String webbisId) {

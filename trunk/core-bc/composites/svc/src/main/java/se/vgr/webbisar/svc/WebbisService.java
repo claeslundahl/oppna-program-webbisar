@@ -25,42 +25,44 @@ import se.vgr.webbisar.types.Webbis;
 
 public interface WebbisService {
 
-	long getNumberOfWebbisar();
-	
-	Webbis getById(final Long webbisId);
-	
-	List<Webbis> getWebbisar(final int firstResult, final int maxResult);
+    long getNumberOfWebbisar();
 
-	void save(final String tempDir, final Webbis webbis);
+    Webbis getById(final Long webbisId);
 
-	Webbis prepareForEditing(final String tempDir, final Long webbisId);
-	
-	void cleanUp(final String tempDir);
+    List<Webbis> getWebbisar(final int firstResult, final int maxResult);
 
-	void saveAll(final Set<Webbis> webbisar);
-	
-	public void delete(final Long webbisId);
-	
-	List<Webbis> getWebbisarForAuthorId(final String userId);
-	
-	Integer getNumberOfMatchesFor(final String criteria);
-	
-	Integer getNumberOfMatchesForIncludeDisabled(final String criteria);
+    List<Webbis> getAllWebbisar();
 
-	List<Webbis> searchWebbisar(final String criteria, final int firstResult, final int maxResults);
-	
-	List<Webbis> searchWebbisarIncludeDisabled(final String criteria, final int firstResult, final int maxResults);
-	
-	List<Webbis> getLatestWebbisar(int maxResult);
-	
-	List<Webbis> getLatestWebbisar(Hospital hospital, int maxResult);
-	
-	void reindex();
+    void save(final String tempDir, final Webbis webbis);
 
-	void toggleEnableDisable(String webbisId);
+    Webbis prepareForEditing(final String tempDir, final Long webbisId);
 
-	String getImageBaseUrl();
+    void cleanUp(final String tempDir);
 
-	String getFtpConfiguration();
-	
+    void saveAll(final Set<Webbis> webbisar);
+
+    public void delete(final Long webbisId);
+
+    List<Webbis> getWebbisarForAuthorId(final String userId);
+
+    Integer getNumberOfMatchesFor(final String criteria);
+
+    Integer getNumberOfMatchesForIncludeDisabled(final String criteria);
+
+    List<Webbis> searchWebbisar(final String criteria, final int firstResult, final int maxResults);
+
+    List<Webbis> searchWebbisarIncludeDisabled(final String criteria, final int firstResult, final int maxResults);
+
+    List<Webbis> getLatestWebbisar(int maxResult);
+
+    List<Webbis> getLatestWebbisar(Hospital hospital, int maxResult);
+
+    void reindex();
+
+    void toggleEnableDisable(String webbisId);
+
+    String getImageBaseUrl();
+
+    String getFtpConfiguration();
+
 }

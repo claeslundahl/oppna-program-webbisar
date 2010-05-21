@@ -34,6 +34,7 @@ import javax.portlet.RenderResponse;
 
 import org.apache.commons.fileupload.portlet.PortletFileUpload;
 
+import se.vgr.webbisar.beans.MainWebbisBean;
 import se.vgr.webbisar.helpers.FileHandler;
 import se.vgr.webbisar.helpers.WebbisPortletHelper;
 import se.vgr.webbisar.helpers.WebbisServiceProxy;
@@ -85,9 +86,10 @@ public class EditWebbisPortlet extends GenericPortlet {
                 // CleanUp so the session is empty
                 helper.cleanUp(request.getPortletSession(true));
 
-                List<Webbis> webbisar = webbisServiceProxy.getWebbisarForAuthorId(helper.getUserId(request));
+                List<MainWebbisBean> webbisar = webbisServiceProxy.getWebbisarForAuthorId(helper
+                        .getUserId(request));
                 if (webbisar != null && webbisar.size() > 0) {
-                    helper.storeMyWebbisarInSession(request, webbisar);
+                    // helper.storeMyWebbisarInSession(request, webbisar);
                     request.setAttribute("webbisar", webbisar);
                     dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ShowWebbisList.jsp");
                 } else {
