@@ -46,7 +46,6 @@
       <set attribute="selectedImage" scope="flow" value="requestParameters.selectedImage" />
     </transition>
 		<transition on="backToWebbisarAction" to="back" />
-    <transition on="backToWebbisarStartAction" to="backToStart" />
     <transition on="searchForWebbisAction" to="search"/>
     <transition on="showSendWebbisAction" to="showSendWebbis"/>
 	</view-state>
@@ -68,6 +67,4 @@
   
 	<end-state id="back" />
   
-  <end-state id="backToStart" />
-
 </flow>
