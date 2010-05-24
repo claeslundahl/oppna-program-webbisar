@@ -31,44 +31,23 @@ import se.vgr.webbisar.util.DateTimeUtil;
  * Implementation of the CacheLoader interface which populates a SitemapCache by using the
  * {@link WebbisCacheServiceImpl}.
  */
-public class PublicSitemapCacheLoaderImpl implements CacheLoader<SitemapCache> {
+public class ExternalSitemapCacheLoaderImpl implements CacheLoader<SitemapCache> {
 
     private final WebbisCacheServiceImpl webbisCacheService;
-    private final String externalApplicationURL;
+    private final String externalApplicationBaseURL;
 
     /**
-     * Constructs a new {@link PublicSitemapCacheLoaderImpl}.
+     * Constructs a new {@link ExternalSitemapCacheLoaderImpl}.
      * 
      * @param webbisCacheService
      *            The {@link WebbisCacheServiceImpl} implementation to use to fetch units.
-     * @param externalApplicationURL
+     * @param externalApplicationBaseURL
      *            The external URL to the application.
      */
-    public PublicSitemapCacheLoaderImpl(final WebbisCacheServiceImpl webbisCacheService,
-            String externalApplicationURL) {
+    public ExternalSitemapCacheLoaderImpl(final WebbisCacheServiceImpl webbisCacheService,
+            String externalApplicationBaseURL) {
         this.webbisCacheService = webbisCacheService;
-        this.externalApplicationURL = externalApplicationURL;
-    }
-
-    public SitemapCache loadCache() {
-        SitemapCache cache = new SitemapCache();
-
-        List<Webbis> webbisar = webbisCacheService.getCache().getWebbisar();
-        // Check if list of units is populated, otherwise we fill it up!
-        if (webbisar.size() < 1) {
-            webbisCacheService.reloadCache();
-            webbisar = webbisCacheService.getCache().getWebbisar();
-        }
-
-        for (Webbis webbis : webbisar) {
-            String lastmod = DateTimeUtil
-                    .getLastModifiedW3CDateTime(webbis.getLastModified(), webbis.getCreated());
-            SitemapEntry entry = new SitemapEntry(externalApplicationURL + "?webbisId=" + webbis.getId(), lastmod,
-                    "daily");
-            cache.add(entry);
-        }
-
-        return cache;
+        this.externalApplicationBaseURL = externalApplicationBaseURL;
     }
 
     /**
@@ -78,4 +57,28 @@ public class PublicSitemapCacheLoaderImpl implements CacheLoader<SitemapCache> {
         return new SitemapCache();
     }
 
+    public SitemapCache loadCache() {
+        SitemapCache cache = new SitemapCache();
+
+        populateWebbisar(cache);
+
+        return cache;
+    }
+
+    private void populateWebbisar(SitemapCache cache) {
+        List<Webbis> webbisar = webbisCacheService.getCache().getWebbisar();
+        // Check if list of webbisar is populated, otherwise we fill it up!
+        if (webbisar.size() < 1) {
+            webbisCacheService.reloadCache();
+            webbisar = webbisCacheService.getCache().getWebbisar();
+        }
+
+        for (Webbis webbis : webbisar) {
+            String lastmod = DateTimeUtil
+                    .getLastModifiedW3CDateTime(webbis.getLastModified(), webbis.getCreated());
+            SitemapEntry entry = new SitemapEntry(externalApplicationBaseURL + "?webbisId=" + webbis.getId(),
+                    lastmod, "daily");
+            cache.add(entry);
+        }
+    }
 }

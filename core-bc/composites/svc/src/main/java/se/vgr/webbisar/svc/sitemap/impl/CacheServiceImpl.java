@@ -45,7 +45,7 @@ public class CacheServiceImpl<T> {
     }
 
     /**
-     * Reloads the cache from LDAP using the cache loader instance.
+     * Reloads the cache from DB using the cache loader instance.
      */
     public void reloadCache() {
         cache.set(cacheLoader.loadCache());

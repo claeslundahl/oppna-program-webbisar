@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import se.vgr.webbisar.svc.sitemap.CacheLoader;
 import se.vgr.webbisar.svc.sitemap.SitemapCache;
 import se.vgr.webbisar.svc.sitemap.SitemapEntry;
+import se.vgr.webbisar.types.Image;
 import se.vgr.webbisar.types.Webbis;
 import se.vgr.webbisar.util.DateTimeUtil;
 
@@ -37,24 +38,31 @@ import se.vgr.webbisar.util.DateTimeUtil;
 public class InternalSitemapCacheLoaderImpl implements CacheLoader<SitemapCache> {
     private final Log log = LogFactory.getLog(getClass());
     private final WebbisCacheServiceImpl webbisCacheService;
-    private final String internalApplicationURL;
+    private final String internalApplicationBaseURL;
+    private final String internalImageBaseURL;
 
     /**
      * Constructs a new {@link InternalSitemapCacheLoaderImpl}.
      * 
      * @param webbisCacheService
      *            The {@link WebbisCacheServiceImpl} implementation to use to fetch units.
-     * @param searchService
-     *            The {@link SearchService} implementation to use to fetch persons.
-     * @param internalApplicationURL
+     * @param internalApplicationBaseURL
      *            The internal URL to the application.
-     * @param changeFrequency
-     *            The change frequency of the sitemap entries.
+     * @param internalImageBaseURL
+     *            The internal URL to the image servlet.
      */
     public InternalSitemapCacheLoaderImpl(final WebbisCacheServiceImpl webbisCacheService,
-            final String internalApplicationURL) {
+            final String internalApplicationURL, final String internalImageBaseURL) {
         this.webbisCacheService = webbisCacheService;
-        this.internalApplicationURL = internalApplicationURL;
+        this.internalApplicationBaseURL = internalApplicationURL;
+        this.internalImageBaseURL = internalImageBaseURL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public SitemapCache createEmptyCache() {
+        return new SitemapCache();
     }
 
     /**
@@ -63,15 +71,15 @@ public class InternalSitemapCacheLoaderImpl implements CacheLoader<SitemapCache>
     public SitemapCache loadCache() {
         SitemapCache cache = new SitemapCache();
 
-        populateWebbisars(cache);
+        populateWebbisar(cache);
 
         return cache;
     }
 
-    private void populateWebbisars(SitemapCache cache) {
+    private void populateWebbisar(SitemapCache cache) {
         List<Webbis> webbisar = webbisCacheService.getCache().getWebbisar();
 
-        // Check if list of units is populated, otherwise we fill it up!
+        // Check if list of webbisar is populated, otherwise we fill it up!
         if (webbisar.size() < 1) {
             webbisCacheService.reloadCache();
             webbisar = webbisCacheService.getCache().getWebbisar();
@@ -80,10 +88,8 @@ public class InternalSitemapCacheLoaderImpl implements CacheLoader<SitemapCache>
         for (Webbis webbis : webbisar) {
             String lastmod = DateTimeUtil
                     .getLastModifiedW3CDateTime(webbis.getLastModified(), webbis.getCreated());
-            SitemapEntry entry = new SitemapEntry(internalApplicationURL + "?webbisId=" + webbis.getId(), lastmod,
-                    "daily");
-
-            // TODO: HRIV har en egen dtd för denna info!
+            SitemapEntry entry = new SitemapEntry(internalApplicationBaseURL + "?webbisId=" + webbis.getId(),
+                    lastmod, "daily");
 
             // Additional information, not sitemap standard
             entry.addExtraInformation("name", webbis.getName());
@@ -98,16 +104,12 @@ public class InternalSitemapCacheLoaderImpl implements CacheLoader<SitemapCache>
                     .getFullName() : "");
             entry.addExtraInformation("birthdate", DateTimeUtil.formatDateSwedish(webbis.getBirthTime()
                     .getTimeAsDate()));
+            if (webbis.getImages() != null && webbis.getImages().size() > 0) {
+                Image image = webbis.getImages().get(0);
+                entry.addExtraInformation("imageLink", internalImageBaseURL + image.getLocation());
+            }
 
             cache.add(entry);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public SitemapCache createEmptyCache() {
-        return new SitemapCache();
-    }
-
 }

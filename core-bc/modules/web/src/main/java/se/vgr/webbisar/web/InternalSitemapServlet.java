@@ -35,15 +35,15 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import se.vgr.webbisar.svc.sitemap.SitemapSupportBean;
 
 /**
- * Generates a sitemap for Webbisar.
+ * Generates an internal sitemap for Webbisar.
  */
-public class SitemapServlet extends HttpServlet {
+public class InternalSitemapServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String ENCODING_UTF8 = "UTF-8";
-    private static final String CLASS_NAME = SitemapServlet.class.getName();
-    private static final Log LOGGER = LogFactory.getLog(SitemapServlet.class);
+    private static final String CLASS_NAME = InternalSitemapServlet.class.getName();
+    private static final Log LOGGER = LogFactory.getLog(InternalSitemapServlet.class);
 
-    private SitemapSupportBean sitemapSupportBean;
+    private SitemapSupportBean internalSitemapSupportBean;
 
     /**
      * Get reference to SitemapSupportBean from Spring context.
@@ -59,7 +59,7 @@ public class SitemapServlet extends HttpServlet {
         WebApplicationContext springContext = WebApplicationContextUtils
                 .getWebApplicationContext(getServletContext());
 
-        sitemapSupportBean = (SitemapSupportBean) springContext.getBean("sitemapSupportBean");
+        internalSitemapSupportBean = (SitemapSupportBean) springContext.getBean("internalSitemapSupportBean");
     }
 
     /**
@@ -68,16 +68,16 @@ public class SitemapServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug(CLASS_NAME + ".doGet()");
-        LOGGER.debug("SitemapServlet starting to put together the sitemap.");
+        LOGGER.debug("InternalSitemapServlet starting to put together the sitemap.");
 
         long startTimeMillis = System.currentTimeMillis();
 
-        String sitemapContent = sitemapSupportBean.getSitemapContent();
+        String sitemapContent = internalSitemapSupportBean.getSitemapContent();
 
         long endTimeMillis = System.currentTimeMillis();
 
-        LOGGER.debug("SitemapServlet generation finished. It took: " + (endTimeMillis - startTimeMillis) / 1000
-                + " seconds.");
+        LOGGER.debug("InternalSitemapServlet generation finished. It took: " + (endTimeMillis - startTimeMillis)
+                / 1000 + " seconds.");
 
         response.setCharacterEncoding(ENCODING_UTF8);
 

@@ -230,6 +230,16 @@
     <servlet-name>sitemap</servlet-name>
     <url-pattern>/sitemap</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>internalsitemap</servlet-name>
+    <servlet-class>se.vgr.webbisar.web.InternalSitemapServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>internalsitemap</servlet-name>
+    <url-pattern>/internalsitemap</url-pattern>
+  </servlet-mapping>
 
   <error-page>
     <exception-type>javax.servlet.ServletException</exception-type>
