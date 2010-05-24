@@ -15,7 +15,6 @@
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
 
-
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -52,6 +51,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring</artifactId>
+    </dependency>
+   
+    <dependency>
+      <groupId>quartz</groupId>
+      <artifactId>quartz</artifactId>
+      <version>1.5.2</version>
     </dependency>
    
     <dependency>
@@ -99,15 +104,13 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-ehcache</artifactId>
-      <version>3.3.1.GA</version>
+      <version>3.3.2.GA</version>
     </dependency>
     <dependency>
       <groupId>org.apache.ftpserver</groupId>
       <artifactId>ftpserver-core</artifactId>
-      <version>1.0.0-RC1</version>
+      <version>1.0.4</version>
     </dependency>
-
-
 
   </dependencies>
 </project>

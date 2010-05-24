@@ -35,6 +35,8 @@ public class SitemapSupportBean {
      * 
      * @param sitemapGenerator
      *            The SitemapGenerator implementation to use to generate the sitemap XML.
+     * @param sitemapCacheService
+     *            The {@link SitemapCacheServiceImpl} to get the entries for the sitemap from.
      */
     public SitemapSupportBean(SitemapGenerator sitemapGenerator, SitemapCacheServiceImpl sitemapCacheService) {
         this.sitemapCacheService = sitemapCacheService;

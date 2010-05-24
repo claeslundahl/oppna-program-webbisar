@@ -26,12 +26,9 @@ import java.util.List;
 public class InternalSitemapGenerator implements SitemapGenerator {
 
     public String generate(List<SitemapEntry> sitemapEntries) {
-        StringBuilder output = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
-
-        // TODO: AndersB - Eget schema, vi kan inte använda http://www.vgregion.se/schemas/hsa_schema
-        // <urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"
-        // xmlns:hsa=\"http://www.vgregion.se/schemas/hsa_schema\">\n
+        StringBuilder output = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        output.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"");
+        output.append(" xmlns:webbis=\"http://www.vgregion.se/schemas/webbis_schema\">\n");
 
         for (SitemapEntry entry : sitemapEntries) {
             output.append("<url>\n");
@@ -46,8 +43,6 @@ public class InternalSitemapGenerator implements SitemapGenerator {
             }
             output.append("</url>\n");
         }
-
-        // TODO: AndersB - "inklusive url till bilden" ??
 
         output.append("</urlset>");
 
