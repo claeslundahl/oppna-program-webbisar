@@ -26,12 +26,12 @@
 <portlet:defineObjects />
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
-<link rel="stylesheet" type="text/css" href='<%=renderResponse.encodeURL(renderRequest.getContextPath() + "/style/style.css")%>'/>
-
-	
+<style type="text/css">
+  <%@ include file="/style/style.css" %>
+</style>  	
 
 <div id="custom-doc">
-	<div id="hd">
+	<div>
 		<div class="yui-b" style="text-align: left"><h2>Webbisar</h2></div>
 		<div class="yui-b">
 			<div class="yui-gb header">
@@ -39,7 +39,7 @@
 			</div>
 		</div>	
 	</div>
-	<div id="bd">
+	<div>
 		<div id="yui-main">
 		<form action="<portlet:actionURL><portlet:param name="webbisId" value="${requestScope.webbisId}"/></portlet:actionURL>" method="post" id="webbis_delete_form">			
 			<div class="yui-b addwebbis">

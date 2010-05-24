@@ -26,17 +26,17 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
 
 <portlet:defineObjects />	
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
 <style type="text/css">
   <%@ include file="/style/style.css" %>
-</style>
+</style>  
 
 <div id="custom-doc">
-	<div id="hd">
+	<div>
 		<div class="yui-b" style="text-align: left"><h2>Webbisar</h2></div>
 	</div>
-	<div id="bd">
+	<div>
 		<div id="yui-main">
 			<form action="<portlet:actionURL/>" method="post" name="webbis_main_form" id="webbis_main_form">
 				<div class="yui-b webbis">

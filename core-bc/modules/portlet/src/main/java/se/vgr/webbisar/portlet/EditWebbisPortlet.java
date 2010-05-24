@@ -187,7 +187,7 @@ public class EditWebbisPortlet extends GenericPortlet {
                     // show the confirmDelete Page
                     request.setAttribute("webbisId", request.getParameter("w0_webbisId"));
                     response.setRenderParameter(VIEW, CONFIRM_DELETE_WEBBIS_VIEW);
-                } else if (request.getParameter("cancelDeleteWebbis") != null) {
+                } else if (request.getParameter("cancelDelete") != null) {
                     response.setRenderParameter(VIEW, MAIN_VIEW);
                 } else if (request.getParameter("confirmDelete") != null) {
                     webbisServiceProxy.deleteWebbis(request.getParameter("webbisId"));
