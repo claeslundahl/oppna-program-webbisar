@@ -235,13 +235,15 @@ public class MainWebbisBean implements Serializable {
     /**
      * Helper function, only to be used on "main" webbis if multiple birth siblings.
      * 
-     * @return String Date of birth
+     * @return String Date of birth on format "19 april, 2009"
      */
     public String getBirthDateFromMain() {
-        String s = "";
+        StringBuilder sb = new StringBuilder();
         if (mainWebbis != null && mainWebbis.getBirthTime() != null) {
-            s = mainWebbis.getBirthTime().getSmartTime(new Date());
+            sb.append(mainWebbis.getBirthTime().getSmartTime(new Date()));
+            sb.append(", ");
+            sb.append(mainWebbis.getBirthTime().getYear());
         }
-        return s;
+        return sb.toString();
     }
 }

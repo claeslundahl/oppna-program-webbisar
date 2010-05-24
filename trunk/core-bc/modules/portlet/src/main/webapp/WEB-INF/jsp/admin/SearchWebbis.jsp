@@ -24,35 +24,47 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
  
-
 <portlet:defineObjects />	
 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
+<style type="text/css">
+  <%@ include file="/style/style.css" %>
+</style> 
+
 <div id="custom-doc">
-	<div id="hd">
-		<div class="yui-b" style="text-align: left"><h2>Inaktivera/aktivera webbis</h2></div>
-		<div class="yui-b">
-			<div class="yui-gb header">
-				
-			</div>
-		</div>	
+	<div>
+    <div class="yui-g">
+      <div class="yui-u first" style="text-align: left">
+        <h2>Inaktivera/aktivera webbis</h2>
+      </div>
+      <div class="yui-u">
+      </div>
+    </div>
 	</div>
-	<div id="bd">
+	<div>
 		<div id="yui-main">
-			<form action="<portlet:actionURL/>"  method="post" id="search_webbis_form">			
+			<form action="<portlet:actionURL/>" method="post" id="search_webbis_form">			
 				<div class="yui-b addwebbis">
 					<c:if test="${WebbisChanged != null}"><h3>Webbisen har uppdaterats</h3></c:if>
 				
 					<div class="yui-g">
-						<div class="yui-u first">
-							Sök webbis: <input type="text" name="searchField"/>&nbsp;<input name="search" id="search" value="Sök" type="submit"/>
+						<div class="yui-u first" style="margin-left: 0.4em">
+							Sök webbis: <input type="text" name="searchField"/>&nbsp;<input name="searchButton" id="searchButton" value="Sök" type="submit"/>
 						</div>
 						<div class="yui-u" style="text-align: right">
 						</div>
 					</div>
+          <br/>
+          <div class="yui-g">
+            <div class="yui-u first" style="margin-left: 0.4em">
+              <input name="reindex" id="reindex" value="Indexera om" type="submit"/>
+              <br/>
+              <span style="white-space:nowrap">Att indexera om kan ta ett antal minuter, så hav tålamod och tryck inte flera gånger...</span>
+            </div>
+            <div class="yui-u" style="text-align: right">
+            </div>
+          </div>
 				</div>
-				<div class="yui-b">
-					<input name="reindex" id="reindex" value="Indexera om" type="submit"/>Detta tar ett antal minuter, så hav tålamod och tryck inte flera gånger...				
-				</div>	
 			</form>
 		</div>
 	</div>

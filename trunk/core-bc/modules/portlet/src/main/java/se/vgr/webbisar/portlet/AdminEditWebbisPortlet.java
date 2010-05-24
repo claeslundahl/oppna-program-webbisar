@@ -42,54 +42,53 @@ import se.vgr.webbisar.types.Webbis;
  */
 public class AdminEditWebbisPortlet extends GenericPortlet {
 
-	private WebbisServiceProxy webbisServiceProxy;
+    private WebbisServiceProxy webbisServiceProxy;
 
-	public void init(PortletConfig config) throws PortletException {
-		webbisServiceProxy = new WebbisServiceProxy();
-		super.init(config);
-	}
+    @Override
+    public void init(PortletConfig config) throws PortletException {
+        webbisServiceProxy = new WebbisServiceProxy();
+        super.init(config);
+    }
 
-	public void doView(RenderRequest request, RenderResponse response)
-			throws PortletException, IOException {
+    @Override
+    public void doView(RenderRequest request, RenderResponse response) throws PortletException, IOException {
 
-		response.setContentType("text/html");
-		PortletRequestDispatcher dispatcher = null;
-		if (request.getAttribute("SearchResultPage") != null){
-			dispatcher = getPortletContext().getRequestDispatcher(
-			"/WEB-INF/jsp/admin/EnableDisableWebbis.jsp");
-		}
-		else {
-			dispatcher = getPortletContext().getRequestDispatcher(
-			"/WEB-INF/jsp/admin/SearchWebbis.jsp");
-		}
-		
-		dispatcher.include(request, response);
-	}
+        response.setContentType("text/html");
+        PortletRequestDispatcher dispatcher = null;
+        if (request.getAttribute("SearchResultPage") != null) {
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/admin/EnableDisableWebbis.jsp");
+        } else {
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/admin/SearchWebbis.jsp");
+        }
 
-	public void processAction(ActionRequest request, ActionResponse response)
-			throws PortletException, IOException {
-	
-		if (request.getParameter("search") != null){
-			int numberOfHits = webbisServiceProxy.getNumberOfMatchesForIncludeDisabled(request.getParameter("searchField"));
-			
-			List<Webbis> resultList = webbisServiceProxy.searchWebbisIncludeDisabled(request.getParameter("searchField"), 0, 20);
-			List<SearchResultBean> list = new ArrayList<SearchResultBean>();
-			if (resultList != null){
-				for(Webbis webbis : resultList) {
-					list.add(new SearchResultBean(webbis));
-				}
-			}
-			
-			SearchResultPageBean searchResultPage = new SearchResultPageBean(numberOfHits, list);
-			request.setAttribute("SearchResultPage", searchResultPage);
-			
-					
-		} else if (request.getParameter("webbisId") != null){
-			webbisServiceProxy.toggleEnableDisable(request.getParameter("webbisId"));
-			request.setAttribute("WebbisChanged", "true");
-			
-		} else if (request.getParameter("reindex") != null) {
-			webbisServiceProxy.reindex();
-		}
-	}
+        dispatcher.include(request, response);
+    }
+
+    @Override
+    public void processAction(ActionRequest request, ActionResponse response) throws PortletException, IOException {
+
+        if (request.getParameter("searchButton") != null) {
+            int numberOfHits = webbisServiceProxy.getNumberOfMatchesForIncludeDisabled(request
+                    .getParameter("searchField"));
+
+            List<Webbis> resultList = webbisServiceProxy.searchWebbisIncludeDisabled(request
+                    .getParameter("searchField"), 0, 20);
+            List<SearchResultBean> list = new ArrayList<SearchResultBean>();
+            if (resultList != null) {
+                for (Webbis webbis : resultList) {
+                    list.add(new SearchResultBean(webbis));
+                }
+            }
+
+            SearchResultPageBean searchResultPage = new SearchResultPageBean(numberOfHits, list);
+            request.setAttribute("SearchResultPage", searchResultPage);
+
+        } else if (request.getParameter("webbisId") != null) {
+            webbisServiceProxy.toggleEnableDisable(request.getParameter("webbisId"));
+            request.setAttribute("WebbisChanged", "true");
+
+        } else if (request.getParameter("reindex") != null) {
+            webbisServiceProxy.reindex();
+        }
+    }
 }

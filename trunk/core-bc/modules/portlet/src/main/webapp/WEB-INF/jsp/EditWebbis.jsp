@@ -26,14 +26,14 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0"  prefix="portlet" %>
 
 <portlet:defineObjects />	
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css"/>
 <style type="text/css">
   <%@ include file="/style/style.css" %>
 </style>
 
 <div id="custom-doc">
-	<div id="hd">
+	<div>
     <div class="yui-g">
   		<div class="yui-u first" style="text-align: left">
         <h2>Webbisar</h2>
@@ -43,51 +43,47 @@
       </div>
     </div>
 	</div>
-	<div id="bd">
+	<div>
 		<div id="yui-main">
 			<form action="<portlet:actionURL/>" method="post" name="webbis_main_form" id="webbis_main_form">
       
 				<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'] != null and portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis != null}">
 					<input type="hidden" name="w0_webbisId" value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id}"/>
 				</c:if>
+        
 				<div class="yui-b addwebbis">
-					
+          <div class="yui-g">
+            <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id == null}"><h3 class="webbis">Lägg till webbis / webbisar</h3></c:if>
+            <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id != null}"><h3 class="webbis">Uppdatera webbis / webbisar</h3></c:if>
+              
+            <div style="margin-left: 0.4em">
+              <c:if test="${empty validationMessages}">
+                <p>Fyll i fälten nedan och klicka på ”Förhandsgranska”. Fält markerade med * är obligatoriska.<br/>
+                  <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis == null or portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id == null}">
+                    Har ni fått <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="1"/></portlet:renderURL>">tvillingar</a> eller <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="2"/></portlet:renderURL>">trillingar</a>?
+                  </c:if>
+                </p>
+              </c:if>
+              <c:if test="${not empty validationMessages}">
+                <p style="color: red">Följande fält är inte korrekt ifyllda:</p>
+                <ul style="color: red; margin-left: 1.4em;">
+                  <c:forEach items="${validationMessages}" var="validationMessage">
+                    <li><c:out value="${validationMessage}"/></li>
+                  </c:forEach>
+                </ul>
+              </c:if>
+            </div>
+          </div>
+          
 					<div class="yui-g">
-						<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id == null}"><h3 class="webbis">Lägg till webbis / webbisar</h3></c:if>
-						<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id != null}"><h3 class="webbis">Uppdatera webbis / webbisar</h3></c:if>
 						<div class="yui-u first" style="margin-left: 0.4em">
-							
-							<div class="yui-g">
-								<div class="yui-u first" style="width:99%">
-									<c:if test="${empty validationMessages}">
-										<p>Fyll i fälten nedan och klicka på ”Förhandsgranska”.<br/>
-                      <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis == null or portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id == null}">
-                        Har ni fått <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="1"/></portlet:renderURL>">tvillingar</a> eller <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="2"/></portlet:renderURL>">trillingar</a>?
-                      </c:if>
-                    </p>
-									</c:if>
-									<c:if test="${not empty validationMessages}">
-										<p style="color: red">Följande fält är inte korrekt ifyllda:</p>
-										<ul style="color: red">
-									</c:if>
-									<c:forEach items="${validationMessages}" var="validationMessage">
-										<li><c:out value="${validationMessage}"/></li>
-									</c:forEach>
-									<c:if test="${not empty validationMessages}">
-										</ul>
-									</c:if>
-								</div>
-								<div class="yui-u">
-								</div>
-							</div>
-
 							<!-- Namn och kön -->
-							<div class="yui-g" style="padding-top: 20px;">
+							<div class="yui-g" style="padding-top: 10px;">
                 <h4 class="webbis">Webbis 1</h4>
 								<div class="yui-u first">
 									<p>
-										<label for="w0_webbisname">Webbisens namn:</label>
-								    	<input type="text" name="w0_webbisname" id="w0_webbisname" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.name}" default="skriv namn" />" maxlength="15"/>
+										<label for="w0_webbisname">Webbisens namn:</label><br/>
+								    <input type="text" name="w0_webbisname" id="w0_webbisname" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.name}" default="skriv namn" />" maxlength="15"/>
 									</p>
 								</div>
 								<div class="yui-u" style="padding-top: 0.8em">
@@ -165,36 +161,27 @@
 									<p>
 										<label for="w0_weight">
 								    	Vikt (gram):
-								    	</label>
-								    	<input type="text" name="w0_weight" id="w0_weight" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.weight}" />"/>
-								  	</p>
+								    </label><br/>
+								    <input type="text" name="w0_weight" id="w0_weight" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.weight}" />"/>
+								  </p>
 								</div>
 								<div class="yui-u">
 									<p>
 										<label for="w0_length">
 								    	Längd (cm):
-								    	</label>
-								    	<input type="text" name="w0_length" id="w0_length" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.length}" />"/>
-								  	</p>							
+							    	</label><br/>
+							    	<input type="text" name="w0_length" id="w0_length" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.length}" />"/>
+							  	</p>
 								</div>
 							</div>
 						</div>
             
-						<div class="yui-u" style="padding-top: 20px;">
-            
-              <div class="yui-g">
-                <div class="yui-u first">
-                  <br/>
-                  <br/>
-                </div>
-                <div class="yui-u">
-                </div>
-              </div>
+						<div class="yui-u" style="padding-top: 10px;">
             
               <input name="addImages_w0" value="Lägg till bilder" type="submit"/>
               <span style="padding-left: 20px;">Bilder på webbis 1</span>                
-              <br/><br/>
-              <!--  <img class="icon" src="../img/add-32x32.png"><a id="addPic" href="#">Lägg till bild</a><br/> -->
+              <br/>
+              <br/>
               
               <!-- Any images object? -->
               <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.images != null}" >
@@ -215,14 +202,14 @@
                       <div style="height: 27px; margin-top: 2px;">
                         <c:set var="imageId" value="w0_image${refRow.index}"/>
                         <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                          <p style="padding-top: 7px;">Denna bild är förstabild</p>
+                          <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
                         </c:if>
                         <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
                           <input type="submit" name="w0_image${refRow.index}-main-image" value="Sätt som förstabild"/>
                         </c:if>
                       </div>
                       <p style="margin-bottom: 10px;">
-                        <label for="w0_image${refRow.index+1}-text">Bildtext:<br/></label>
+                        <label for="w0_image${refRow.index+1}-text">Bildtext:</label><br/>
                         <input type="text" name="w0_image${refRow.index}-text" class="text" value="${image.text}"  maxlength="80"></input><br/>
                       </p>    
                     </div>
@@ -239,14 +226,14 @@
                         <div style="height: 27px; margin-top: 2px;">
                           <c:set var="imageId2" value="w0_image${refRow.index+1}"/>
                           <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                            <p style="padding-top: 7px;">Denna bild är förstabild</p>
+                            <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
                           </c:if>
                           <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
                             <input type="submit" name="w0_image${refRow.index+1}-main-image" value="Sätt som förstabild"/>
                           </c:if>
                         </div>
                         <p style="margin-bottom: 10px;">
-                          <label for="w0_image${refRow.index+1}-text">Bildtext:<br/></label>
+                          <label for="w0_image${refRow.index+1}-text">Bildtext:</label><br/>
                           <input type="text" name="w0_image${refRow.index+1}-text" class="text" value="${imageSecondIdx.text}"  maxlength="80"></input><br/>
                         </p>  
                       </div>  
@@ -272,11 +259,11 @@
                 </div>
   
                 <!-- Namn och kön -->
-                <div class="yui-g" style="padding-top: 20px;">
+                <div class="yui-g" style="padding-top: 10px;">
                   <h4 class="webbis">Webbis ${refRow.index+2}</h4>
                   <div class="yui-u first">
                     <p>
-                      <label for="w${refRow.index+1}_webbisname">Webbisens namn:</label>
+                      <label for="w${refRow.index+1}_webbisname">Webbisens namn:</label><br/>
                         <input type="text" name="w${refRow.index+1}_webbisname" id="w${refRow.index+1}_webbisname" class="text" value="<c:out value="${multipleBirthSibling.name}" default="skriv namn" />" maxlength="15"/>
                     </p>
                   </div>
@@ -354,27 +341,26 @@
                     <p>
                       <label for="w${refRow.index+1}_vikt">
                         Vikt (gram):
-                        </label>
-                        <input type="text" name="w${refRow.index+1}_weight" id="w${refRow.index+1}_weight" class="text" value="<c:out value="${multipleBirthSibling.weight}" />"/>
-                      </p>
+                      </label><br/>
+                      <input type="text" name="w${refRow.index+1}_weight" id="w${refRow.index+1}_weight" class="text" value="<c:out value="${multipleBirthSibling.weight}" />"/>
+                    </p>
                   </div>
                   <div class="yui-u">
                     <p>
                       <label for="w${refRow.index+1}_langd">
                         Längd (cm):
-                        </label>
-                        <input type="text" name="w${refRow.index+1}_length" id="w${refRow.index+1}_length" class="text" value="<c:out value="${multipleBirthSibling.length}" />"/>
-                      </p>              
+                      </label><br/>
+                      <input type="text" name="w${refRow.index+1}_length" id="w${refRow.index+1}_length" class="text" value="<c:out value="${multipleBirthSibling.length}" />"/>
+                    </p>              
                   </div>
                 </div>
               </div>
               
-              <div class="yui-u" style="padding-top: 20px;">
+              <div class="yui-u" style="padding-top: 10px;">
                 <input name="addImages_w${refRow.index+1}" value="Lägg till bilder" type="submit"/>                
                 <span style="padding-left: 20px;">Bilder på webbis ${refRow.index+2}</span>                
-                <br/><br/>
-                <!--  <img class="icon" src="../img/add-32x32.png"><a id="addPic" href="#">Lägg till bild</a><br/> -->
-                
+                <br/>
+                <br/>
                 <!-- Any images object? -->
                 <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.images != null}" >
                 
@@ -394,14 +380,14 @@
                         <div style="height: 27px; margin-top: 2px;">
                           <c:set var="imageId" value="w${refRow.index+1}_image${refImgRow.index}"/>
                           <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                            <p style="padding-top: 7px;">Denna bild är förstabild</p>
+                            <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
                           </c:if>
                           <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
                             <input type="submit" name="w${refRow.index+1}_image${refImgRow.index}-main-image" value="Sätt som förstabild"/>
                           </c:if>
                         </div>
                         <p style="margin-bottom: 10px;">
-                          <label for="w${refRow.index+1}_image${refRow.index+1}-text">Bildtext:<br/></label>
+                          <label for="w${refRow.index+1}_image${refRow.index+1}-text">Bildtext:</label><br/>
                           <input type="text" name="w${refRow.index+1}_image${refImgRow.index}-text" class="text" value="${image.text}"  maxlength="80"></input><br/>
                         </p>    
                       </div>
@@ -418,14 +404,14 @@
                           <div style="height: 27px; margin-top: 2px;">
                             <c:set var="imageId2" value="w${refRow.index+1}_image${refImgRow.index+1}"/>
                             <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                              <p style="padding-top: 7px;">Denna bild är förstabild</p>
+                              <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
                             </c:if>
                             <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
                               <input type="submit" name="w${refRow.index+1}_image${refImgRow.index+1}-main-image" value="Sätt som förstabild"/>
                             </c:if>
                           </div>
                           <p style="margin-bottom: 10px;">
-                            <label for="w${refRow.index+1}_image${refRow.index+1}-text">Bildtext:<br/></label>
+                            <label for="w${refRow.index+1}_image${refRow.index+1}-text">Bildtext:</label><br/>
                             <input type="text" name="w${refRow.index+1}_image${refImgRow.index+1}-text" class="text" value="${imageSecondIdx.text}"  maxlength="80"></input><br/>
                           </p>  
                         </div>  
@@ -446,17 +432,16 @@
                   <p>
                     <label for="parentfname1">
                       Förälder: *
-                      </label>
-                      <input type="text" name="parentfname1" id="parentfname1" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent1.firstName}" default="förnamn" />" maxlength="15"/>
-                    </p>
+                    </label><br/>
+                    <input type="text" name="parentfname1" id="parentfname1" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent1.firstName}" default="förnamn" />" maxlength="15"/>
+                  </p>
                 </div>
                 <div class="yui-u">
                   <p>
                     <label for="parentlname1">
-                      <br/>
-                      </label>
-                      <input type="text" name="parentlname1" id="parentlname1" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent1.lastName}" default="efternamn" />" maxlength="25"/>
-                    </p>              
+                    </label><br/>
+                    <input type="text" name="parentlname1" id="parentlname1" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent1.lastName}" default="efternamn" />" maxlength="25"/>
+                  </p>              
                 </div>
               </div>
               <!-- Förälder 2 -->
@@ -465,35 +450,36 @@
                   <p>
                     <label for="parentfname2">
                       Förälder:
-                      </label>
-                      <input type="text" name="parentfname2" id="parentfname2" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent2.firstName}" default="förnamn" />" maxlength="15"/>
-                    </p>
+                    </label><br/>
+                    <input type="text" name="parentfname2" id="parentfname2" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent2.firstName}" default="förnamn" />" maxlength="15"/>
+                  </p>
                 </div>
                 <div class="yui-u">
                   <p>
                     <label for="parentlname2">
-                      <br/>
-                      </label>
-                      <input type="text" name="parentlname2" id="parentlname2" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent2.lastName}" default="efternamn" />" maxlenght="25"/>
-                    </p>              
+                    </label><br/>
+                    <input type="text" name="parentlname2" id="parentlname2" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].parent2.lastName}" default="efternamn" />" maxlenght="25"/>
+                  </p>              
                 </div>
               </div>
               <!-- Syskon -->
               <div class="yui-g addrow">
                 <div class="yui-u first">
-                  <p><label for="siblings">
-                      Syskon:
-                      </label>
-                      <input type="text" name="siblings" id="siblings" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].siblings}" />"/>
-                    </p>
+                  <p>
+                    <label for="siblings">
+                    Syskon:
+                    </label><br/>
+                    <input type="text" name="siblings" id="siblings" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].siblings}" />"/>
+                  </p>
                 </div>
+                <div class="yui-u"></div>
               </div>
               <div class="yui-g addrow">
                 <div class="yui-u first">
                   <p>
-                    <label for="hemort">
+                    <label for="hometown">
                     Hemort:
-                    </label>
+                    </label><br/>
                     <input type="text" name="hometown" id="hometown" class="text" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].homeTown}" />" maxlength="25"/>
                   </p>
                 </div>
@@ -504,12 +490,12 @@
                   <p>
                     <label for="hospital">
                     Sjukhus: *
-                    </label>
+                    </label><br/>
                     <select name="hospital">
-                    <option value="Valj">Välj sjukhus</option>
-                    <c:forEach items="${requestScope.hospitals}" var="hospital"><!-- KSS, MOLNDAL, NAL, SAS, OSTRA, OVRIGT -->
-                      <option value="${hospital.longName}" <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].hospital eq hospital}"> selected</c:if>><c:out value="${hospital.longName}"/></option>
-                    </c:forEach>
+                      <option value="Valj">Välj sjukhus</option>
+                      <c:forEach items="${requestScope.hospitals}" var="hospital"><!-- KSS, MOLNDAL, NAL, SAS, OSTRA, OVRIGT -->
+                        <option value="${hospital.longName}" <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].hospital eq hospital}"> selected</c:if>><c:out value="${hospital.longName}"/></option>
+                      </c:forEach>
                     </select>
                   </p>
                 </div>
@@ -518,10 +504,10 @@
               <div class="yui-g addrow">
                 <div class="yui-u first">
                   <p>
-                    <label for="message">
-                      Meddelande till besökarna:
-                    </label>
-                    <textarea cols="40" rows="3" name="message" style="overflow:hidden"><c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].message}" /></textarea>
+                    <label for="message" style="white-space: nowrap;">
+                      Meddelande till besökarna (max 150 tecken):
+                    </label><br/>
+                    <textarea cols="50" rows="3" name="message" style="overflow:auto" ><c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].message}" /></textarea>
                   </p>
                 </div>
                 <div class="yui-u"></div>
@@ -531,8 +517,8 @@
                   <p>
                     <label for="webpage">
                       Webbsida, blogg eller liknande (ex.http://www.hemma.se/min):
-                    </label>
-                    <input type="text" name="webpage" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].webPage}" />"></input>
+                    </label><br/>
+                    <input type="text" style="width:180px;" name="webpage" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].webPage}" />"></input>
                   </p>
                 </div>
                 <div class="yui-u"></div>
@@ -542,8 +528,8 @@
                   <p>
                     <label for="e-mail">
                       E-post (visas ej för andra): *
-                    </label>
-                    <input type="text" name="e-mail" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].email}" />"></input>
+                    </label><br/>
+                    <input type="text" style="width:180px;" name="e-mail" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].email}" />"></input>
                   </p>
                 </div>
                 <div class="yui-u"></div>
