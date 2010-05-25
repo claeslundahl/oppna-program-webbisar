@@ -182,10 +182,10 @@ div.search_info {
 img.selected {
 	border: 0.2em solid #9C132F;
 	width:14em;
-	margin-top:0.2em;
-	margin-bottom:0.2em;
-	margin-left:0.2em;
-	padding: 0.2em;
+	margin-top:0.4em;
+	margin-bottom:0.4em;
+	margin-left:0.4em;
+	/*padding: 0.2em;*/
 }
 
 img.notselected {
