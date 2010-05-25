@@ -18,6 +18,10 @@ Generation time : 2009-01-08 10:18:23 CET
   <artifactId>webbisar-core-bc-composite-webcomp</artifactId>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
+  
+  <properties>
+    <spring.wf.version>2.0.8.RELEASE</spring.wf.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -30,12 +34,7 @@ Generation time : 2009-01-08 10:18:23 CET
       <artifactId>webbisar-core-bc-composite-types</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-api</artifactId>
-      <version>1.1.5</version>
-      <scope>provided</scope>
-    </dependency>
+
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
@@ -45,6 +44,18 @@ Generation time : 2009-01-08 10:18:23 CET
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.4</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.webflow</groupId>
+      <artifactId>spring-webflow</artifactId>
+      <version>${spring.wf.version}</version>
     </dependency>
   </dependencies>
 

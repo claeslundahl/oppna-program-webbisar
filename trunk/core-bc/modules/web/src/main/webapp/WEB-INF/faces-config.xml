@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 
-    Copyright 2009 Vastra Gotalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -17,39 +17,35 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
+
 <!DOCTYPE faces-config PUBLIC
   "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
   "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
 
 <faces-config>
-	<application>
-		<navigation-handler>
-			org.springframework.webflow.executor.jsf.FlowNavigationHandler
-		</navigation-handler>
-		<variable-resolver>
-			org.springframework.webflow.executor.jsf.DelegatingFlowVariableResolver
-		</variable-resolver>
-		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+
+  <application>
+    <!-- 
+    <navigation-handler>
+      org.springframework.webflow.executor.jsf.FlowNavigationHandler
+    </navigation-handler>
+    <variable-resolver>
+      org.springframework.webflow.executor.jsf.DelegatingFlowVariableResolver
+    </variable-resolver>
+     -->
+    
+    <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
     
     <message-bundle>
       application-dev
     </message-bundle>
-	</application>
+  </application>
 
-	<lifecycle>
-	  <!-- Debug utility for JSF, can be used for setting breakpoints and
-	       checking request parameters
-	  <phase-listener>se.vgr.javg.support.jsf.DebugPhaseListener</phase-listener>
-	  -->
-	  
-	  <!-- JAVG support for using GET-links with JSF/Webflow -->
-	  <phase-listener>
-	    se.vgr.javg.support.webflow.v1.GetLinkFlowResumerPhaseListener
-	  </phase-listener>
-	  
-		<phase-listener>
-		  org.springframework.webflow.executor.jsf.FlowPhaseListener
-		</phase-listener>
-	</lifecycle>
+  <lifecycle>
+    <phase-listener>
+      se.vgr.javg.support.webflow.v2.EventIdPhaseListener
+    </phase-listener>
+  </lifecycle>
 </faces-config>

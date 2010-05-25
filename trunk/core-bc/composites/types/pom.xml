@@ -6,14 +6,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <artifactId>webbisar-core-bc-composite-types</artifactId>
+  <packaging>jar</packaging>
+  <name>${project.artifactId}</name>
   <parent>
     <groupId>se.vgr.webbisar</groupId>
     <artifactId>webbisar-core-bc</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>webbisar-core-bc-composite-types</artifactId>
-  <packaging>jar</packaging>
-  <name>${project.artifactId}</name>
+
+  <properties>
+    <spring.version>2.5.6</spring.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -24,7 +28,6 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
-      <version>3.4.0.GA</version>
       <!-- Exclude xml-apis otherwise the portlet won't start up correctly on Websphere -->
       <exclusions>
       	<exclusion>
@@ -53,11 +56,23 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

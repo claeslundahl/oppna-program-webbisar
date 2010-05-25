@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2009  Västa Götalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -17,7 +17,9 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
+
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
   xmlns:c="http://java.sun.com/jstl/core"><ui:composition template="/template.xhtml">
@@ -26,8 +28,7 @@
     <script type="text/javascript" src="http://jquery.com/src/jquery-latest.js"></script>
     
     <script type="text/javascript">
-      /* <![CDATA[ */
-      
+    /* <![CDATA[ */
       function showHoverFrames(divIds) {
           var divIdArray = divIds.split(',');
           var currentClass, currentElement;
@@ -51,7 +52,7 @@
               }
           }
       }
-      /* ]]> */
+    /* ]]> */
     </script>
   
     <div id="custom-doc">
@@ -106,16 +107,18 @@
                           <c:when test="#{W.webbisar[0].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[0].allWebbisIdString}');return true;"
-                        href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[0].id}">
-                      <c:choose>
-                        <c:when test="#{not empty W.webbisar[0].imageUrls}">
-                          <img class="thumb" alt="#{W.webbisar[0].header}" src="#{W.webbisar[0].imageUrls[0]}" />
-                        </c:when>
-                        <c:otherwise>
-                          <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
-                        </c:otherwise>
-                      </c:choose> </a></div>
+                      <div class="yui-u first">
+                        <a onclick="hideHoverFrames('#{W.webbisar[0].allWebbisIdString}');return true;"
+                          href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[0].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                        <c:choose>
+                          <c:when test="#{not empty W.webbisar[0].imageUrls}">
+                            <img class="thumb" alt="#{W.webbisar[0].header}" src="#{W.webbisar[0].imageUrls[0]}" />
+                          </c:when>
+                          <c:otherwise>
+                            <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                          </c:otherwise>
+                        </c:choose> </a>
+                      </div>
                       <div class="yui-u badge-text">
                         <p><b>Tid:</b> #{W.webbisar[0].time}</p>
                         <p><b>Vikt:</b> 
@@ -169,7 +172,7 @@
                       </div>
                       <div class="yui-u first">
                         <a onclick="hideHoverFrames('#{W.webbisar[1].allWebbisIdString}');return true;"
-                          href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}">
+                          href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           <c:choose>
                             <c:when test="#{not empty W.webbisar[1].imageUrls}">
                               <img class="thumb" alt="#{W.webbisar[1].header}" src="#{W.webbisar[1].imageUrls[0]}" />
@@ -232,16 +235,19 @@
                           <c:when test="#{W.webbisar[2].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[2].allWebbisIdString}');return true;"
-                        href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[2].id}">
-                      <c:choose>
-                        <c:when test="#{not empty W.webbisar[2].imageUrls}">
-                          <img class="thumb" alt="#{W.webbisar[2].header}" src="#{W.webbisar[2].imageUrls[0]}" />
-                        </c:when>
-                        <c:otherwise>
-                          <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
-                        </c:otherwise>
-                      </c:choose> </a></div>
+                      <div class="yui-u first">
+                        <a onclick="hideHoverFrames('#{W.webbisar[2].allWebbisIdString}');return true;"
+                          href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[2].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                          <c:choose>
+                            <c:when test="#{not empty W.webbisar[2].imageUrls}">
+                              <img class="thumb" alt="#{W.webbisar[2].header}" src="#{W.webbisar[2].imageUrls[0]}" />
+                            </c:when>
+                            <c:otherwise>
+                              <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                            </c:otherwise>
+                          </c:choose> 
+                        </a>
+                      </div>
                       <div class="yui-u badge-text">
                       <p><b>Tid:</b> #{W.webbisar[2].time}</p>
                       <p><b>Vikt:</b> <c:choose>
@@ -293,16 +299,19 @@
                         </c:choose>
                       </div>
                     
-                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[3].allWebbisIdString}');return true;"
-                        href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[3].id}">
-                      <c:choose>
-                        <c:when test="#{not empty W.webbisar[3].imageUrls}">
-                          <img class="thumb" alt="#{W.webbisar[3].header}" src="#{W.webbisar[3].imageUrls[0]}" />
-                        </c:when>
-                        <c:otherwise>
-                          <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
-                        </c:otherwise>
-                      </c:choose> </a></div>
+                      <div class="yui-u first">
+                        <a onclick="hideHoverFrames('#{W.webbisar[3].allWebbisIdString}');return true;"
+                          href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[3].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                          <c:choose>
+                            <c:when test="#{not empty W.webbisar[3].imageUrls}">
+                              <img class="thumb" alt="#{W.webbisar[3].header}" src="#{W.webbisar[3].imageUrls[0]}" />
+                            </c:when>
+                            <c:otherwise>
+                              <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                            </c:otherwise>
+                          </c:choose> 
+                        </a>
+                      </div>
                       <div class="yui-u badge-text">
                       <p><b>Tid:</b> #{W.webbisar[3].time}</p>
                       <p><b>Vikt:</b> <c:choose>
@@ -355,16 +364,19 @@
                           <c:when test="#{W.webbisar[4].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[4].allWebbisIdString}');return true;"
-                        href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[4].id}">
-                      <c:choose>
-                        <c:when test="#{not empty W.webbisar[4].imageUrls}">
-                          <img class="thumb" alt="#{W.webbisar[4].header}" src="#{W.webbisar[4].imageUrls[0]}" />
-                        </c:when>
-                        <c:otherwise>
-                          <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
-                        </c:otherwise>
-                      </c:choose> </a></div>
+                      <div class="yui-u first">
+                        <a onclick="hideHoverFrames('#{W.webbisar[4].allWebbisIdString}');return true;"
+                          href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[4].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                          <c:choose>
+                            <c:when test="#{not empty W.webbisar[4].imageUrls}">
+                              <img class="thumb" alt="#{W.webbisar[4].header}" src="#{W.webbisar[4].imageUrls[0]}" />
+                            </c:when>
+                            <c:otherwise>
+                              <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                            </c:otherwise>
+                          </c:choose>
+                        </a>
+                      </div>
                       <div class="yui-u badge-text">
                       <p><b>Tid:</b> #{W.webbisar[4].time}</p>
                       <p><b>Vikt:</b> <c:choose>
@@ -414,16 +426,19 @@
                           <c:when test="#{W.webbisar[5].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
                         </c:choose>
                       </div>
-                      <div class="yui-u first"><a onclick="hideHoverFrames('#{W.webbisar[5].allWebbisIdString}');return true;"
-                        href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[5].id}">
-                      <c:choose>
-                        <c:when test="#{not empty W.webbisar[5].imageUrls}">
-                          <img class="thumb" alt="#{W.webbisar[5].header}" src="#{W.webbisar[5].imageUrls[0]}" />
-                        </c:when>
-                        <c:otherwise>
-                          <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
-                        </c:otherwise>
-                      </c:choose> </a></div>
+                      <div class="yui-u first">
+                        <a onclick="hideHoverFrames('#{W.webbisar[5].allWebbisIdString}');return true;"
+                          href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[5].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                          <c:choose>
+                            <c:when test="#{not empty W.webbisar[5].imageUrls}">
+                              <img class="thumb" alt="#{W.webbisar[5].header}" src="#{W.webbisar[5].imageUrls[0]}" />
+                            </c:when>
+                            <c:otherwise>
+                              <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                            </c:otherwise>
+                          </c:choose>
+                        </a>
+                      </div>
                       <div class="yui-u badge-text">
                       <p><b>Tid:</b> #{W.webbisar[5].time}</p>
                       <p><b>Vikt:</b> <c:choose>
@@ -475,12 +490,12 @@
           <div class="yui-ge">
             <div class="yui-u first">
               <c:if test="#{!W.firstPage}">
-                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">&lt; Föregående </a></p>
+                <p><a href="${flowExecutionUrl}&amp;_eventId=showPrevPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">&lt; Föregående </a></p>
               </c:if>
             </div>
             <div class="yui-u" style="text-align: right">
               <c:if test="#{!W.lastPage}">
-                <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction"> Nästa &gt;</a></p>
+                <p><a href="${flowExecutionUrl}&amp;_eventId=showNextPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}"> Nästa &gt;</a></p>
               </c:if>
             </div>
           </div>

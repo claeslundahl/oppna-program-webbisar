@@ -50,17 +50,11 @@
       <artifactId>webbisar-core-bc-composite-svc</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!--
-      dependency> <groupId>se.vgr.javg</groupId>
-      <artifactId>javg-rt-support</artifactId>
-      <version>${javg.version}</version> </dependency>
-    -->
+
     <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
-      <version>1.1.2</version>
     </dependency>
-
 
     <dependency>
       <groupId>commons-fileupload</groupId>
@@ -77,14 +71,13 @@
     <dependency>
       <groupId>javax.portlet</groupId>
       <artifactId>portlet-api</artifactId>
-      <version>2.0</version>
+     
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
       <scope>provided</scope>
     </dependency>
 
@@ -101,9 +94,6 @@
       <version>2.1</version>
       <scope>provided</scope>
     </dependency>
-
-    <!-- apache cxf dependencies -->
-
 
   </dependencies>
 

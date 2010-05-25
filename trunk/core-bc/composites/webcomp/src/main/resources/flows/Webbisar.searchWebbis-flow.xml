@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2009 Vastra Gotalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -17,45 +17,31 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
 <flow xmlns="http://www.springframework.org/schema/webflow"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/webflow
-                          http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+    start-state="searchWebbis">
 
-  <input-mapper>
-    <input-attribute name="SearchCriteria" scope="flow" />
-  </input-mapper>
+  <input name="SearchCriteria" value="flowScope.SearchCriteria" />
   
-	<start-state idref="searchWebbis" />
-
 	<action-state id="searchWebbis">
-      <bean-action bean="Webbisar.WebbisarFlowSupport" method="search">
-        <method-arguments>
-          <argument expression="flowScope.SearchCriteria" />
-        </method-arguments>
-        <method-result name="SearchResultPage" scope="flow" />
-      </bean-action>
-      <transition on="success" to="viewPage" />
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.search(flowScope.SearchCriteria)" 
+      result="flowScope.SearchResultPage" />
+    <transition on="success" to="viewPage" />
 	</action-state>
 
   <action-state id="actionNextPage">
-    <bean-action bean="Webbisar.WebbisarFlowSupport" method="loadNextSearchPage">
-      <method-arguments>
-        <argument expression="flowScope.SearchResultPage" />
-      </method-arguments>
-      <method-result name="SearchResultPage" scope="flow" />
-    </bean-action>
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadNextSearchPage(flowScope.SearchResultPage)" 
+      result="flowScope.SearchResultPage" />
     <transition on="success" to="viewPage" />
   </action-state>
     
   <action-state id="actionPrevPage">
-    <bean-action bean="Webbisar.WebbisarFlowSupport" method="loadPrevSearchPage">
-      <method-arguments>
-        <argument expression="flowScope.SearchResultPage" />
-      </method-arguments>
-      <method-result name="SearchResultPage" scope="flow" />
-    </bean-action>
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadPrevSearchPage(flowScope.SearchResultPage)" 
+      result="flowScope.SearchResultPage" />
     <transition on="success" to="viewPage" />
   </action-state>
   
@@ -66,13 +52,10 @@
     <transition on="searchForWebbisAction" to="searchWebbis"/>
 	</view-state>
 	
-  <subflow-state id="showWebbisDetails" flow="Webbisar.viewWebbis-flow">
-    <attribute-mapper>
-      <input-mapper>
-        <mapping source="requestParameters.webbisId" target="webbisId" from="string" to="long" />
-        <mapping source="flowScope.SearchCriteria" target="SearchCriteria"/>
-      </input-mapper>
-    </attribute-mapper>
+  <subflow-state id="showWebbisDetails" subflow="Webbisar.viewWebbis-flow">
+    <input name="webbisId" value="requestParameters.webbisId" type="java.lang.Long"/>
+    <input name="SearchCriteria" value="flowScope.SearchCriteria"/>
+
     <transition on="finish" to="finish" />
     <transition on="search" to="searchWebbis"/>
     <transition on="back" to="searchWebbis"/>
