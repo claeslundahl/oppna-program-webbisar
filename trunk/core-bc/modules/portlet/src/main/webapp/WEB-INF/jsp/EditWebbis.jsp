@@ -23,6 +23,7 @@
 <%@ page import="javax.portlet.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/portlet_2_0"  prefix="portlet" %>
 
 <portlet:defineObjects />	
@@ -31,6 +32,17 @@
 <style type="text/css">
   <%@ include file="/style/style.css" %>
 </style>
+
+<script language="javascript" type="text/javascript">
+  function limitText(limitField, limitCount, limitNum) {
+    if (limitField.value.length > limitNum) {
+      limitField.value = limitField.value.substring(0, limitNum);
+      alert('Max ' + limitNum + ' tecken tillåtna i detta fält.');
+    } else {
+      limitCount.value = limitNum - limitField.value.length;
+    }
+  }
+</script>
 
 <div id="custom-doc">
 	<div>
@@ -194,11 +206,16 @@
                     <div class="yui-u first">
                       <input type="hidden" name="w0_image${refRow.index}" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${image.location}"/>"/>
                       <img style="width: 150px; margin-bottom: 2px;" src="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${image.location}"/>" />
-                      <br/>
-                      <input type="submit" name="w0_remove-image${refRow.index}" value="Radera"/>
-                      <div style="float: right; margin-right: 5px;">
-                        <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${image.location}"/>" target="_new">Se stor bild</a>
+                      
+                      <div style="height: 27px;">
+                        <div style="float: left;">
+                          <input type="submit" name="w0_remove-image${refRow.index}" value="Radera"/>
+                        </div>
+                        <div style="float: right; margin-right: 5px;">
+                          <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${image.location}"/>" target="_new">Se stor bild</a>
+                        </div>
                       </div>
+                      
                       <div style="height: 27px; margin-top: 2px;">
                         <c:set var="imageId" value="w0_image${refRow.index}"/>
                         <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
@@ -208,21 +225,28 @@
                           <input type="submit" name="w0_image${refRow.index}-main-image" value="Sätt som förstabild"/>
                         </c:if>
                       </div>
+                     
                       <p style="margin-bottom: 10px;">
                         <label for="w0_image${refRow.index+1}-text">Bildtext:</label><br/>
                         <input type="text" name="w0_image${refRow.index}-text" class="text" value="${image.text}"  maxlength="80"></input><br/>
                       </p>    
                     </div>
+                    
                     <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.images[refRow.index+1] != null}" >
                       <c:set var="imageSecondIdx" value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.images[refRow.index+1]}"/>
                       <div class="yui-u">
                         <input type="hidden" name="w0_image${refRow.index+1}" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>"/>
                         <img style="width: 150px; margin-bottom: 2px;" src="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>"/>
-                        <br/>
-                        <input type="submit" name="w0_remove-image${refRow.index+1}" value="Radera"/>
-                        <div style="float: right; margin-right: 5px;">
-                          <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>" target="_new">Se stor bild</a>
+                        
+                        <div style="height: 27px;">
+                          <div style="float: left;">
+                            <input type="submit" name="w0_remove-image${refRow.index+1}" value="Radera"/>
+                          </div>
+                          <div style="float: right; margin-right: 5px;">
+                            <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].imageBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>" target="_new">Se stor bild</a>
+                          </div>
                         </div>
+                        
                         <div style="height: 27px; margin-top: 2px;">
                           <c:set var="imageId2" value="w0_image${refRow.index+1}"/>
                           <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
@@ -232,6 +256,7 @@
                             <input type="submit" name="w0_image${refRow.index+1}-main-image" value="Sätt som förstabild"/>
                           </c:if>
                         </div>
+                        
                         <p style="margin-bottom: 10px;">
                           <label for="w0_image${refRow.index+1}-text">Bildtext:</label><br/>
                           <input type="text" name="w0_image${refRow.index+1}-text" class="text" value="${imageSecondIdx.text}"  maxlength="80"></input><br/>
@@ -462,6 +487,22 @@
                   </p>              
                 </div>
               </div>
+              <div class="yui-g addrow">
+                <div class="yui-u first">
+                  <p>
+                    <label for="hospital">
+                    Sjukhus: *
+                    </label><br/>
+                    <select name="hospital">
+                      <option value="Valj">Välj sjukhus</option>
+                      <c:forEach items="${requestScope.hospitals}" var="hospital"><!-- KSS, MOLNDAL, NAL, SAS, OSTRA, OVRIGT -->
+                        <option value="${hospital.longName}" <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].hospital eq hospital}"> selected</c:if>><c:out value="${hospital.longName}"/></option>
+                      </c:forEach>
+                    </select>
+                  </p>
+                </div>
+                <div class="yui-u"></div>
+              </div>
               <!-- Syskon -->
               <div class="yui-g addrow">
                 <div class="yui-u first">
@@ -485,44 +526,9 @@
                 </div>
                 <div class="yui-u"></div>
               </div>
-              <div class="yui-g addrow">
-                <div class="yui-u first">
-                  <p>
-                    <label for="hospital">
-                    Sjukhus: *
-                    </label><br/>
-                    <select name="hospital">
-                      <option value="Valj">Välj sjukhus</option>
-                      <c:forEach items="${requestScope.hospitals}" var="hospital"><!-- KSS, MOLNDAL, NAL, SAS, OSTRA, OVRIGT -->
-                        <option value="${hospital.longName}" <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].hospital eq hospital}"> selected</c:if>><c:out value="${hospital.longName}"/></option>
-                      </c:forEach>
-                    </select>
-                  </p>
-                </div>
-                <div class="yui-u"></div>
-              </div>
-              <div class="yui-g addrow">
-                <div class="yui-u first">
-                  <p>
-                    <label for="message" style="white-space: nowrap;">
-                      Meddelande till besökarna (max 150 tecken):
-                    </label><br/>
-                    <textarea cols="50" rows="3" name="message" style="overflow:auto" ><c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].message}" /></textarea>
-                  </p>
-                </div>
-                <div class="yui-u"></div>
-              </div>
-              <div class="yui-g addrow">
-                <div class="yui-u first">
-                  <p>
-                    <label for="webpage">
-                      Webbsida, blogg eller liknande (ex.http://www.hemma.se/min):
-                    </label><br/>
-                    <input type="text" style="width:180px;" name="webpage" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].webPage}" />"></input>
-                  </p>
-                </div>
-                <div class="yui-u"></div>
-              </div>
+            </div>
+            
+            <div class="yui-u">
               <div class="yui-g addrow">
                 <div class="yui-u first">
                   <p>
@@ -533,10 +539,31 @@
                   </p>
                 </div>
                 <div class="yui-u"></div>
-              </div>  
-            </div>
-            
-            <div class="yui-u" style="padding-top: 20px;">
+              </div>
+              <div class="yui-g addrow">
+                <div class="yui-u first">
+                  <p>
+                    <label for="webpage" style="white-space: nowrap;">
+                      Webbsida, blogg eller liknande<br/>(ex. http://www.hemma.se/min):
+                    </label><br/>
+                    <input type="text" style="width:180px;" name="webpage" value="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].webPage}" />"></input>
+                  </p>
+                </div>
+                <div class="yui-u"></div>
+              </div>
+              <div class="yui-g addrow">
+                <div class="yui-u first">
+                  <p>
+                    <label for="message" style="white-space: nowrap;">
+                      Meddelande till besökarna (max 150 tecken):
+                    </label><br/>
+                    <textarea cols="50" rows="3" id="message" name="message" style="overflow:auto" onKeyDown="limitText(document.webbis_main_form.message,document.webbis_main_form.countdown,150);" 
+                      onKeyUp="limitText(document.webbis_main_form.message,document.webbis_main_form.countdown,150);"><c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].message}" /></textarea>
+                    Du har <input readonly type="text" id="countdown" name="countdown" size="2" value="${150 - fn:length(portletSessionScope['webbisForm.mainWebbisBean'].message)}"> tecken kvar.
+                  </p>
+                </div>
+                <div class="yui-u"></div>
+              </div>
             </div> 
           </div>
           
