@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2009 Vastra Gotalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -16,18 +16,21 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 --%>
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
-<html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Forward</title>
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="Expires" content="0"/>    
-    <meta http-equiv="Cache-Control" content="no-cahce"/>
+    <!-- prevent caching -->
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store" />
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Forward</title>  
+    <jsp:forward page="Webbisar.view-flow.flow"/>
   </head>
-  <body>
-    <jsp:forward page="getlink">
-      <jsp:param name="_flowId" value="Webbisar.view-flow" />
-    </jsp:forward>
-  </body>
+  <body></body>
 </html>

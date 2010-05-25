@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2009 Vastra Gotalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -16,7 +16,9 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
+
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
@@ -26,9 +28,9 @@
     <property name="hibernate.search.default.indexBase">C:/webbisar/lucene/indexes</property>
     
     <property name="hibernate.search.default.indexBase">D:/webbisar/index</property>
-     -->       
+     -->
     <property name="hibernate.search.default.indexBase">C:/Temp/webbisarIndex</property>
-       
+    
  		<property name="hibernate.search.default.batch.merge_factor">10</property>
 		<property name="hibernate.search.default.batch.max_buffered_docs">10</property>
     <property name="hibernate.cache.use_second_level_cache">true</property>

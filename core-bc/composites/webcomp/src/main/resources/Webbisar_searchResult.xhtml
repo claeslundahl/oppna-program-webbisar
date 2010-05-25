@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2009  Västa Götalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -17,7 +17,9 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
+
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:h="http://java.sun.com/jsf/html"
@@ -67,32 +69,24 @@
           	<div id="bd">
           		<div id="yui-main">
           			<div class="yui-u first">
-                      <div class="search_item">
-                        #{SearchResultPage.numberOfHits} träffar
-                      </div>
-<!--                      <div class="search_item">-->
-<!--  			  		  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{SearchResultPage.searchResults[0].id}">-->
-<!--                          #{SearchResultPage.searchResults[0].header}-->
-<!--                        </a>-->
-<!--                      </div>-->
-<!--                      <div class="search_info">-->
-<!--                        #{SearchResultPage.searchResults[0].info}-->
-<!--                      </div>-->
-                    </div>
-                    <c:forEach var="sr" items="#{SearchResultPage.searchResults}" begin="0">
-          			<div class="yui-u">
-                      <div class="search_item">
-  			  		    <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showWebbisDetailsAction&amp;webbisId=#{sr.id}">
-                          #{sr.header}
+                  <div class="search_item">
+                    #{SearchResultPage.numberOfHits} träffar
+                  </div>
+                </div>
+                <c:forEach var="sr" items="#{SearchResultPage.searchResults}" begin="0">
+      			      <div class="yui-u">
+                    <div class="search_item">
+		  		             <a href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{sr.id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                        #{sr.header}
                         </a>
-                      </div>
-                      <div class="search_info">
-                        <p>
-                          #{sr.info}                        
-                        </p>
-                      </div>
                     </div>
-                    </c:forEach>
+                    <div class="search_info">
+                      <p>
+                        #{sr.info}                        
+                      </p>
+                    </div>
+                  </div>
+                </c:forEach>
           		</div>
           	</div>
           	<div id="ft">
@@ -101,7 +95,7 @@
                   <div class="yui-u first"> 
                     <c:if test="#{!SearchResultPage.firstPage}">
                       <p>
-                        <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showPrevPageAction">
+                        <a href="${flowExecutionUrl}&amp;_eventId=showPrevPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                            &lt; Föregående
                         </a>
                       </p>
@@ -110,7 +104,7 @@
                   <div class="yui-u" style="text-align: right">
                     <c:if test="#{!SearchResultPage.lastPage}">
                       <p>
-                        <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showNextPageAction">
+                        <a href="${flowExecutionUrl}&amp;_eventId=howNextPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           Nästa &gt;
                         </a>
                       </p>

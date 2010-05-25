@@ -13,6 +13,10 @@
   </artifactId>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
+  
+  <properties>
+    <spring.version>2.5.6</spring.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -35,29 +39,28 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-search</artifactId>
-      <version>3.1.0.GA</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations
-      </artifactId>
-      <version>3.4.0.GA</version>
+      <artifactId>hibernate-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager
-      </artifactId>
-      <version>3.4.0.GA</version>
+      <artifactId>hibernate-entitymanager</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring</artifactId>
-      <version>2.5.5</version>
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>2.5.5</version>
+      <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -103,11 +106,6 @@
       <groupId>net.rkbloom.logdriver</groupId>
       <artifactId>logdriver</artifactId>
       <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-ehcache</artifactId>
-      <version>3.3.1.GA</version>
     </dependency>
   </dependencies>
 

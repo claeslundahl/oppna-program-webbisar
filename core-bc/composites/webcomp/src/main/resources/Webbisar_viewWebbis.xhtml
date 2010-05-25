@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2009  Västa Götalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -17,7 +17,9 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
+
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:h="http://java.sun.com/jsf/html"
@@ -47,7 +49,7 @@
                     Till startsidan
                   </h:outputLink>
 						  		<br/>
-                  <a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=backToWebbisarAction">Tillbaka</a>
+                  <a href="${flowExecutionUrl}&amp;_eventId=backToWebbisarAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">Tillbaka</a>
                 </p>
 							</div>
 							<div class="yui-u searchfield">
@@ -99,7 +101,7 @@
                     <br/>
                     <c:forEach var="siblingInfo" items="#{Webbis.multipleBirthSiblingIdsAndNames}" begin="0" varStatus="refRow">
                       <c:if test="#{refRow.index > 0}">,</c:if>
-                      <h:outputLink value="#{msgBundle['webbisar.baseUrl']}?webbisId=#{siblingInfo.key}}">
+                      <h:outputLink value="#{msgBundle['webbisar.baseUrl']}?webbisId=#{siblingInfo.key}">
                         #{siblingInfo.value}
                       </h:outputLink>
                     </c:forEach>
@@ -126,7 +128,7 @@
                     <a href="http://vard.vgregion.se/sv/Webbisar2/Sok-webbisar/?_flowId=Webbisar.view-flow&amp;webbisId=#{Webbis.id}" target="new">Direktlänk till webbisen</a>
 								    </p>
                     -->
-                  <p><a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=showSendWebbisAction&amp;webbisId=#{Webbis.id}">Skicka webbis till vän</a></p>
+                  <p><a href="${flowExecutionUrl}&amp;_eventId=showSendWebbisAction&amp;webbisId=#{Webbis.id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">Skicka webbis till vän</a></p>
                   <c:if test="#{not empty MailMessageResult.message}">
                     <p>#{MailMessageResult.message}</p>
                   </c:if>  
@@ -157,14 +159,14 @@
 								<div class="yui-g first">
 									<div class="yui-u first">
                     <c:if test="#{Webbis.imageUrls[0] != null}">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=0">
+			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=0&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                         <img class="#{Webbis.style[0]}" src="#{Webbis.imageUrls[0]}"/>
                       </a>
                     </c:if>
                   </div>
 									<div class="yui-u">
                     <c:if test="#{Webbis.imageUrls[1] != null}">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=1">
+			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=1&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                         <img class="#{Webbis.style[1]}" src="#{Webbis.imageUrls[1]}"/>
                       </a>
                      </c:if>
@@ -173,14 +175,14 @@
 								<div class="yui-g">
 									<div class="yui-u first">
                     <c:if test="#{Webbis.imageUrls[2] != null}">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=2">
+			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=2&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                         <img class="#{Webbis.style[2]}" src="#{Webbis.imageUrls[2]}"/>
                       </a>
                      </c:if>
                   </div>
 									<div class="yui-u">
                     <c:if test="#{Webbis.imageUrls[3] != null}">
-			  							<a href="getlink?_linkflowkey=${flowExecutionKey}&amp;_linkeventid=selectWebbisImageAction&amp;selectedImage=3">
+			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=3&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                         <img class="#{Webbis.style[3]}" src="#{Webbis.imageUrls[3]}"/>
                       </a>
                      </c:if>
