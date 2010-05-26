@@ -52,8 +52,24 @@
     </dependency>
 
     <dependency>
+      <groupId>javax.portlet</groupId>
+      <artifactId>portlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.portal</groupId>
+      <artifactId>portlet-container</artifactId>
+    </dependency>
+    <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
     </dependency>
 
     <dependency>
@@ -65,34 +81,7 @@
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
-      <version>2.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.portlet</groupId>
-      <artifactId>portlet-api</artifactId>
-     
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-<!--      <scope>provided</scope>-->
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.portal</groupId>
-      <artifactId>portlet-container</artifactId>
       <version>2.1</version>
-      <scope>provided</scope>
     </dependency>
 
   </dependencies>
