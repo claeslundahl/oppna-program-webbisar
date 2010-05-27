@@ -30,7 +30,7 @@
 
   <context:property-placeholder location="classpath:application-dev.properties" />
   
-  <bean id="Webbisar_WebbisarFlowSupportBean" class="se.vgr.webbisar.presentation.WebbisarFlowSupportBean" autowire="byType">
+  <bean id="Webbisar_WebbisarFlowSupportBean" class="se.vgregion.webbisar.presentation.WebbisarFlowSupportBean" autowire="byType">
     <property name="mailSender"><ref bean="mailSender"/></property>
     <property name="velocityEngine"><ref bean="velocityEngine"/></property>
   </bean>
@@ -50,13 +50,13 @@
   
   <!-- Webbis cache/service -->
   
-  <bean id="webbisService" class="se.vgr.webbisar.svc.impl.WebbisServiceImpl"/>
+  <bean id="webbisService" class="se.vgregion.webbisar.svc.impl.WebbisServiceImpl"/>
   
-  <bean id="webbisCacheLoader" class="se.vgr.webbisar.svc.sitemap.impl.WebbisCacheLoaderImpl">
+  <bean id="webbisCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisCacheLoaderImpl">
     <constructor-arg ref="webbisService"/>
   </bean>
   
-  <bean id="webbisCacheService" class="se.vgr.webbisar.svc.sitemap.impl.WebbisCacheServiceImpl">
+  <bean id="webbisCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisCacheServiceImpl">
     <constructor-arg ref="webbisCacheLoader" />
   </bean>
   
@@ -69,18 +69,18 @@
   
   <!-- Public sitemap cachce/service -->
   
-  <bean id="sitemapGenerator" class="se.vgr.webbisar.svc.sitemap.ExternalSitemapGenerator" />
+  <bean id="sitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.ExternalSitemapGenerator" />
   
-  <bean id="sitemapCacheLoader" class="se.vgr.webbisar.svc.sitemap.impl.ExternalSitemapCacheLoaderImpl">
+  <bean id="sitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.ExternalSitemapCacheLoaderImpl">
     <constructor-arg ref="webbisCacheService"/>
     <constructor-arg value="${webbisar.baseUrl}" />
   </bean>
   
-  <bean id="sitemapCacheService" class="se.vgr.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+  <bean id="sitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
     <constructor-arg ref="sitemapCacheLoader" />
   </bean>
   
-  <bean id="sitemapSupportBean" class="se.vgr.webbisar.svc.sitemap.SitemapSupportBean">
+  <bean id="sitemapSupportBean" class="se.vgregion.webbisar.svc.sitemap.SitemapSupportBean">
     <constructor-arg ref="sitemapCacheService" />
     <constructor-arg ref="sitemapGenerator" />
   </bean>
@@ -94,19 +94,19 @@
   
   <!-- Internal sitemap cache/service -->
   
-  <bean id="internalSitemapGenerator" class="se.vgr.webbisar.svc.sitemap.InternalSitemapGenerator" />
+  <bean id="internalSitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.InternalSitemapGenerator" />
   
-  <bean id="internalSitemapCacheLoader" class="se.vgr.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
+  <bean id="internalSitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
     <constructor-arg ref="webbisCacheService"/>
     <constructor-arg value="${webbisar.baseUrl}" />
     <constructor-arg value="${webbisar.imageBaseUrl}" />
   </bean>
   
-  <bean id="internalSitemapCacheService" class="se.vgr.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+  <bean id="internalSitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
     <constructor-arg ref="internalSitemapCacheLoader" />
   </bean>
   
-  <bean id="internalSitemapSupportBean" class="se.vgr.webbisar.svc.sitemap.SitemapSupportBean">
+  <bean id="internalSitemapSupportBean" class="se.vgregion.webbisar.svc.sitemap.SitemapSupportBean">
     <constructor-arg ref="internalSitemapCacheService" />
     <constructor-arg ref="internalSitemapGenerator" />
   </bean>

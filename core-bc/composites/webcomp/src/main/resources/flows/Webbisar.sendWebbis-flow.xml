@@ -25,8 +25,8 @@
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
     start-state="viewPage">
 
-  <var name="MailMessage" class="se.vgr.webbisar.presentation.MailMessageBean"/>
-  <var name="EmptyMailMessageResult" class="se.vgr.webbisar.presentation.MailMessageResultBean"/>
+  <var name="MailMessage" class="se.vgregion.webbisar.presentation.MailMessageBean"/>
+  <var name="EmptyMailMessageResult" class="se.vgregion.webbisar.presentation.MailMessageResultBean"/>
 
   <input name="webbisId" value="flowScope.webbisId" />
 

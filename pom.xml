@@ -8,7 +8,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>se.vgr.webbisar</groupId>
+  <groupId>se.vgregion.webbisar</groupId>
   <artifactId>webbisar-system</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>

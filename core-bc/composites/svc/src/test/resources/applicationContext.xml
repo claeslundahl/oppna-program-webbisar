@@ -32,7 +32,7 @@
     <!-- Enable Fine-Grained Autowiring with Annotations -->
     <context:annotation-config/>
     <!-- Scans for @Repository, @Service and @Component -->
-    <context:component-scan base-package="se.vgr.webbisar"/>
+    <context:component-scan base-package="se.vgregion.webbisar"/>
 
     <!-- Spring2 Annotation Transaction, similar to EJB3 @TransactionAttribute -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -52,7 +52,7 @@
 <!--        </tx:attributes>-->
 <!--    </tx:advice>-->
     
-    <bean id="configuration" class="se.vgr.webbisar.svc.impl.ConfigurationImpl">
+    <bean id="configuration" class="se.vgregion.webbisar.svc.impl.ConfigurationImpl">
       <property name="imageBaseDir" value="empty"/>
       <property name="imageSize" value="1024x768"/>
       <property name="imageQuality" value="95"/>

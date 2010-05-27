@@ -31,6 +31,6 @@
         <property name="hibernate.cache.use_query_cache">true</property>
         <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
  
- 		<mapping class="se.vgr.webbisar.types.Webbis" />
+ 		<mapping class="se.vgregion.webbisar.types.Webbis" />
 	</session-factory>
 </hibernate-configuration>
