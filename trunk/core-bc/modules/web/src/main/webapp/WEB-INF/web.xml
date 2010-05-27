@@ -95,7 +95,7 @@
   <filter>
     <display-name>P3PFilter</display-name>
     <filter-name>P3PFilter</filter-name>
-    <filter-class>se.vgr.webbisar.web.P3PFilter</filter-class>
+    <filter-class>se.vgregion.webbisar.web.P3PFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -138,7 +138,7 @@
   </listener>
 
   <listener>
-    <listener-class>se.vgr.webbisar.web.FtpServerListener</listener-class>
+    <listener-class>se.vgregion.webbisar.web.FtpServerListener</listener-class>
   </listener>
 
   <servlet>
@@ -201,7 +201,7 @@
   
   <servlet>
     <servlet-name>ImageServingServlet</servlet-name>
-    <servlet-class>se.vgr.webbisar.web.ImageServlet</servlet-class>
+    <servlet-class>se.vgregion.webbisar.web.ImageServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -213,7 +213,7 @@
   <servlet>
     <display-name>ErrorServlet</display-name>
     <servlet-name>ErrorServlet</servlet-name>
-    <servlet-class>se.vgr.webbisar.web.ErrorServlet</servlet-class>
+    <servlet-class>se.vgregion.webbisar.web.ErrorServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -235,7 +235,7 @@
   <!-- Servlet serving standard sitemap -->
   <servlet>
     <servlet-name>sitemap</servlet-name>
-    <servlet-class>se.vgr.webbisar.web.SitemapServlet</servlet-class>
+    <servlet-class>se.vgregion.webbisar.web.SitemapServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -246,7 +246,7 @@
   <!-- Servlet serving internal sitemap (with extra, non standard, webbis info elements) -->
   <servlet>
     <servlet-name>internalsitemap</servlet-name>
-    <servlet-class>se.vgr.webbisar.web.InternalSitemapServlet</servlet-class>
+    <servlet-class>se.vgregion.webbisar.web.InternalSitemapServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>

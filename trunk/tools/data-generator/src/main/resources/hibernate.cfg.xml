@@ -37,6 +37,6 @@
   		<property name="hibernate.validator.autoregister_listeners">false</property>
       <property name="hibernate.validator.apply_to_ddl">false</property>
   
- 		<mapping class="se.vgr.webbisar.types.Webbis" />
+ 		<mapping class="se.vgregion.webbisar.types.Webbis" />
 	</session-factory>
 </hibernate-configuration>

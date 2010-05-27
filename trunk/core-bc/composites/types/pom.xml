@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
   <parent>
-    <groupId>se.vgr.webbisar</groupId>
+    <groupId>se.vgregion.webbisar</groupId>
     <artifactId>webbisar-core-bc</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>

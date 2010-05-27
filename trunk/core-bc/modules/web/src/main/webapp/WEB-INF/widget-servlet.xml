@@ -42,7 +42,7 @@
     <property name="suffix" value=".jsp"/>
   </bean>
 
-  <bean id="widgetController" class="se.vgr.webbisar.web.WidgetController" >
+  <bean id="widgetController" class="se.vgregion.webbisar.web.WidgetController" >
     <property name="cacheSeconds" value="120" />
     <property name="webbisService" ref="webbisService"/>
     <property name="configuration" ref="configuration"/>

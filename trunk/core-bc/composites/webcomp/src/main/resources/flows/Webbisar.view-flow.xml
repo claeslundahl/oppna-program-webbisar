@@ -25,7 +25,7 @@
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
     start-state="checkShouldShowWebbis">
 
-  <var name="SearchCriteria" class="se.vgr.webbisar.presentation.SearchCriteriaBean"/>
+  <var name="SearchCriteria" class="se.vgregion.webbisar.presentation.SearchCriteriaBean"/>
 
   <!-- Check if we have a 'webbisId' parameter. If we have go to the 
        showWebbisDetails sub-flow. 

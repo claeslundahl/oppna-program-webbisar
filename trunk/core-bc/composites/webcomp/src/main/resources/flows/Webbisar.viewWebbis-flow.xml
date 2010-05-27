@@ -45,7 +45,7 @@
   
   <subflow-state id="showSendWebbis" subflow="Webbisar.sendWebbis-flow">
     <input name="webbisId" value="requestParameters.webbisId" type="java.lang.Long"/>
-    <output name="MailMessageResult" type="se.vgr.webbisar.presentation.MailMessageResultBean"/>
+    <output name="MailMessageResult" type="se.vgregion.webbisar.presentation.MailMessageResultBean"/>
     
     <transition on="cancelSend" to="viewPage" />
     <transition on="mailSent" to="viewPage" />

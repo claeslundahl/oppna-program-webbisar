@@ -26,7 +26,7 @@
   id="webbisar-portlet" version="2.0">
   <portlet>
     <portlet-name>EditWebbis</portlet-name>
-    <portlet-class>se.vgr.webbisar.portlet.EditWebbisPortlet</portlet-class>
+    <portlet-class>se.vgregion.webbisar.portlet.EditWebbisPortlet</portlet-class>
     <expiration-cache>0</expiration-cache>
     <supports>
       <mime-type>text/html</mime-type>
@@ -37,7 +37,7 @@
 
   <portlet>
     <portlet-name>AdminEditWebbis</portlet-name>
-    <portlet-class>se.vgr.webbisar.portlet.AdminEditWebbisPortlet</portlet-class>
+    <portlet-class>se.vgregion.webbisar.portlet.AdminEditWebbisPortlet</portlet-class>
     <expiration-cache>0</expiration-cache>
     <supports>
       <mime-type>text/html</mime-type>
