@@ -61,8 +61,13 @@ public class WebbisPortletHelper {
     private ClassValidator webbisValidator = new ClassValidator(Webbis.class, ResourceBundle.getBundle(
             "se.vgr.webbisar.types.ValidatorMessages", new Locale("sv")));
 
-    public static final String WEBBIS_SESSION_PREFIX = "webbisForm.";
+    public static final String SESSION_ATTRIB_KEY_PREFIX = "webbisForm.";
+    public static final String SESSION_ATTRIB_KEY_WEBBIS = "webbisForm.webbis";
+    public static final String SESSION_ATTRIB_KEY_WEBBIS_INDEX = "webbisForm.webbisIndex";
+    public static final String SESSION_ATTRIB_KEY_MAINWEBBISBEAN = "webbisForm.mainWebbisBean";
+    public static final String SESSION_ATTRIB_KEY_AVAILABLE_IMAGEIDS = "webbisForm.availableImageIds";
     public static final String WEBBIS_INDEX_PREFIX = "w";
+
     public static int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle triplets
 
     private String baseUrl;
@@ -157,8 +162,8 @@ public class WebbisPortletHelper {
 
                         // Check if "main" or multiple birth sibling webbis
                         Integer webbisIndex = 0;
-                        if (session.getAttribute(WEBBIS_SESSION_PREFIX + "webbisIndex") != null) {
-                            webbisIndex = (Integer) session.getAttribute(WEBBIS_SESSION_PREFIX + "webbisIndex");
+                        if (session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX) != null) {
+                            webbisIndex = (Integer) session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX);
                         }
 
                         // Set temp path on webbis
@@ -187,8 +192,7 @@ public class WebbisPortletHelper {
     }
 
     private void setImageOnWebbisInSession(Integer webbisIndex, PortletSession session, String filename) {
-        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
-                + "mainWebbisBean");
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
         Webbis webbis = null;
         if (webbisIndex == 0) {
@@ -199,8 +203,6 @@ public class WebbisPortletHelper {
         Image image = new Image();
         image.setLocation("temp/" + session.getId() + "/" + filename);
         webbis.getImages().add(image);
-
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
     }
 
     /**
@@ -213,7 +215,7 @@ public class WebbisPortletHelper {
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             String name = attributeNames.nextElement();
-            if (name.startsWith(WEBBIS_SESSION_PREFIX)) {
+            if (name.startsWith(SESSION_ATTRIB_KEY_PREFIX)) {
                 session.removeAttribute(name);
             }
         }
@@ -247,8 +249,8 @@ public class WebbisPortletHelper {
                 availableImageIds.add(WEBBIS_INDEX_PREFIX + webbisIndex + "_image" + i);
             }
         }
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "availableImageIds", availableImageIds);
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "webbisIndex", webbisIndex);
+        session.setAttribute(SESSION_ATTRIB_KEY_AVAILABLE_IMAGEIDS, availableImageIds);
+        session.setAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX, webbisIndex);
     }
 
     /**
@@ -261,8 +263,7 @@ public class WebbisPortletHelper {
     public void removeImage(int webbisIndex, int imageNumber, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
 
-        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
-                + "mainWebbisBean");
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
         Webbis webbis = null;
         if (webbisIndex == 0) {
@@ -293,13 +294,10 @@ public class WebbisPortletHelper {
      */
     public void setMainImage(int webbisIndex, int imageNumber, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
-        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
-                + "mainWebbisBean");
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
         mainWebbisBean.getSelectedMainImages()[webbisIndex] = WEBBIS_INDEX_PREFIX + webbisIndex + "_image"
                 + imageNumber;
-
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
     }
 
     /**
@@ -311,9 +309,9 @@ public class WebbisPortletHelper {
      */
     private boolean isMainImageSet(int webbisIndex, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
-        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
-                + "mainWebbisBean");
-        Object mainImage = mainWebbisBean.getSelectedMainImages()[webbisIndex];
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
+        // Object mainImage = mainWebbisBean.getSelectedMainImages()[webbisIndex];
+        Object mainImage = mainWebbisBean.getSelectedMainImages();
         return ((mainImage != null) && (mainImage.toString().startsWith(WEBBIS_INDEX_PREFIX + webbisIndex
                 + "_image")));
 
@@ -500,10 +498,10 @@ public class WebbisPortletHelper {
         words = stripAll(words);
         for (String w : words) {
             List<String> wl = new ArrayList<String>();
-            int splitIn = w.length() / 17;
+            int splitIn = w.length() / 20;
             if (splitIn > 0) {
                 for (int i = 0; i <= splitIn; i++) {
-                    String s = substring(w, i * 17, (i + 1) * 17);
+                    String s = substring(w, i * 20, (i + 1) * 20);
                     if (i != splitIn) {
                         s += "-";
                     }
@@ -611,22 +609,6 @@ public class WebbisPortletHelper {
         return UUID.randomUUID().toString();
     }
 
-    // TODO: AndersB - Why? Never seems to be read from session...
-    // /**
-    // * This will store the user's webbisar in the session. This is used between showing the link-list of
-    // * "my webbisar" and the edit webbis main page (when the user has selected a webbis to edit). The list is
-    // also
-    // * used when deleting a webbis or upon update to retrieve the "old" webbis' images.
-    // *
-    // * @param request
-    // * @param webbisar
-    // * a List<Webbis> of webbisar
-    // */
-    // public void storeMyWebbisarInSession(PortletRequest request, List<MainWebbisBean> webbisar) {
-    // request.getPortletSession(true).setAttribute(WEBBIS_SESSION_PREFIX + "myWebbisar", webbisar);
-    //
-    // }
-
     /**
      * This method will put each individual field from the webbis in the session with the prefix 'webbis.mainform'.
      * This is used for easy showing on the main edit webbis page (which retrieves values from the session).
@@ -640,42 +622,44 @@ public class WebbisPortletHelper {
 
         MainWebbisBean mainWebbisBean = new MainWebbisBean(webbis, baseUrl);
 
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean", mainWebbisBean);
+        session.setAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN, mainWebbisBean);
     }
 
     public MainWebbisBean getWebbisDataFromSession(PortletSession session) {
-        return (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean");
+        return (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
     }
 
     public void populateDefaults(PortletSession session, String noOfSiblings) {
         Webbis webbis = null;
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
-        if (session.getAttribute(WEBBIS_SESSION_PREFIX + "mainWebbisBean") == null) {
+        if (mainWebbisBean == null) {
             BirthTime birthTimeDefaultToday = new BirthTime(new Date());
             List<Name> parentsDefaultEmptyList = new ArrayList<Name>();
             List<Image> imagesDefaultEmptyList = new ArrayList<Image>();
 
             webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
                     parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
+
+            // No webbisBean object in session, add it
+            putWebbisDataInSession(session, webbis);
+
         } else {
-            MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(WEBBIS_SESSION_PREFIX
-                    + "mainWebbisBean");
+            // We got a webbisBean object in session, just get the webbis from there
             webbis = mainWebbisBean.getMainWebbis();
         }
 
         if (webbis != null && noOfSiblings != null) {
             webbis = addDefaultSiblingWebbisar(webbis, Integer.valueOf(noOfSiblings));
         }
-
-        putWebbisDataInSession(session, webbis);
     }
 
     public Webbis getWebbisFromSession(PortletSession session) {
-        return (Webbis) session.getAttribute(WEBBIS_SESSION_PREFIX + "webbis");
+        return (Webbis) session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS);
     }
 
     public void saveWebbisInSession(PortletSession session, Webbis webbis) {
-        session.setAttribute(WEBBIS_SESSION_PREFIX + "webbis", webbis);
+        session.setAttribute(SESSION_ATTRIB_KEY_WEBBIS, webbis);
     }
 
     public PreviewWebbisBean createPreviewWebbisBean(ActionRequest request, Webbis webbis) {
