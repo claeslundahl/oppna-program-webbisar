@@ -41,13 +41,7 @@ Generation time : 2009-01-08 10:18:23 CET
       <artifactId>velocity</artifactId>
       <version>1.5</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    -->
+
     <dependency>
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-webflow</artifactId>

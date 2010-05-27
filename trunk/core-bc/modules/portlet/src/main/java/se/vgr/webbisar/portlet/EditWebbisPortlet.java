@@ -62,7 +62,9 @@ public class EditWebbisPortlet extends GenericPortlet {
     private static final String SHOW_WEBBIS_LIST_VIEW = "SHOW_WEBBIS_LIST_VIEW";
     private static final String CONFIRM_DELETE_WEBBIS_VIEW = "CONFIRM_DELETE_WEBBIS_VIEW";
     private static final String PREVIEW_VIEW = "PREVIEW_VIEW";
+
     private static final int SUPPORTED_MULTIPLE_BIRTH_SIBLINGS = 3; // Triplets
+    private static final int SUPPORTED_NO_OF_IMAGES = 4;
 
     private WebbisPortletHelper helper = null;
     private WebbisServiceProxy webbisServiceProxy = null;
@@ -244,37 +246,21 @@ public class EditWebbisPortlet extends GenericPortlet {
     }
 
     private void handleImageOperations(ActionRequest request) {
-        for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
-            if (request.getParameter("w" + i + "_remove-image0") != null) {
-                helper.removeImage(i, 0, request);
-                break;
-            } else if (request.getParameter("w" + i + "_remove-image1") != null) {
-                helper.removeImage(i, 1, request);
-                break;
-            } else if (request.getParameter("w" + i + "_remove-image2") != null) {
-                helper.removeImage(i, 2, request);
-                break;
-            } else if (request.getParameter("w" + i + "_remove-image3") != null) {
-                helper.removeImage(i, 3, request);
-                break;
-            } else if (request.getParameter("w" + i + "_remove-image4") != null) {
-                helper.removeImage(i, 4, request);
-                break;
-            } else if (request.getParameter("w" + i + "_image0-main-image") != null) {
-                helper.setMainImage(i, 0, request);
-                break;
-            } else if (request.getParameter("w" + i + "_image1-main-image") != null) {
-                helper.setMainImage(i, 1, request);
-                break;
-            } else if (request.getParameter("w" + i + "_image2-main-image") != null) {
-                helper.setMainImage(i, 2, request);
-                break;
-            } else if (request.getParameter("w" + i + "_image3-main-image") != null) {
-                helper.setMainImage(i, 3, request);
-                break;
-            } else if (request.getParameter("w" + i + "_image4-main-image") != null) {
-                helper.setMainImage(i, 4, request);
-                break;
+        // For all multiple birth siblings, check if operation was performed
+        siblingLoop: for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
+            // Check if we have a remove operation in request
+            for (int x = 0; x < SUPPORTED_NO_OF_IMAGES; x++) {
+                if (request.getParameter("w" + i + "_remove-image" + x) != null) {
+                    helper.removeImage(i, x, request);
+                    break siblingLoop;
+                }
+            }
+            // Check if we have a set main image operation in request
+            for (int x = 0; x < SUPPORTED_NO_OF_IMAGES; x++) {
+                if (request.getParameter("w" + i + "_image" + x + "-main-image") != null) {
+                    helper.setMainImage(i, x, request);
+                    break siblingLoop;
+                }
             }
         }
     }

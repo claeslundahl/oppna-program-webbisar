@@ -19,7 +19,6 @@
 
 
 -->
-
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
@@ -36,20 +35,8 @@
     <!-- Spring2 Annotation Transaction, similar to EJB3 @TransactionAttribute -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
         
-    <!-- Spring2 @AspectJ --> <!-- AspectJ not used since it has a license that is not compatible with LGPL -->
-<!--    <aop:aspectj-autoproxy/>-->
-<!--     Override Annotation Transaction -->
-<!--    <aop:config>-->
-<!--    	 Declare Aspect -->
-<!--        <aop:advisor id="txnAspect" advice-ref="txnAdvice" pointcut="execution(* *..svc.impl.*ServiceImpl.*(..))"/>-->
-<!--    </aop:config>-->
-<!--    <tx:advice id="txnAdvice">-->
-<!--        <tx:attributes>-->
-<!--            <tx:method name="get*" read-only="true"/>-->
-<!--            <tx:method name="find*" read-only="true"/>-->
-<!--            <tx:method name="*"/>-->
-<!--        </tx:attributes>-->
-<!--    </tx:advice>-->
+    <!-- Spring2 @AspectJ --> 
+    <!-- AspectJ not used since it has a license that is not compatible with LGPL -->
     
     <server xmlns="http://mina.apache.org/ftpserver/spring/v1"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

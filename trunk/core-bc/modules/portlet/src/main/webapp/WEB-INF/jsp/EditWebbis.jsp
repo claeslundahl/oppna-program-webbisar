@@ -306,7 +306,7 @@
                   <div class="yui-u first" style="width: 52%">
                     <p>
                       <label for="w${refRow.index+1}_day">Födelsedatum: *</label><br/>
-                          <select name="w${refRow.index+1}_day"><!-- TODO use js to change the number of days depending on the selected month  -->
+                      <select name="w${refRow.index+1}_day"><!-- TODO use js to change the number of days depending on the selected month  -->
                         <c:forEach begin="1" end="31" var="day">
                           <c:set var="dayFromSession" value="${multipleBirthSibling.birthTime.day}"/>
                           <c:if test="${dayFromSession != null}">
@@ -449,7 +449,6 @@
                   </c:forEach>
                 </c:if>
               </div> 
-              
             </div>
           </c:forEach>
           
