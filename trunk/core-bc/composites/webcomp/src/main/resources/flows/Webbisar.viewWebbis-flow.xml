@@ -36,7 +36,7 @@
 
 	<view-state id="viewPage" view="/Webbisar_viewWebbis.xhtml">
     <transition on="selectWebbisImageAction" to="showWebbis">
-      <set name="flowScope.selectedImage" value="requestParameters.selectedImage"></set>
+      <set name="flowScope.selectedImage" value="requestParameters.selectedImage" type="java.lang.Integer" />
     </transition>
 		<transition on="backToWebbisarAction" to="back" />
     <transition on="searchForWebbisAction" to="search"/>

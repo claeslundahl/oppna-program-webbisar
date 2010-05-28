@@ -27,14 +27,16 @@ public class MailMessageBean implements Serializable {
 
     private String subject;
     private String message;
-    private String recipients;
+    private String recipientAddresses;
+    private String senderAddress;
+    private String senderName;
 
-    public String getRecipients() {
-        return recipients;
+    public String getRecipientAddresses() {
+        return recipientAddresses;
     }
 
-    public void setRecipients(String recipients) {
-        this.recipients = recipients;
+    public void setRecipientAddresses(String recipientAddresses) {
+        this.recipientAddresses = recipientAddresses;
     }
 
     public String getSubject() {
@@ -53,12 +55,30 @@ public class MailMessageBean implements Serializable {
         this.message = message;
     }
 
+    public String getSenderAddress() {
+        return senderAddress;
+    }
+
+    public void setSenderAddress(String senderAddress) {
+        this.senderAddress = senderAddress;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("recipients=[").append(recipients);
+        sb.append("recipientAddresses=[").append(recipientAddresses);
         sb.append("], subject=").append(subject);
         sb.append(", message=").append(message);
+        sb.append(", senderName=").append(senderName);
+        sb.append(", senderAddress=").append(senderAddress);
         return sb.toString();
     }
 }

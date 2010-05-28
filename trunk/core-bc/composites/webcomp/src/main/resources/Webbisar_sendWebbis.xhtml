@@ -33,10 +33,10 @@
     <ui:define name="body">
       <div id="custom-doc">
         <div id="hd">
-          <div class="yui-b header"><h2>Webbisar</h2></div>
+          <div class="yui-b header"><h2>Webbisar - Skicka webbis till vän</h2></div>
           <div class="yui-b topinfo">
             <p>
-            Här kan du skicka ett enkelt mail till dina vänner och bekanta. Mailet kommer även att innehålla en direktlänk till webbisen!
+            Här kan du skicka ett meddelande till dina vänner och bekanta. Mailet kommer även att innehålla en direktlänk till webbisen.
             </p>
           </div>
         </div>
@@ -44,28 +44,46 @@
           <div id="yui-main">
             <div class="yui-b webbis">
               <form name="sendWebbisForm" id="sendWebbisForm" jsfc="h:form">
-                <h3 class="webbis">Skicka webbis till vän</h3>
+                <!-- h3 class="webbis">Skicka webbis till vän</h3  -->
                 <div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
+                  <h3 class="webbis" style="margin-left: 0;">Till</h3>
                   <p>
-                    Flera mailadresser kan anges i inmatningsfältet, separera då adresserna med kommatecken.
+                    Flera mailadresser kan anges, separera då adresserna med kommatecken.
                     <br/>
                     <br/>
                     Mailadress(er):
                     <br/>
-                    <input type="text" name="mailMessageRecipients" id="mailMessageRecipients" jsfc="h:inputText" value="#{MailMessage.recipients}" size="45" />
+                    <input type="text" name="mailMessageRecipients" id="mailMessageRecipients" jsfc="h:inputText" value="#{MailMessage.recipientAddresses}" size="45" />
                     <br/>
                     <br/>
-                    Ämnesrad:
+                    Rubrik:
                     <br/>
                     <input type="text" name="mailMessageSubject" id="mailMessageSubject" jsfc="h:inputText" value="#{MailMessage.subject}" size="45" />
-                    <br/>
-                    <br/>
+                  </p>
+                </div>
+                <div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
+                  <p>
                     Meddelande:
                     <br/>
                     <input type="text" name="mailMessageBody" id="mailMessageBody" jsfc="h:inputTextarea" value="#{MailMessage.message}" cols="60" rows="5" />
                     <br/>
                   </p>
-                  <br/>
+                </div>
+                <div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
+                  <h3 class="webbis" style="margin-left: 0;">Från</h3>
+                  <p>
+                    Glöm inte att skriva in ditt eget namn och mailadress.
+                    <br/>
+                    <br/>
+                    Namn:
+                    <br/>
+                    <input type="text" name="mailMessageSenderName" id="mailMessageSenderName" jsfc="h:inputText" value="#{MailMessage.senderName}" size="45" />
+                    <br/>
+                    <br/>
+                    Mailadress:
+                    <br/>
+                    <input type="text" name="mailMessageSender" id="mailMessageSender" jsfc="h:inputText" value="#{MailMessage.senderAddress}" size="45" />
+                  </p>
                   <br/>
                   <p>
                     <span style="color: red;">
@@ -73,7 +91,7 @@
                     </span>
                   </p>
                 </div>
-                <div class="yui-g first">
+                <div class="yui-g first" style="margin-right: 0.4em; padding-bottom: 0.4em;">
                   <div class="yui-u first"></div>
                   <div class="yui-u" style="text-align: right">
                       <input class="btn" type="submit" action="cancelSendWebbisAction" immidiate="false" value="Avbryt" jsfc="h:commandButton"/>

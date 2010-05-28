@@ -114,8 +114,8 @@ public class WebbisarFlowSupportBean {
         return new WebbisPageBean(pageNumber, pageNumber == 0, pageNumber == (numberOfPages - 1), list);
     }
 
-    public WebbisBean getWebbis(Long webbisId, Object selectedImage) {
-        int imageId = (selectedImage == null) ? 0 : (Integer) selectedImage;
+    public WebbisBean getWebbis(final Long webbisId, final Integer selectedImage) {
+        int imageId = (selectedImage == null) ? 0 : selectedImage;
 
         Webbis webbis = webbisService.getById(webbisId);
 
@@ -123,105 +123,89 @@ public class WebbisarFlowSupportBean {
     }
 
     public MailMessageResultBean sendWebbis(final Long webbisId, final MailMessageBean mailMessageBean) {
-        MailMessageResultBean result = new MailMessageResultBean();
 
-        // Do proper validation
-        if (StringUtils.isBlank(mailMessageBean.getRecipients())) {
-            result.setSuccess(Boolean.FALSE);
-            result
-                    .setMessage("Minst en mottagare måste anges! Om flera mottagare, separera mailadresserna med komma (,).");
+        // Validate email adresses first
+        MailMessageResultBean result = validateEmailAddresses(mailMessageBean);
+        if (Boolean.FALSE.equals(result.getSuccess())) {
             return result;
-        } else {
-            // Validate format for email addresses
-            String[] mailAddresses = mailMessageBean.getRecipients().split(",");
-            for (String mailAddress : mailAddresses) {
-                if (!RFC2822_MAIL_PATTERN.matcher(mailAddress).matches()) {
-                    result.setSuccess(Boolean.FALSE);
-                    result.setMessage(mailAddress + " är inte en giltig mailadress.");
-                    return result;
-                }
-            }
-            // // Check subject
-            // if (StringUtils.isBlank(mailMessageBean.getSubject())) {
-            // result.setSuccess(Boolean.FALSE);
-            // result.setMessage("Ämne måste anges.");
-            // return result;
-            // }
-            // // Check message
-            // if (StringUtils.isBlank(mailMessageBean.getMessage())) {
-            // result.setSuccess(Boolean.FALSE);
-            // result.setMessage("Meddelande måste anges.");
-            // return result;
-            // }
+        }
+        // Validate sender name
+        if (StringUtils.isBlank(mailMessageBean.getSenderName())) {
+            result.setSuccess(Boolean.FALSE);
+            result.setMessage("Namn på avsändare måste anges.");
+            return result;
+        }
 
-            // use this map to store the information that will be merged into the html template
-            Map<String, String> emailInformation = new HashMap<String, String>();
-            WebbisBean webbisBean = getWebbis(webbisId, null);
-            Map<Long, String> webbisarIdNames = webbisBean.getMultipleBirthSiblingIdsAndNames();
+        // use this map to store the information that will be merged into the html template
+        Map<String, String> emailInformation = new HashMap<String, String>();
+        WebbisBean webbisBean = getWebbis(webbisId, null);
+        Map<Long, String> webbisarIdNames = webbisBean.getMultipleBirthSiblingIdsAndNames();
 
-            String messageText = mailMessageBean.getMessage();
-            if (!StringUtils.isEmpty(messageText)) {
-                messageText = messageText.replace("\r", "").replace("\n", "<br/>");
-            }
+        String messageText = mailMessageBean.getMessage();
+        if (!StringUtils.isEmpty(messageText)) {
+            messageText = messageText.replace("\r", "").replace("\n", "<br/>");
+        }
 
-            // add the current webbis to the list of siblings so that
-            // we have them all in the same Map
-            webbisarIdNames.put(webbisBean.getId(), webbisBean.getName());
-            // add the message and the base url for html links
-            emailInformation.put("baseUrl", cfg.getBaseUrl());
-            emailInformation.put("message", messageText);
+        // add the current webbis to the list of siblings so that
+        // we have them all in the same Map
+        webbisarIdNames.put(webbisBean.getId(), webbisBean.getName());
 
-            VelocityContext context = new VelocityContext();
-            context.put("emailInfo", emailInformation);
-            context.put("webbisInfo", webbisarIdNames);
+        // add the message and the base url for html links
+        emailInformation.put("baseUrl", cfg.getBaseUrl());
+        emailInformation.put("message", messageText);
+        emailInformation.put("senderName", mailMessageBean.getSenderName());
+        emailInformation.put("senderAddress", mailMessageBean.getSenderAddress());
 
-            Template template = null;
-            StringWriter msgWriter = null;
+        VelocityContext context = new VelocityContext();
+        context.put("emailInfo", emailInformation);
+        context.put("webbisInfo", webbisarIdNames);
+
+        Template template = null;
+        StringWriter msgWriter = null;
+        try {
+            velocityEngine.init();
+            template = velocityEngine.getTemplate(cfg.getMailTemplate());
+            msgWriter = new StringWriter();
+            template.merge(context, msgWriter);
+        } catch (Exception e1) {
+            System.err.println(e1.getMessage());
+            result.setSuccess(Boolean.FALSE);
+            result.setMessage("Internt fel, webbis kunde inte skickas.");
+            return result;
+        }
+        String msgText = msgWriter.toString();
+
+        // Seems OK, try to send mail...
+        try {
+            InternetAddress fromAddress = null;
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, ENCODING_UTF8);
             try {
-                velocityEngine.init();
-                template = velocityEngine.getTemplate(cfg.getMailTemplate());
-                msgWriter = new StringWriter();
-                template.merge(context, msgWriter);
-            } catch (Exception e1) {
-                System.err.println(e1.getMessage());
-                result.setSuccess(Boolean.FALSE);
-                result.setMessage("Internt fel, webbis kunde inte skickas.");
-                return result;
+                fromAddress = new InternetAddress(cfg.getMailFromAddress(), cfg.getMailFromAddressName());
+            } catch (UnsupportedEncodingException e) {
+                fromAddress = new InternetAddress(cfg.getMailFromAddress());
             }
-            String msgText = msgWriter.toString();
+            helper.setTo(mailMessageBean.getRecipientAddresses().split(","));
+            helper.setFrom(fromAddress);
+            helper.setSubject(mailMessageBean.getSubject());
+            helper.setText(msgText, true);
 
-            // Seems OK, try to send mail...
-            try {
-                MimeMessage mimeMessage = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, ENCODING_UTF8);
-                InternetAddress fromAddress = null;
-                try {
-                    fromAddress = new InternetAddress(cfg.getMailFromAddress(), cfg.getMailFromAddressName());
-                } catch (UnsupportedEncodingException e) {
-                    fromAddress = new InternetAddress(cfg.getMailFromAddress());
-                }
-                helper.setTo(mailAddresses);
-                helper.setFrom(fromAddress);
-                helper.setSubject(mailMessageBean.getSubject());
-                helper.setText(msgText, true);
+            // include the vgr logo
+            String logoPath = cfg.getImageBaseDir() + "/" + cfg.getMailLogo();
+            FileSystemResource res = new FileSystemResource(new File(logoPath));
+            helper.addInline("imageIdentifier", res);
 
-                // include the vgr logo
-                String logoPath = cfg.getImageBaseDir() + "/" + cfg.getMailLogo();
-                FileSystemResource res = new FileSystemResource(new File(logoPath));
-                helper.addInline("imageIdentifier", res);
-
-                mailSender.send(mimeMessage);
-            } catch (MailException ex) {
-                System.err.println(ex.getMessage());
-                result.setSuccess(Boolean.FALSE);
-                result.setMessage("Internt fel, webbis kunde inte skickas.");
-                return result;
-            } catch (MessagingException e) {
-                System.err.println(e.getMessage());
-                result.setSuccess(Boolean.FALSE);
-                result.setMessage("Internt fel, webbis kunde inte skickas.");
-                return result;
-            }
+            mailSender.send(mimeMessage);
+        } catch (MailException ex) {
+            System.err.println(ex.getMessage());
+            result.setSuccess(Boolean.FALSE);
+            result.setMessage("Internt fel, webbis kunde inte skickas.");
+            return result;
+        } catch (MessagingException e) {
+            System.err.println(e.getMessage());
+            result.setSuccess(Boolean.FALSE);
+            result.setMessage("Internt fel, webbis kunde inte skickas.");
+            return result;
         }
 
         // ...and all was well...
@@ -268,5 +252,39 @@ public class WebbisarFlowSupportBean {
     public SearchResultPageBean loadPrevSearchPage(SearchResultPageBean o) {
         int pageNumber = o.getPageNumber() - 1;
         return internalLoadSearchPage(o.getSearchCriteria(), pageNumber);
+    }
+
+    private MailMessageResultBean validateEmailAddresses(MailMessageBean mailMessageBean) {
+
+        MailMessageResultBean result = new MailMessageResultBean();
+        result.setSuccess(Boolean.TRUE);
+
+        // Do proper validation
+        if (StringUtils.isBlank(mailMessageBean.getRecipientAddresses())) {
+            // No recipient(s) supplied
+            result.setSuccess(Boolean.FALSE);
+            result.setMessage("Minst en mottagare måste anges.");
+        } else if (StringUtils.isBlank(mailMessageBean.getSenderAddress())) {
+            // No sender supplied
+            result.setSuccess(Boolean.FALSE);
+            result.setMessage("Avsändaradress måste anges.");
+        } else {
+            // Validate format for email addresses
+            String[] mailAddresses = mailMessageBean.getRecipientAddresses().split(",");
+            for (String mailAddress : mailAddresses) {
+                if (!RFC2822_MAIL_PATTERN.matcher(mailAddress).matches()) {
+                    result.setSuccess(Boolean.FALSE);
+                    result.setMessage("Mottagaradressen " + mailAddress + " är inte en giltig mailadress.");
+                    break;
+                }
+            }
+            if (!RFC2822_MAIL_PATTERN.matcher(mailMessageBean.getSenderAddress()).matches()) {
+                result.setSuccess(Boolean.FALSE);
+                result.setMessage("Avsändaradressen " + mailMessageBean.getSenderAddress()
+                        + " är inte en giltig mailadress.");
+            }
+        }
+
+        return result;
     }
 }
