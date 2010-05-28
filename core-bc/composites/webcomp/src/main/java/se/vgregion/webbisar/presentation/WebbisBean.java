@@ -298,7 +298,6 @@ public class WebbisBean implements Serializable {
 
         if (mainMultipleBirthWebbis != null) {
             // If it has a main webbis, this is a sibling
-
             retMap.put(mainMultipleBirthWebbis.getId(), mainMultipleBirthWebbis.getName());
 
             // It might have another sibling as well (triplet)

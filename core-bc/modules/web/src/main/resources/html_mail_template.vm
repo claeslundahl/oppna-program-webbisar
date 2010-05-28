@@ -16,22 +16,46 @@
  *   Boston, MA 02111-1307  USA
  *
  *#
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+  <head>
+    <title>Webbisar - V&auml;stra G&ouml;talandsregionen</title>
+  </head>
+  <body>
+ 
+    <table>
+      <tr>
+        <td colspan="2">$emailInfo.message</td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+    #foreach($webbis in $webbisInfo.keySet())
+      <tr>
+        <td colspan="2"><a href="$emailInfo.baseUrl?webbisId=$webbis">L&auml;nk till webbisen $webbisInfo.get($webbis)</a></td>
+      </tr>
+    #end
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          V&auml;nliga h&auml;lsningar,<br/>
+          $emailInfo.senderName (<a href="mailto:$emailInfo.senderAddress">$emailInfo.senderAddress</a>)
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><hr/></td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">Skickat fr&aring;n <a href="http://vard.vgregion.se/sv/Webbisar/">Webbisar - V&auml;stra G&ouml;talandsregionen</a></td>
+        <td align="right" style="padding-left: 30px;"><img src='cid:imageIdentifier'></td>
+      </tr>
+    </table>
+ 
+  </body>
 
-  <html>
-    <head>
-      <title>Webbisar - Västra Götaland</title>
-    </head>
-    <body>
-      <table>
-      <tr><td><p><font size="2" face="Verdana">$emailInfo.message</p></td></tr>
-      <tr><td>&nbsp;</td></tr>
-        #foreach($webbis in $webbisInfo.keySet())
-          <tr>
-            <td><p><font size="2" face="Verdana"><a href="$emailInfo.baseUrl?webbisId=$webbis">$webbisInfo.get($webbis)</a></p></td>
-          </tr>
-        #end
-      </table>
-      <hr/>
-      <img src='cid:imageIdentifier'>
-    </body>
-  </html>
+</html>
