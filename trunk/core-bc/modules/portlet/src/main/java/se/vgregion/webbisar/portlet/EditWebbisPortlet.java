@@ -184,7 +184,8 @@ public class EditWebbisPortlet extends GenericPortlet {
                 } else if (request.getParameter("editWebbisId") != null) {
                     Webbis webbis = webbisServiceProxy.prepareForEditing(request.getPortletSession(true).getId(),
                             request.getParameter("editWebbisId"));
-                    helper.putWebbisDataInSession(request.getPortletSession(true), webbis);
+                    helper.putWebbisDataInSession(request.getPortletSession(true), helper
+                            .getMainWebbisBeanForWebbis(webbis));
                     request.setAttribute("editWebbisId", request.getParameter("editWebbisId"));
                     response.setRenderParameter(VIEW, MAIN_VIEW);
                 } else if (request.getParameter("deleteWebbis") != null) {

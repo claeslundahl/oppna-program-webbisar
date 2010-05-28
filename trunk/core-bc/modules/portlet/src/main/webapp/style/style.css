@@ -188,3 +188,11 @@ img.full {
 	margin-bottom:0.4em;
 	margin-left:0.8em;
 }
+
+hr.greenLine {
+  border: none 0; 
+  border-top: 1px dashed #D1D1D1;
+  height: 1px;
+  margin-right:0.4em;
+  margin-left:0.4em;
+}

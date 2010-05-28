@@ -453,6 +453,10 @@
           </c:forEach>
           
           <div class="yui-g">
+            <hr class="greenLine" />
+          </div>
+          
+          <div class="yui-g">
             <div class="yui-u first" style="margin-left: 0.4em">      
               <!-- Förälder 1 -->
               <div class="yui-g addrow">
@@ -572,7 +576,7 @@
           
 					<div class="yui-g">
 						<div class="yui-u first"></div>
-						<div class="yui-u" style="text-align: right">
+						<div class="yui-u" style="text-align: right;">
 							<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id != null}"><input name="deleteWebbis" value="Radera webbis" type="submit"/></c:if>
 							<input name="cancel" value="Avbryt" type="submit"/>
 							<input name="preview" value="Förhandsgranska" type="submit"/>

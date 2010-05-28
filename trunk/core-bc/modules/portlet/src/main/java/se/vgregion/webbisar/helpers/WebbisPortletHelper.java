@@ -236,7 +236,7 @@ public class WebbisPortletHelper {
 
         // Cache webbis info
         Webbis webbis = parseWebbisInfo(request);
-        putWebbisDataInSession(session, webbis);
+        putWebbisDataInSession(session, getMainWebbisBeanForWebbis(webbis));
 
         // Cache info about number of availabe images etc
         // Check if we got any sibling, if no index supplied we assume it is the "main" webbis
@@ -614,14 +614,11 @@ public class WebbisPortletHelper {
      * This is used for easy showing on the main edit webbis page (which retrieves values from the session).
      * 
      * @param session
-     * @param Webbis
-     *            the webbis for which each individual value will be stored in the session with the prefix
+     * @param MainWebbisBean
+     *            the webbisBean for which each individual value will be stored in the session with the prefix
      *            'webbis.mainform'
      */
-    public void putWebbisDataInSession(PortletSession session, Webbis webbis) {
-
-        MainWebbisBean mainWebbisBean = new MainWebbisBean(webbis, baseUrl);
-
+    public void putWebbisDataInSession(PortletSession session, MainWebbisBean mainWebbisBean) {
         session.setAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN, mainWebbisBean);
     }
 
@@ -630,7 +627,6 @@ public class WebbisPortletHelper {
     }
 
     public void populateDefaults(PortletSession session, String noOfSiblings) {
-        Webbis webbis = null;
         MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
         if (mainWebbisBean == null) {
@@ -638,20 +634,19 @@ public class WebbisPortletHelper {
             List<Name> parentsDefaultEmptyList = new ArrayList<Name>();
             List<Image> imagesDefaultEmptyList = new ArrayList<Image>();
 
-            webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
+            Webbis webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
                     parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
 
-            // No webbisBean object in session, add it
-            putWebbisDataInSession(session, webbis);
-
-        } else {
-            // We got a webbisBean object in session, just get the webbis from there
-            webbis = mainWebbisBean.getMainWebbis();
+            mainWebbisBean = getMainWebbisBeanForWebbis(webbis);
         }
 
-        if (webbis != null && noOfSiblings != null) {
-            webbis = addDefaultSiblingWebbisar(webbis, Integer.valueOf(noOfSiblings));
+        // Check if we should add sibling objects
+        if (noOfSiblings != null) {
+            addDefaultSiblingWebbisarOnMain(mainWebbisBean, Integer.valueOf(noOfSiblings));
         }
+
+        // Put mainWebbisBean (back) into session
+        putWebbisDataInSession(session, mainWebbisBean);
     }
 
     public Webbis getWebbisFromSession(PortletSession session) {
@@ -666,7 +661,11 @@ public class WebbisPortletHelper {
         return new PreviewWebbisBean(baseUrl, webbis, 0);
     }
 
-    private Webbis addDefaultSiblingWebbisar(Webbis mainWebbis, Integer noOfSiblings) {
+    public MainWebbisBean getMainWebbisBeanForWebbis(Webbis webbis) {
+        return new MainWebbisBean(webbis, baseUrl);
+    }
+
+    private void addDefaultSiblingWebbisarOnMain(MainWebbisBean mainWebbisBean, Integer noOfSiblings) {
 
         if (noOfSiblings != null) {
             BirthTime birthTimeDefaultToday = new BirthTime(new Date());
@@ -678,13 +677,12 @@ public class WebbisPortletHelper {
                 Webbis webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
                         parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
 
-                webbis.setMainMultipleBirthWebbis(mainWebbis);
+                webbis.setMainMultipleBirthWebbis(mainWebbisBean.getMainWebbis());
                 multipleBirthSiblings.add(webbis);
             }
 
-            mainWebbis.setMultipleBirthSiblings(multipleBirthSiblings);
+            mainWebbisBean.setMultipleBirthWebbisSiblings(multipleBirthSiblings);
+            mainWebbisBean.getMainWebbis().setMultipleBirthSiblings(multipleBirthSiblings);
         }
-
-        return mainWebbis;
     }
 }
