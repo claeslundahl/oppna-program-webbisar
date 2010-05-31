@@ -21,13 +21,12 @@ Två diskareor används lokalt på Apache Tomcat servern. En för att lagra bild
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png
 
 = Webbapplikationen - för att visa webbisar =
-Web-applikationen är skriven enligt [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA Öppna programs referensarkitektur] och är därför baserad på [http://www.springsource.org/webflow Spring Webflow version 1] och [http://java.sun.com/javaee/javaserverfaces/ JSF]/[https://facelets.dev.java.net/ Facelets]. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
+Web-applikationen är skriven enligt [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA Öppna programs referensarkitektur] och är därför baserad på [http://www.springsource.org/webflow Spring Webflow version 2] och [http://java.sun.com/javaee/javaserverfaces/ JSF]/[https://facelets.dev.java.net/ Facelets]. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
 
-  # `http://<host>/webbisar?_flowId=Webbisar.view-flow`
-  # `http://<host>/webbisar?_flowId=Webbisar.view-flow&webbisId=<id>`
+  # `http://<host>/webbisar/`
+  # `http://<host>/webbisar/?webbisId=<id>`
 
 Den första URL:en gör att man hamnar på förstasidan och den andra att man hamnar direkt på en webbis med det angivna id:et.
-Om man går direkt till `http://<host>/webbisar` så görs en redirect till den första URL:en. 
 
 == Integration med !EpiServer ==
 Hos VGR är webbapplikationen integrerad i !EpiServer. Bilden nedan visar hur Webbisar integrerar med !EpiServer. På sidan i !EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
@@ -98,10 +97,11 @@ Blir således:
 
 `callback({ ”message”, ”hello”})`
 
-   
 Sidan som tar emot anropet skapar dynamiskt en skript-tag och lägger i head-elementet på sidan. Skript-taggen pekar med src-attributet mot servern som har informationen. Skriptelementet evalueras och i detta fallet så sker ett anrop till en funktion som heter callback på sidan. Om sidan har definierat en sådan funktion, så kommer den att anropas med !JavaScript objektet och man kan använda det för att dynamiskt förändra sidan.
 
 Genom att titta på exemplet, ffa widget.js, så kan man förstå hur man kan använda mekanismen för att bygga widgets på sina egna sidor.
+
+Notera att sökvägar till widget.js samt json-controller är hårdkodade i skript/html.
 
 = Databas = 
 Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (!WebbisParent) och en som innehåller bildinformation (!WebbisImage). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
