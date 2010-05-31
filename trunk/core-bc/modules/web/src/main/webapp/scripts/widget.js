@@ -78,7 +78,7 @@ var WebbisWidget = function() {
           
       var link = document.createElement('a');
       link.href = webbis.link;
-      link.appendChild(document.createTextNode(webbis.parents));
+      link.appendChild(document.createTextNode(webbis.name)); //parents
       info.appendChild(link);
       info.appendChild(document.createElement('br'));
       divtxt.appendChild(info);
