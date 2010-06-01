@@ -232,4 +232,7 @@ public class WebbisServiceImpl implements WebbisService {
         return cfg.getFtpConfiguration();
     }
 
+    public Boolean isTestMode() {
+        return cfg.isTestMode();
+    }
 }

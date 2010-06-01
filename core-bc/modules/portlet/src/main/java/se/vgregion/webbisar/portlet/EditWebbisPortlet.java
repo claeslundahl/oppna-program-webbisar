@@ -239,10 +239,11 @@ public class EditWebbisPortlet extends GenericPortlet {
             webbisServiceProxy = new WebbisServiceProxy();
             String baseUrl = webbisServiceProxy.getImageBaseUrl();
             String ftpCfg = webbisServiceProxy.getFtpConfig();
+            Boolean testMode = webbisServiceProxy.isTestMode();
 
             FileHandler fileHandler = new FileHandler(ftpCfg);
 
-            helper = new WebbisPortletHelper(baseUrl, fileHandler);
+            helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode);
         }
     }
 

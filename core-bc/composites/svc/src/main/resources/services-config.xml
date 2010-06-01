@@ -49,6 +49,8 @@
     </server>
     
     <bean id="configuration" class="se.vgregion.webbisar.svc.impl.ConfigurationImpl">
+      <property name="testMode" value="${webbisar.testMode}"/>
+    
       <property name="imageBaseDir" value="${webbisar.imageBaseDir}"/>
       <property name="imageBaseUrl" value="${webbisar.imageBaseUrl}"/>
       <property name="imageSize" value="${webbisar.imageSize}"/>

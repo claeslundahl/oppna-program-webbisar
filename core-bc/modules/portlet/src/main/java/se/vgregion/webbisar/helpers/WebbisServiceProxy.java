@@ -97,6 +97,10 @@ public class WebbisServiceProxy {
         return webbisService.getFtpConfiguration();
     }
 
+    public Boolean isTestMode() {
+        return webbisService.isTestMode();
+    }
+
     public void reindex() {
         webbisService.reindex();
     }

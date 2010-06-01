@@ -26,6 +26,8 @@ import se.vgregion.webbisar.svc.ImageSize;
 
 public class ConfigurationImpl implements Configuration {
 
+    Boolean testMode;
+
     String imageBaseDir;
     String imageBaseUrl;
     ImageSize imageSize;
@@ -40,6 +42,14 @@ public class ConfigurationImpl implements Configuration {
     String mailFromAddressName;
     String mailLogo;
     String mailTemplate;
+
+    public Boolean isTestMode() {
+        return testMode;
+    }
+
+    public void setTestMode(Boolean testMode) {
+        this.testMode = testMode;
+    }
 
     public String getFtpConfiguration() {
         return ftpConfiguration;

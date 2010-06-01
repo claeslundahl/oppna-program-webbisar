@@ -183,11 +183,18 @@ public class Webbis implements Serializable {
 
     public Webbis(Long id, String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,
             Hospital hospital, String home, List<Name> parents, List<Image> images, String siblings,
-            String message, String email, String homePage) {
+            String message, String email, String homePage, Date created) {
+
         this(name, authorId, sex, birthTime, weight, length, hospital, home, parents, images, siblings, message,
                 email, homePage);
 
         this.id = id;
+        if (created == null) {
+            this.created = new Date();
+        } else {
+            this.created = created;
+        }
+        this.lastModified = new Date();
     }
 
     public Webbis(String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,
@@ -319,6 +326,14 @@ public class Webbis implements Serializable {
         return created;
     }
 
+    public Long getCreatedAsLong() {
+        if (created != null) {
+            return created.getTime();
+        } else {
+            return null;
+        }
+    }
+
     public Date getLastModified() {
         return lastModified;
     }
@@ -427,21 +442,48 @@ public class Webbis implements Serializable {
         sb.append("birthTime=").append(sdf.format(birthTime)).append(",");
         sb.append("weight=").append(weight).append(",");
         sb.append("length=").append(length).append(",");
-        sb.append("hospital=").append(hospital).append(",");
-        sb.append("home=").append(home).append(",");
         sb.append("images=[");
         for (Image i : images) {
             sb.append("image=[").append(i).append("]").append(",");
+        }
+        sb.append("]").append(",");
+        if (multipleBirthSiblings != null && multipleBirthSiblings.size() > 0) {
+            sb.append("multipleBirthSiblings=[");
+            for (Webbis w : multipleBirthSiblings) {
+                sb.append(w.toWebbisInfoOnlyString()).append(",");
+                ;
+            }
+            sb.append("]").append(",");
         }
         sb.append("parents=[");
         for (Name p : parents) {
             sb.append("parent=[").append(p).append("]").append(",");
         }
-        sb.append("]");
+        sb.append("]").append(",");
+        sb.append("hospital=").append(hospital).append(",");
+        sb.append("home=").append(home).append(",");
         sb.append("siblings=").append(siblings).append(",");
         sb.append("message=").append(message).append(",");
         sb.append("email=").append(email).append(",");
         sb.append("homePage=").append(homePage).append(",");
+        sb.append("disabled=").append(disabled).append(",");
+        sb.append("created=").append(sdf.format(created)).append(",");
+        sb.append("lastModified=").append(sdf.format(lastModified));
+        return sb.toString();
+    }
+
+    public String toWebbisInfoOnlyString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("name=").append(name).append(",");
+        sb.append("sex=").append(sex).append(",");
+        sb.append("birthTime=").append(sdf.format(birthTime)).append(",");
+        sb.append("weight=").append(weight).append(",");
+        sb.append("length=").append(length).append(",");
+        sb.append("images=[");
+        for (Image i : images) {
+            sb.append("image=[").append(i).append("]").append(",");
+        }
+        sb.append("]").append(",");
         sb.append("disabled=").append(disabled).append(",");
         sb.append("created=").append(sdf.format(created)).append(",");
         sb.append("lastModified=").append(sdf.format(lastModified));
