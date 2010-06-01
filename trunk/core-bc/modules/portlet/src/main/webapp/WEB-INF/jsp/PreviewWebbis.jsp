@@ -49,7 +49,7 @@
               <div class="yui-u first"><img class="full" src="${previewWebbis.selectedImageUrl}"></img>
               </div>
               
-              <div class="yui-u" style="margin-left:0;">
+              <div class="yui-u" style="margin-left:0; margin-right:2px;">
                   <p>Född: <b><c:out value="${previewWebbis.longDate}"/></b></p>
                     <c:if test="${previewWebbis.weight != '0g'}">
                       <p>Vikt: <b><c:out value="${previewWebbis.weight}"/></b></p>
