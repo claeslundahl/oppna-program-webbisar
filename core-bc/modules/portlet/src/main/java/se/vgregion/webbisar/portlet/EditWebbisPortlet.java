@@ -80,52 +80,57 @@ public class EditWebbisPortlet extends GenericPortlet {
         // Moved proxy init out of portlet init() to enable easy localhost deploy
         initServiceProxyAndHelper();
 
-        try {
-            response.setContentType("text/html");
-            PortletRequestDispatcher dispatcher = null;
-            Object view = request.getParameter(VIEW);
+        response.setContentType("text/html");
+        PortletRequestDispatcher dispatcher = null;
+        Object view = request.getParameter(VIEW);
 
-            if ((view == null) || (view.equals(SHOW_WEBBIS_LIST_VIEW))) {
+        if ((view == null) || (view.equals(SHOW_WEBBIS_LIST_VIEW))) {
 
-                // CleanUp so the session is empty
-                helper.cleanUp(request.getPortletSession(true));
+            // CleanUp so the session is empty
+            helper.cleanUp(request.getPortletSession(true));
 
-                List<MainWebbisBean> webbisar = webbisServiceProxy.getWebbisarForAuthorId(helper
-                        .getUserId(request));
-                if (webbisar != null && webbisar.size() > 0) {
-                    // helper.storeMyWebbisarInSession(request, webbisar);
-                    request.setAttribute("webbisar", webbisar);
-                    dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ShowWebbisList.jsp");
-                } else {
-                    // show an empty main edit webbis page - for adding a new webbis
-                    helper.populateDefaults(request.getPortletSession(true), null);
-                    // this is used in the jsp
-                    request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
-                    request.setAttribute("hospitals", Hospital.values());
-                    dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
-                }
-            } else if (view.equals(MAIN_VIEW)) {
-                helper.populateDefaults(request.getPortletSession(true), request.getParameter("noOfSiblings"));
+            String userId = null;
+            try {
+                userId = helper.getUserId(request);
+            } catch (RuntimeException re) {
+                // userId was probably not found in request
+                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/UserIdNotFound.jsp");
+                dispatcher.include(request, response);
+                return;
+            }
 
+            List<MainWebbisBean> webbisar = webbisServiceProxy.getWebbisarForAuthorId(userId);
+            if (webbisar != null && webbisar.size() > 0) {
+                // helper.storeMyWebbisarInSession(request, webbisar);
+                request.setAttribute("webbisar", webbisar);
+                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ShowWebbisList.jsp");
+            } else {
+                // show an empty main edit webbis page - for adding a new webbis
+                helper.populateDefaults(request.getPortletSession(true), null);
                 // this is used in the jsp
                 request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
                 request.setAttribute("hospitals", Hospital.values());
-                // show the main edit webbis page
                 dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
-            } else if (view.equals(ADD_IMAGES_VIEW)) {// show add picture page
-                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/AddImages.jsp");
-            } else if (view.equals(PREVIEW_VIEW)) {// show preview page
-                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/PreviewWebbis.jsp");
-            } else if (view.equals(CONFIRMATION_VIEW)) {// show confirmation page
-                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/Confirmation.jsp");
-            } else if (view.equals(CONFIRM_DELETE_WEBBIS_VIEW)) {// show confirm delete page
-                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ConfirmDelete.jsp");
             }
-            dispatcher.include(request, response);
-        } finally {
-            // request.removeAttribute(VIEW);
-            // System.out.println("removed attribute View: " + request.getAttribute(VIEW));
+        } else if (view.equals(MAIN_VIEW)) {
+            helper.populateDefaults(request.getPortletSession(true), request.getParameter("noOfSiblings"));
+
+            // this is used in the jsp
+            request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
+            request.setAttribute("hospitals", Hospital.values());
+            // show the main edit webbis page
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
+        } else if (view.equals(ADD_IMAGES_VIEW)) {// show add picture page
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/AddImages.jsp");
+        } else if (view.equals(PREVIEW_VIEW)) {// show preview page
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/PreviewWebbis.jsp");
+        } else if (view.equals(CONFIRMATION_VIEW)) {// show confirmation page
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/Confirmation.jsp");
+        } else if (view.equals(CONFIRM_DELETE_WEBBIS_VIEW)) {// show confirm delete page
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ConfirmDelete.jsp");
         }
+
+        dispatcher.include(request, response);
     }
 
     @Override
@@ -135,7 +140,16 @@ public class EditWebbisPortlet extends GenericPortlet {
         initServiceProxyAndHelper();
 
         try {
-            CallContextUtil.setContext(new CallContext(helper.getUserId(request)));
+            String userId = null;
+            try {
+                userId = helper.getUserId(request);
+            } catch (RuntimeException re) {
+                // userId was probably not found in request
+                response.setRenderParameter(VIEW, SHOW_WEBBIS_LIST_VIEW);
+                return;
+            }
+
+            CallContextUtil.setContext(new CallContext(userId));
 
             // Check if we have a file upload request
             if (PortletFileUpload.isMultipartContent(request)) {
