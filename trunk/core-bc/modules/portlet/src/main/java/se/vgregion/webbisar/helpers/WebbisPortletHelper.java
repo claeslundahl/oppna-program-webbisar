@@ -75,6 +75,8 @@ public class WebbisPortletHelper {
 
     private FileHandler fileHandler;
 
+    private Boolean testMode;
+
     public class WebbisValidationException extends Exception {
         private static final long serialVersionUID = 1L;
 
@@ -104,21 +106,20 @@ public class WebbisPortletHelper {
     /**
      * Constructor
      * 
-     * @param baseDir
-     *            the directory where images will be saved
      * @param baseUrl
      *            the base url to the image directory when accessing the files via http
-     * @param imageSize
-     *            the pixel-size (of the longest side) of the images are scaled to before saveing them on disk.
-     * @param imageQuality
-     *            the quality of the saved images. Should be a number between 0 and 100 where 100 gives the best
-     *            quality.
+     * @param fileHandler
+     *            utility handling file (transfer) operations
+     * @param testMode
+     *            flagging testmode, will affect e.g. validation of userId/authorId
+     * 
      */
-    public WebbisPortletHelper(String baseUrl, FileHandler fileHandler) {
+    public WebbisPortletHelper(String baseUrl, FileHandler fileHandler, Boolean testMode) {
 
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + '/';
         this.diskFileItemFactory = new DiskFileItemFactory();
         this.fileHandler = fileHandler;
+        this.testMode = testMode;
     }
 
     /**
@@ -420,9 +421,14 @@ public class WebbisPortletHelper {
 
             Webbis webbis;
             if (webbisId != null && !webbisId.equals("")) {
+                Date created = null;
+                Long dateLong = parseLong(request, WEBBIS_INDEX_PREFIX + idx + "_created");
+                if (dateLong != null) {
+                    created = new Date(dateLong);
+                }
                 webbis = new Webbis(Long.parseLong(webbisId), webbisName, getUserId(request), webbisGender,
                         webbisBirthTime, webbisWeight, webbisLength, hospital, home, parents, webbisImages,
-                        siblings, message, email, webpage);
+                        siblings, message, email, webpage, created);
             } else {
                 webbis = new Webbis(webbisName, getUserId(request), webbisGender, webbisBirthTime, webbisWeight,
                         webbisLength, hospital, home, parents, webbisImages, siblings, message, email, webpage);
@@ -516,9 +522,7 @@ public class WebbisPortletHelper {
     }
 
     /**
-     * Returns the userId of the logged in user.
-     * 
-     * TODO remove hard coding of userId!
+     * Returns the userId of the logged in user. If testMode==TRUE we return userId = 191212121212
      * 
      * @param request
      *            the PortletRequest
@@ -529,12 +533,15 @@ public class WebbisPortletHelper {
     public String getUserId(PortletRequest request) {
         String userId = null;
         if (request.getUserPrincipal() == null) {
-            // throw new RuntimeException("User not logged in properly");
-            userId = "9322496207"; // TODO: Remove!
+            if (Boolean.TRUE.equals(testMode)) {
+                userId = "191212121212";
+            } else {
+                throw new RuntimeException("User not logged in properly, no user principal found in request.");
+            }
         } else {
             userId = request.getUserPrincipal().getName();
             if (userId == null) {
-                throw new RuntimeException("User not logged in properly");
+                throw new RuntimeException("User not logged in properly, no user principal name found in request.");
             }
         }
         return userId;
@@ -598,6 +605,21 @@ public class WebbisPortletHelper {
             i = Integer.parseInt(request.getParameter(paramName));
         }
         return i;
+    }
+
+    /**
+     * Parses an long input field. Will return null if the request parameter is null or ''.
+     * 
+     * @param request
+     * @param paramName
+     * @return a Long
+     */
+    private Long parseLong(ActionRequest request, String paramName) {
+        Long l = null;
+        if (request.getParameter(paramName) != null && !request.getParameter(paramName).equals("")) {
+            l = Long.parseLong(request.getParameter(paramName));
+        }
+        return l;
     }
 
     /**

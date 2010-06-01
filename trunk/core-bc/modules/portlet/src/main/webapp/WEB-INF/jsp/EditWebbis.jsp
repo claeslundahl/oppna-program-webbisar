@@ -38,12 +38,12 @@
 <script language="javascript" type="text/javascript">
 /* <![CDATA[ */
   function limitText(limitField, limitCount, limitNum) {
-    if (limitField.value.length > limitNum) {
-      limitField.value = limitField.value.substring(0, limitNum);
-      alert('Max ' + limitNum + ' tecken tillåtna i detta fält.');
-    } else {
+      //if (limitField.value.length > limitNum) {
+      //limitField.value = limitField.value.substring(0, limitNum);
+      //alert('Max ' + limitNum + ' tecken tillåtna i detta fält.');
+      //} else {
       limitCount.value = limitNum - limitField.value.length;
-    }
+      //}
   }
 /* ]]> */
 </script>
@@ -65,6 +65,7 @@
       
 				<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'] != null and portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis != null}">
 					<input type="hidden" name="w0_webbisId" value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id}"/>
+          <input type="hidden" name="w0_created" value="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.createdAsLong}"/>
 				</c:if>
         
 				<div class="yui-b addwebbis">
@@ -275,10 +276,16 @@
           
           <!-- Listing multiple birth siblings, if any -->
           <c:forEach items="${portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}" varStatus="refRow" var="multipleBirthSibling">
+          
+            <div class="yui-g">
+              <hr class="greenLine" />
+            </div>
+          
             <div class="yui-g">
               <div class="yui-u first" style="margin-left: 0.4em">
                 
                 <input type="hidden" name="w${refRow.index+1}_webbisId" value="${multipleBirthSibling.id}"/>
+                <input type="hidden" name="w${refRow.index+1}_created" value="${multipleBirthSibling.createdAsLong}"/>
                 
                 <div class="yui-g">
                   <div class="yui-u first" style="width:99%">

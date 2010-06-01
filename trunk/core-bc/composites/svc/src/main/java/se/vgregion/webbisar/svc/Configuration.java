@@ -45,4 +45,6 @@ public interface Configuration {
     String getMailLogo();
 
     String getMailTemplate();
+
+    Boolean isTestMode();
 }
