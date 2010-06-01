@@ -27,25 +27,12 @@
 <faces-config>
 
   <application>
-    <!-- 
-    <navigation-handler>
-      org.springframework.webflow.executor.jsf.FlowNavigationHandler
-    </navigation-handler>
-    <variable-resolver>
-      org.springframework.webflow.executor.jsf.DelegatingFlowVariableResolver
-    </variable-resolver>
-     -->
-    
     <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
     
-    <message-bundle>
-      application-dev
-    </message-bundle>
+    <message-bundle>application-dev</message-bundle>
   </application>
 
   <lifecycle>
-    <phase-listener>
-      se.vgr.javg.support.webflow.v2.EventIdPhaseListener
-    </phase-listener>
+    <phase-listener>se.vgr.javg.support.webflow.v2.EventIdPhaseListener</phase-listener>
   </lifecycle>
 </faces-config>
