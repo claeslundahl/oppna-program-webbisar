@@ -21,6 +21,7 @@
 
   <properties>
     <spring.webflow.version>2.0.9.RELEASE</spring.webflow.version>
+	<compileSource>1.5</compileSource> <!-- Could not deploy on WebSphere (at least not via RAD) when compiled with 1.6 -->
   </properties>
 
   <modules>
