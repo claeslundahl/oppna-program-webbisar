@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -42,6 +44,8 @@ import se.vgregion.webbisar.svc.Configuration;
  */
 public class ImageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    private static final Log LOGGER = LogFactory.getLog(ImageServlet.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
 
@@ -67,7 +71,7 @@ public class ImageServlet extends HttpServlet {
             IOException {
         // Get requested image by path info.
         String requestedImage = request.getPathInfo();
-        System.out.println("requestedImage" + requestedImage);
+        LOGGER.info("requestedImage: " + requestedImage);
 
         if (requestedImage == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
@@ -75,8 +79,8 @@ public class ImageServlet extends HttpServlet {
         }
 
         File image = new File(imagePath, URLDecoder.decode(requestedImage, "UTF-8"));
-        System.out.println("image" + image.getAbsolutePath());
-        System.out.println("image" + image.getName());
+        LOGGER.info("imagePath: " + image.getAbsolutePath());
+        LOGGER.info("imageName" + image.getName());
 
         // Check if file exists
         if (!image.exists()) {

@@ -45,7 +45,7 @@
       <listeners>
           <nio-listener name="default" port="2121"/>
       </listeners>
-      <file-user-manager file="users.properties" />
+      <file-user-manager file="security.properties" />
     </server>
     
     <bean id="configuration" class="se.vgregion.webbisar.svc.impl.ConfigurationImpl">
