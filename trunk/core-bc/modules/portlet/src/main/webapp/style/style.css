@@ -161,6 +161,12 @@ div.search_info {
 	padding-bottom: 0.8em;
 }
 
+div.movie {
+  width: 150px;
+  height: 113px;
+  padding-bottom:2px;
+}
+
 img.selected {
 	border: 1px solid #9C132F;
 	width:14em;
@@ -187,6 +193,20 @@ img.full {
 	width: 43em;
 	margin-bottom:0.4em;
 	margin-left:0.8em;
+}
+
+object.full {
+  width: 43em;
+  margin-bottom:0.4em;
+  margin-left:0.8em;
+}
+
+object.notselected {
+  width:14em;
+  height:10.5em;
+  margin-top:0.6em;
+  margin-bottom:0.6em;
+  margin-left:0.6em;
 }
 
 hr.greenLine {

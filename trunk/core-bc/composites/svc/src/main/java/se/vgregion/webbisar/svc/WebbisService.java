@@ -68,4 +68,6 @@ public interface WebbisService {
     String getFtpConfiguration();
 
     Boolean isTestMode();
+
+    int getMaxVideoFileSize();
 }

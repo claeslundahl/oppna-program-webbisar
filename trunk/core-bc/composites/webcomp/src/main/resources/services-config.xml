@@ -28,7 +28,16 @@
        http://www.springframework.org/schema/context 
        http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-  <context:property-placeholder location="classpath:application-dev.properties" />
+  <!-- context:property-placeholder location="classpath:application-dev.properties"/  -->
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreUnresolvablePlaceholders" value="true" />
+    <property name="locations">
+    <list>
+      <value>classpath:application-dev.properties</value>
+      <value>classpath:security.properties</value>
+    </list>
+    </property>
+  </bean>
   
   <bean id="Webbisar_WebbisarFlowSupportBean" class="se.vgregion.webbisar.presentation.WebbisarFlowSupportBean" autowire="byType">
     <property name="mailSender"><ref bean="mailSender"/></property>
@@ -99,7 +108,7 @@
   <bean id="internalSitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
     <constructor-arg ref="webbisCacheService"/>
     <constructor-arg value="${webbisar.baseUrl}" />
-    <constructor-arg value="${webbisar.imageBaseUrl}" />
+    <constructor-arg value="${webbisar.multimediaFileBaseUrl}" />
   </bean>
   
   <bean id="internalSitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
@@ -125,8 +134,8 @@
     <property name="jobDetail" ref="sitemapCacheReload" />
     <!-- 2 minutes so webbisCacheReload has completed -->
     <property name="startDelay" value="120000" />
-    <!-- repeat every 24 hours = 86400000 -->
-    <property name="repeatInterval" value="86400000" />
+    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
+    <property name="repeatInterval" value="300000" />
   </bean>
   
   <bean id="triggerInternalSitemapCacheReload" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
@@ -134,8 +143,8 @@
     <property name="jobDetail" ref="internalSitemapCacheReload" />
     <!-- 2 minutes so webbisCacheReload has completed -->
     <property name="startDelay" value="120000" />
-    <!-- repeat every 24 hours = 86400000 -->
-    <property name="repeatInterval" value="86400000" />
+    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
+    <property name="repeatInterval" value="300000" />
   </bean>
   
   <bean id="triggerWebbisCacheReload" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
@@ -143,8 +152,8 @@
     <property name="jobDetail" ref="webbisCacheReload" />
     <!-- 10 seconds -->
     <property name="startDelay" value="10000" />
-    <!-- repeat every 24 hours = 86400000-->
-    <property name="repeatInterval" value="86400000" />
+    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
+    <property name="repeatInterval" value="300000" />
   </bean>
 
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

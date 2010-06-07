@@ -24,7 +24,6 @@ import static org.apache.commons.lang.StringUtils.*;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -43,6 +42,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.portlet.PortletFileUpload;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 
@@ -50,10 +50,11 @@ import se.vgregion.webbisar.beans.MainWebbisBean;
 import se.vgregion.webbisar.beans.PreviewWebbisBean;
 import se.vgregion.webbisar.types.BirthTime;
 import se.vgregion.webbisar.types.Hospital;
-import se.vgregion.webbisar.types.Image;
+import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Name;
 import se.vgregion.webbisar.types.Sex;
 import se.vgregion.webbisar.types.Webbis;
+import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 
 @SuppressWarnings("unchecked")
 public class WebbisPortletHelper {
@@ -66,9 +67,12 @@ public class WebbisPortletHelper {
     public static final String SESSION_ATTRIB_KEY_WEBBIS_INDEX = "webbisForm.webbisIndex";
     public static final String SESSION_ATTRIB_KEY_MAINWEBBISBEAN = "webbisForm.mainWebbisBean";
     public static final String SESSION_ATTRIB_KEY_AVAILABLE_IMAGEIDS = "webbisForm.availableImageIds";
+    public static final String SESSION_ATTRIB_KEY_AVAILABLE_VIDEOIDS = "webbisForm.availableVideoIds";
     public static final String WEBBIS_INDEX_PREFIX = "w";
 
-    public static int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle triplets
+    public static int MAX_NO_OF_MEDIAFILES = 4;
+    public static int MAX_NO_OF_VIDEOS = 1;
+    public static int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle twins and triplets
 
     private String baseUrl;
     private DiskFileItemFactory diskFileItemFactory;
@@ -76,6 +80,8 @@ public class WebbisPortletHelper {
     private FileHandler fileHandler;
 
     private Boolean testMode;
+
+    private int maxVideoFileSize;
 
     public class WebbisValidationException extends Exception {
         private static final long serialVersionUID = 1L;
@@ -112,54 +118,49 @@ public class WebbisPortletHelper {
      *            utility handling file (transfer) operations
      * @param testMode
      *            flagging testmode, will affect e.g. validation of userId/authorId
+     * @param maxVideoFileSize
+     *            max allowed size for video file upload
      * 
      */
-    public WebbisPortletHelper(String baseUrl, FileHandler fileHandler, Boolean testMode) {
+    public WebbisPortletHelper(String baseUrl, FileHandler fileHandler, Boolean testMode, int maxVideoFileSize) {
 
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + '/';
         this.diskFileItemFactory = new DiskFileItemFactory();
         this.fileHandler = fileHandler;
         this.testMode = testMode;
+        this.maxVideoFileSize = maxVideoFileSize;
     }
 
     /**
      * This method will parse the multipart request and if the user has pressed cancel return without doing
-     * anything else. If the user has pressed submit it will save all uploaded images in the temp folder on disk.
-     * It will also save references to the images in the session with the prefix 'webbis.mainform.'.
+     * anything else. If the user has pressed submit it will save uploaded images/video in the temp folder on disk.
+     * It will also save references to the images/video in the session with the prefix 'webbis.mainform.'.
      * 
      * @param request
      *            the ActionRequest object
+     * @return List of image references or NULL if video added or user pressed cancel
      */
-    public List<String> parseAndSaveImages(ActionRequest request) throws WebbisValidationException {
+    public List<String> parseAndSaveMultipartFiles(ActionRequest request) throws WebbisValidationException {
         try {
             PortletSession session = request.getPortletSession(true);
             PortletFileUpload upload = new PortletFileUpload(diskFileItemFactory);
-            List<FileItem> fileItems = upload.parseRequest(request);
+            List<FileItem> fileItemLocations = upload.parseRequest(request);
             // first check which button was clicked; submit or cancel
-            for (FileItem item : fileItems) {
+            for (FileItem item : fileItemLocations) {
                 if (item.isFormField()) {
                     if (item.getFieldName().equals("cancelAddImages")) {
                         // do nothing more - the user has pressed 'cancel'.
-                        return Collections.EMPTY_LIST;
+                        return null;
                     }
                 }
             }
-            List<String> imageFiles = new ArrayList<String>();
+            List<String> imageFiles = null;
             // parse and save the images on the temp area
-            for (FileItem item : fileItems) {
+            for (FileItem item : fileItemLocations) {
                 if (!item.isFormField()) {
 
                     if (item.getSize() > 0) {
-                        if (!item.getContentType().startsWith("image")) {
-                            throw new WebbisValidationException(
-                                    "Bildfilen måste vara av typen JPeg, GIF eller PNG");
-                        }
-
-                        // Add temp image
-                        String suffix = item.getName().substring(item.getName().indexOf('.'));
-                        String filename = generateGUID() + suffix;
-                        fileHandler.writeTempFile(filename, session.getId(), item.getInputStream());
-                        imageFiles.add("temp/" + session.getId() + "/" + filename);
+                        MediaType mediaType = MediaType.IMAGE;
 
                         // Check if "main" or multiple birth sibling webbis
                         Integer webbisIndex = 0;
@@ -167,11 +168,42 @@ public class WebbisPortletHelper {
                             webbisIndex = (Integer) session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX);
                         }
 
+                        // Check what we got...
+                        if (!item.getContentType().startsWith("image")) {
+                            if (item.getContentType().startsWith("video")) {
+                                // Validate size
+                                if (item.getSize() > maxVideoFileSize) {
+                                    throw new WebbisValidationException(
+                                            "Videofilen är för stor, maximalt tillåten storlek är 10MB.");
+                                }
+                                // Validate that max videos not already reached
+                                if (maxVideosReached(webbisIndex, session)) {
+                                    throw new WebbisValidationException(
+                                            "Det är inte tillåtet att ladda upp mer än en videofil.");
+                                }
+                                mediaType = MediaType.VIDEO;
+                            } else {
+                                throw new WebbisValidationException(
+                                        "Bildfiler måste vara av typen JPEG, GIF eller PNG\nVideofilen måste vara av typen WMV, AVI, MPEG, MOV eller 3GP");
+                            }
+                        }
+
+                        // Add temp image
+                        String contentType = item.getContentType();
+                        String suffix = item.getName().substring(item.getName().indexOf('.'));
+                        String filename = generateGUID() + suffix;
+                        fileHandler.writeTempFile(filename, session.getId(), item.getInputStream());
+                        if (MediaType.IMAGE.equals(mediaType)) {
+                            // Add to list, we need to resize later...
+                            imageFiles = new ArrayList<String>();
+                            imageFiles.add("temp/" + session.getId() + "/" + filename);
+                        }
+
                         // Set temp path on webbis
-                        setImageOnWebbisInSession(webbisIndex, session, filename);
+                        setMediaFileOnWebbisInSession(webbisIndex, session, filename, contentType, mediaType);
 
                         // If main image not set
-                        if (!isMainImageSet(webbisIndex, request)) {
+                        if (MediaType.IMAGE.equals(mediaType) && !isMainImageSet(webbisIndex, request)) {
                             setMainImage(webbisIndex, Integer.parseInt(item.getFieldName().substring(
                                     item.getFieldName().length() - 1)), request);
                         }
@@ -192,7 +224,8 @@ public class WebbisPortletHelper {
         }
     }
 
-    private void setImageOnWebbisInSession(Integer webbisIndex, PortletSession session, String filename) {
+    private void setMediaFileOnWebbisInSession(Integer webbisIndex, PortletSession session, String filename,
+            String contentType, MediaType mediaType) {
         MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
         Webbis webbis = null;
@@ -201,9 +234,31 @@ public class WebbisPortletHelper {
         } else {
             webbis = mainWebbisBean.getMultipleBirthWebbisSiblings().get(webbisIndex - 1);
         }
-        Image image = new Image();
+        MultimediaFile image = new MultimediaFile();
         image.setLocation("temp/" + session.getId() + "/" + filename);
-        webbis.getImages().add(image);
+        image.setMediaType(mediaType);
+        image.setContentType(contentType);
+        webbis.getMediaFiles().add(image);
+    }
+
+    private boolean maxVideosReached(Integer webbisIndex, PortletSession session) {
+        MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
+
+        Webbis webbis = null;
+        if (webbisIndex == 0) {
+            webbis = mainWebbisBean.getMainWebbis();
+        } else {
+            webbis = mainWebbisBean.getMultipleBirthWebbisSiblings().get(webbisIndex - 1);
+        }
+
+        int noOfVideos = 0;
+        for (MultimediaFile file : webbis.getMediaFiles()) {
+            if (MediaType.VIDEO.equals(file.getMediaType())) {
+                noOfVideos++;
+            }
+        }
+
+        return (noOfVideos >= MAX_NO_OF_VIDEOS);
     }
 
     /**
@@ -239,29 +294,32 @@ public class WebbisPortletHelper {
         Webbis webbis = parseWebbisInfo(request);
         putWebbisDataInSession(session, getMainWebbisBeanForWebbis(webbis));
 
-        // Cache info about number of availabe images etc
+        // Cache info about number of available images etc
         // Check if we got any sibling, if no index supplied we assume it is the "main" webbis
         ArrayList<String> availableImageIds = new ArrayList<String>();
         if (webbisIndex == null) {
             webbisIndex = 0;
         }
-        for (int i = 0; i <= MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; i++) {
-            if (request.getParameter(WEBBIS_INDEX_PREFIX + webbisIndex + "_image" + i) == null) {
-                availableImageIds.add(WEBBIS_INDEX_PREFIX + webbisIndex + "_image" + i);
+        for (int i = 0; i < MAX_NO_OF_MEDIAFILES; i++) {
+            if (request.getParameter(WEBBIS_INDEX_PREFIX + webbisIndex + "_mediaFile" + i) == null) {
+                availableImageIds.add(WEBBIS_INDEX_PREFIX + webbisIndex + "_mediaFile" + i);
             }
         }
+
         session.setAttribute(SESSION_ATTRIB_KEY_AVAILABLE_IMAGEIDS, availableImageIds);
         session.setAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX, webbisIndex);
     }
 
     /**
-     * This method will remove all info corresponding to a certain image number from the session. Note: it will not
-     * remove any files from the file system as this should be done when publishing the webbis.
+     * This method will remove all info corresponding to a certain media file number from the session. Note: it
+     * will not remove any files from the file system as this should be done when publishing the webbis.
      * 
-     * @param imageNumber
-     *            - the image to remove
+     * @param webbisIndex
+     *            index of webbis (if multiple birth siblings)
+     * @param fileNumber
+     *            - the index of file to remove
      */
-    public void removeImage(int webbisIndex, int imageNumber, ActionRequest request) {
+    public void removeMediaFile(int webbisIndex, int fileNumber, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
 
         MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
@@ -273,12 +331,13 @@ public class WebbisPortletHelper {
             webbis = mainWebbisBean.getMultipleBirthWebbisSiblings().get(webbisIndex - 1);
         }
 
-        if (webbis.getImages() != null && webbis.getImages().size() > imageNumber) {
+        List<MultimediaFile> fileList = webbis.getMediaFiles();
+        if (fileList != null && fileList.size() > fileNumber) {
             int index = 0;
-            Iterator itr = webbis.getImages().iterator();
+            Iterator itr = fileList.iterator();
             while (itr.hasNext()) {
                 itr.next(); // We don't need the object...
-                if (index == imageNumber) {
+                if (index == fileNumber) {
                     itr.remove();
                     break;
                 }
@@ -297,13 +356,15 @@ public class WebbisPortletHelper {
         PortletSession session = request.getPortletSession(true);
         MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
-        mainWebbisBean.getSelectedMainImages()[webbisIndex] = WEBBIS_INDEX_PREFIX + webbisIndex + "_image"
+        mainWebbisBean.getSelectedMainImages()[webbisIndex] = WEBBIS_INDEX_PREFIX + webbisIndex + "_mediaFile"
                 + imageNumber;
     }
 
     /**
      * Checks if the main image has been set in the session.
      * 
+     * @param webbisIndex
+     *            index of webbis, if multiple birth siblings (twins/triplets)
      * @param request
      *            the ActionRequest
      * @return true of the main image has been set in the session
@@ -311,10 +372,17 @@ public class WebbisPortletHelper {
     private boolean isMainImageSet(int webbisIndex, ActionRequest request) {
         PortletSession session = request.getPortletSession(true);
         MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
-        // Object mainImage = mainWebbisBean.getSelectedMainImages()[webbisIndex];
-        Object mainImage = mainWebbisBean.getSelectedMainImages();
-        return ((mainImage != null) && (mainImage.toString().startsWith(WEBBIS_INDEX_PREFIX + webbisIndex
-                + "_image")));
+        // Ensure we had a bean in session
+        if (mainWebbisBean == null) {
+            return false;
+        }
+        String[] mainImage = mainWebbisBean.getSelectedMainImages();
+        // Ensure we have an array, that it has the correct length and that target position is populated
+        if (mainImage == null || mainImage.length <= webbisIndex || mainImage[webbisIndex] == null) {
+            return false;
+        }
+        return (mainImage != null && mainImage.length > webbisIndex && mainImage[webbisIndex].toString()
+                .startsWith(WEBBIS_INDEX_PREFIX + webbisIndex + "_mediaFile"));
 
     }
 
@@ -380,62 +448,64 @@ public class WebbisPortletHelper {
         // Webbis multiple birth sibling loop, handling any twins/triplets as well
         Webbis mainWebbis = null;
         List<Webbis> multipleBirthSiblings = new ArrayList<Webbis>();
-        for (int idx = 0; idx < MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; idx++) {
+        for (int webbisIdx = 0; webbisIdx < MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; webbisIdx++) {
             // Check if we got any sibling
-            if (request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_webbisId") == null) {
+            if (request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_webbisId") == null) {
                 break;
             }
 
-            String webbisId = htmlStrip(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_webbisId"));
-            String webbisName = parseName(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_webbisname"));
+            String webbisId = htmlStrip(request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_webbisId"));
+            String webbisName = parseName(request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_webbisname"));
             Sex webbisGender;
-            if ("Female".equals(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_gender"))) {
+            if ("Female".equals(request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_gender"))) {
                 webbisGender = Sex.Female;
             } else {
                 webbisGender = Sex.Male;
             }
-            int webbisYear = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_year");
-            int webbisMonth = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_month");
-            int webbisDay = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_day");
-            int webbisHour = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_hour");
-            int webbisMinute = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_min");
+            int webbisYear = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_year");
+            int webbisMonth = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_month");
+            int webbisDay = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_day");
+            int webbisHour = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_hour");
+            int webbisMinute = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_min");
             BirthTime webbisBirthTime = new BirthTime(webbisYear, webbisMonth, webbisDay, webbisHour, webbisMinute);
 
-            int webbisWeight = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_weight");
-            int webbisLength = parseInt(request, WEBBIS_INDEX_PREFIX + idx + "_length");
+            int webbisWeight = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_weight");
+            int webbisLength = parseInt(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_length");
 
-            List<Image> webbisImages = new ArrayList<Image>();
+            List<MultimediaFile> webbisMediaFiles = new ArrayList<MultimediaFile>();
 
             // Get index of main image
-            int webbisMainImage = (request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_main-image") == null || ""
-                    .equals(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_main-image"))) ? 0 : Integer
-                    .parseInt(request.getParameter(WEBBIS_INDEX_PREFIX + idx + "_main-image").substring(8));
+            int webbisMainImage = (request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_main-image") == null || ""
+                    .equals(request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_main-image"))) ? 0 : Integer
+                    .parseInt(request.getParameter(WEBBIS_INDEX_PREFIX + webbisIdx + "_main-image").substring(12));
             // Put the main image first in the list of images
-            parseImage(request, webbisImages, WEBBIS_INDEX_PREFIX + idx + "_image" + webbisMainImage);
+            parseMultimediaFile(request, webbisMediaFiles, WEBBIS_INDEX_PREFIX + webbisIdx + "_mediaFile"
+                    + webbisMainImage);
             // Place other images after main
-            for (int i = 0; i <= MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS; i++) {
+            for (int i = 0; i < MAX_NO_OF_MEDIAFILES; i++) {
                 if (i != webbisMainImage) {
-                    parseImage(request, webbisImages, WEBBIS_INDEX_PREFIX + idx + "_image" + i);
+                    parseMultimediaFile(request, webbisMediaFiles, WEBBIS_INDEX_PREFIX + webbisIdx + "_mediaFile"
+                            + i);
                 }
             }
 
             Webbis webbis;
             if (webbisId != null && !webbisId.equals("")) {
                 Date created = null;
-                Long dateLong = parseLong(request, WEBBIS_INDEX_PREFIX + idx + "_created");
+                Long dateLong = parseLong(request, WEBBIS_INDEX_PREFIX + webbisIdx + "_created");
                 if (dateLong != null) {
                     created = new Date(dateLong);
                 }
                 webbis = new Webbis(Long.parseLong(webbisId), webbisName, getUserId(request), webbisGender,
-                        webbisBirthTime, webbisWeight, webbisLength, hospital, home, parents, webbisImages,
+                        webbisBirthTime, webbisWeight, webbisLength, hospital, home, parents, webbisMediaFiles,
                         siblings, message, email, webpage, created);
             } else {
                 webbis = new Webbis(webbisName, getUserId(request), webbisGender, webbisBirthTime, webbisWeight,
-                        webbisLength, hospital, home, parents, webbisImages, siblings, message, email, webpage);
+                        webbisLength, hospital, home, parents, webbisMediaFiles, siblings, message, email, webpage);
             }
 
             // Set main webbis (always index == 0) or couple multiple birth sibling and main webbis
-            if (idx == 0) {
+            if (webbisIdx == 0) {
                 mainWebbis = webbis;
             } else {
                 webbis.setMainMultipleBirthWebbis(mainWebbis);
@@ -548,19 +618,28 @@ public class WebbisPortletHelper {
     }
 
     /**
-     * This method parses an image from the input request data and adds it to the list of images. The location of
-     * the image is set to a relative link (without baseDir/baseUrl).
+     * This method parses an image from the input request data and adds it to the list of multimedia files. The
+     * location of the file is set to a relative link (without baseDir/baseUrl).
      * 
      * @param request
-     * @param images
-     *            the list of images
-     * @param imageParamName
-     *            e.g. 'image1'
+     * @param multimediaFiles
+     *            the list of multimedia files
+     * @param fileParamName
+     *            e.g. 'w0_IMAGE1'
      */
-    private void parseImage(ActionRequest request, List<Image> images, String imageParamName) {
-        if (request.getParameter(imageParamName) != null) {
-            images.add(new Image(request.getParameter(imageParamName).replace(baseUrl, ""), htmlStrip(request
-                    .getParameter(imageParamName + "-text"))));
+    private void parseMultimediaFile(ActionRequest request, List<MultimediaFile> multimediaFiles,
+            String fileParamName) {
+        if (request.getParameter(fileParamName) != null) {
+            String contentType = request.getParameter(fileParamName + "_contentType");
+
+            MediaType mediaType = MediaType.IMAGE;
+            String mediaTypeStr = request.getParameter(fileParamName + "_mediaType");
+            if (!StringUtils.isEmpty(mediaTypeStr)) {
+                mediaType = MediaType.valueOf(mediaTypeStr);
+            }
+
+            multimediaFiles.add(new MultimediaFile(request.getParameter(fileParamName).replace(baseUrl, ""),
+                    htmlStrip(request.getParameter(fileParamName + "-text")), mediaType, contentType));
         }
     }
 
@@ -654,10 +733,10 @@ public class WebbisPortletHelper {
         if (mainWebbisBean == null) {
             BirthTime birthTimeDefaultToday = new BirthTime(new Date());
             List<Name> parentsDefaultEmptyList = new ArrayList<Name>();
-            List<Image> imagesDefaultEmptyList = new ArrayList<Image>();
+            List<MultimediaFile> mediaFileDefaultEmptyList = new ArrayList<MultimediaFile>();
 
             Webbis webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
-                    parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
+                    parentsDefaultEmptyList, mediaFileDefaultEmptyList, null, null, null, null);
 
             mainWebbisBean = getMainWebbisBeanForWebbis(webbis);
         }
@@ -692,12 +771,12 @@ public class WebbisPortletHelper {
         if (noOfSiblings != null) {
             BirthTime birthTimeDefaultToday = new BirthTime(new Date());
             List<Name> parentsDefaultEmptyList = new ArrayList<Name>();
-            List<Image> imagesDefaultEmptyList = new ArrayList<Image>();
+            List<MultimediaFile> mediaFileDefaultEmptyList = new ArrayList<MultimediaFile>();
 
             List<Webbis> multipleBirthSiblings = new ArrayList<Webbis>();
             for (int i = 0; i < noOfSiblings; i++) {
                 Webbis webbis = new Webbis(null, null, Sex.Male, birthTimeDefaultToday, 0, 0, null, null,
-                        parentsDefaultEmptyList, imagesDefaultEmptyList, null, null, null, null);
+                        parentsDefaultEmptyList, mediaFileDefaultEmptyList, null, null, null, null);
 
                 webbis.setMainMultipleBirthWebbis(mainWebbisBean.getMainWebbis());
                 multipleBirthSiblings.add(webbis);

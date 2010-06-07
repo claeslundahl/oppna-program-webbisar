@@ -58,7 +58,7 @@ public class ImageServlet extends HttpServlet {
     public void init() throws ServletException {
         WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         Configuration config = (Configuration) ctx.getBean("configuration");
-        imagePath = config.getImageBaseDir();
+        imagePath = config.getMultimediaFileBaseDir();
         super.init();
     }
 
@@ -86,8 +86,11 @@ public class ImageServlet extends HttpServlet {
 
         // Get content type by filename.
         String contentType = getServletContext().getMimeType(image.getName().replace(".JPG", ".jpg"));
+        if (contentType == null && image.getName().endsWith("3gp")) {
+            contentType = "video/3gpp";
+        }
 
-        if (contentType == null || !contentType.startsWith("image")) {
+        if (contentType == null || !(contentType.startsWith("image") || contentType.startsWith("video"))) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
             return;
         }

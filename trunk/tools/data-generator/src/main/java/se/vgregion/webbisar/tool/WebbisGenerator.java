@@ -34,10 +34,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import se.vgregion.webbisar.svc.WebbisService;
 import se.vgregion.webbisar.types.BirthTime;
 import se.vgregion.webbisar.types.Hospital;
-import se.vgregion.webbisar.types.Image;
+import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Name;
 import se.vgregion.webbisar.types.Sex;
 import se.vgregion.webbisar.types.Webbis;
+import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 
 public class WebbisGenerator {
 
@@ -100,7 +101,7 @@ public class WebbisGenerator {
         parents.add(NameGenerator.generateFemaleName());
         parents.add(NameGenerator.generateMaleName());
 
-        List<Image> images = new ArrayList<Image>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
         images.add(generateImage());
         for (int i = 0; i < rand.nextInt(3); i++) {
             images.add(generateImage());
@@ -143,10 +144,10 @@ public class WebbisGenerator {
         return Hospital.values()[rand.nextInt(l - 1)]; // remove unknown
     }
 
-    private Image generateImage() {
+    private MultimediaFile generateImage() {
         int n = rand.nextInt(11);
-        // return new Image(IMAGES_URL_ROOT+ n +".jpg", "Lilla gosan");
-        return new Image(n + ".jpg", "lilla gosan");
+        // return new MultimediaFile(IMAGES_URL_ROOT+ n +".jpg", "Lilla gosan");
+        return new MultimediaFile(n + ".jpg", "lilla gosan", MediaType.IMAGE, "image/jpeg");
     }
 
     private String generateAuthorId() {

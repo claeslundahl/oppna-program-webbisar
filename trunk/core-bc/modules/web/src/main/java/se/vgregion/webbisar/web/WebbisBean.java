@@ -25,18 +25,17 @@ import se.vgregion.webbisar.types.Webbis;
 
 public class WebbisBean extends se.vgregion.webbisar.presentation.WebbisBean {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private List<WebbisBean> list;
-	
-	public WebbisBean(String imageBaseUrl, Webbis webbis, List<WebbisBean> list) {
-		super(imageBaseUrl, webbis);
-		this.list = list;
-	}
+    private List<WebbisBean> list;
 
-	public boolean isLast() {
-		return  this == list.get(list.size() - 1);
-	}
+    public WebbisBean(String mediaFileBaseUrl, Webbis webbis, List<WebbisBean> list) {
+        super(mediaFileBaseUrl, webbis);
+        this.list = list;
+    }
 
-	
+    public boolean isLast() {
+        return this == list.get(list.size() - 1);
+    }
+
 }

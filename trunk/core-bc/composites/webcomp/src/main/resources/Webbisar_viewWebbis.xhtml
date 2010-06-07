@@ -37,8 +37,8 @@
 					<div class="yui-b header"><h2>Webbisar</h2></div>
             <div class="yui-b topinfo">
               <p>
-                Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
-                och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en&#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.                 
+                Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
+              <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
               </p>
             </div>
 					<div class="yui-b">
@@ -75,10 +75,25 @@
 			 				<h3 class="webbis">#{Webbis.header}</h3>
 							<div class="yui-gc">
 								<div class="yui-u first">
-                  <!-- TODO: video? -->
-                  <img class="full" src="#{Webbis.selectedImageUrl}"></img>
+                  <c:choose>
+                    <c:when test="${Webbis.selectedMediaType != 'VIDEO'}">
+                      <img class="full" src="#{Webbis.selectedMediaFileUrl}"></img>
+                    </c:when>
+                    <c:otherwise>
+                      <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="player" class="full">
+                        <param name="url" value="#{Webbis.selectedMediaFileUrl}" />
+                        <param name="src" value="#{Webbis.selectedMediaFileUrl}" />
+                        <param name="showcontrols" value="true" />
+                        <param name="autostart" value="false" />
+                        <embed width="430px" height="323px" name="player" 
+                          showcontrols="1" autoplay="0" controller="1" scale="tofit"
+                          src="#{Webbis.selectedMediaFileUrl}" 
+                          type="#{Webbis.selectedContentType}" />
+                      </object> 
+                    </c:otherwise>
+                  </c:choose>
                 </div>
-								<div class="yui-u" style="margin-left:0; margin-right:2px; padding-left:2px;">
+								<div class="yui-u" style="margin-left:0; margin-right:5px; padding-left:2px;">
 									<p><b>Född:</b> #{Webbis.longDate}</p>
                   <c:if test="#{Webbis.weight != '0g'}">
                     <p><b>Vikt:</b> #{Webbis.weight}</p>
@@ -150,7 +165,16 @@
 								<div class="yui-u" style="width: 22%">
                   <p style="text-align: right">
                     <!-- img src="resources/images/magnifying-glass.png" style="height:1.2em; padding-right:0.5em;"/ -->
-                    <a href="#{Webbis.selectedImageUrl}" target="new">Visa större bild</a>
+                    <a href="#{Webbis.selectedMediaFileUrl}" target="new">
+                      <c:choose>
+                        <c:when test="${Webbis.selectedMediaType != 'VIDEO'}">
+                          Visa större bild
+                        </c:when>
+                        <c:otherwise>
+                          Visa/hämta film
+                        </c:otherwise>
+                      </c:choose>
+                    </a>
                   </p>
                 </div>
 								<div class="yui-u"></div>
@@ -158,34 +182,62 @@
 							<div class="yui-g piclist">
 								<div class="yui-g first">
 									<div class="yui-u first">
-                    <c:if test="#{Webbis.imageUrls[0] != null}">
-			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=0&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                        <img class="#{Webbis.style[0]}" src="#{Webbis.imageUrls[0]}"/>
+                    <c:if test="#{Webbis.mediaFiles[0] != null}">
+                      <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=0&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                        <c:choose>
+                          <c:when test="${Webbis.mediaFiles[0].mediaType != 'VIDEO'}">
+                            <img class="#{Webbis.style[0]}" src="#{Webbis.mediaFiles[0].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="#{Webbis.style[0]} video" src="#{Webbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                       </a>
                     </c:if>
                   </div>
 									<div class="yui-u">
-                    <c:if test="#{Webbis.imageUrls[1] != null}">
-			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=1&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                        <img class="#{Webbis.style[1]}" src="#{Webbis.imageUrls[1]}"/>
+                    <c:if test="#{Webbis.mediaFiles[1] != null}">
+                      <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=1&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+			  							  <c:choose>
+                          <c:when test="${Webbis.mediaFiles[1].mediaType != 'VIDEO'}">
+                            <img class="#{Webbis.style[1]}" src="#{Webbis.mediaFiles[1].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="#{Webbis.style[1]} video" src="#{Webbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                       </a>
-                     </c:if>
-                   </div>
+                    </c:if>
+                  </div>
 								</div>
 								<div class="yui-g">
 									<div class="yui-u first">
-                    <c:if test="#{Webbis.imageUrls[2] != null}">
-			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=2&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                        <img class="#{Webbis.style[2]}" src="#{Webbis.imageUrls[2]}"/>
+                    <c:if test="#{Webbis.mediaFiles[2] != null}">
+                      <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=2&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+  			  							<c:choose>
+                          <c:when test="${Webbis.mediaFiles[2].mediaType != 'VIDEO'}">                          
+                            <img class="#{Webbis.style[2]}" src="#{Webbis.mediaFiles[2].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="#{Webbis.style[2]} video" src="#{Webbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                       </a>
-                     </c:if>
+                    </c:if>
                   </div>
 									<div class="yui-u">
-                    <c:if test="#{Webbis.imageUrls[3] != null}">
-			  							<a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=3&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                        <img class="#{Webbis.style[3]}" src="#{Webbis.imageUrls[3]}"/>
+                    <c:if test="#{Webbis.mediaFiles[3] != null}">
+                      <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=3&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+			  							  <c:choose>
+                          <c:when test="${Webbis.mediaFiles[3].mediaType != 'VIDEO'}">
+                            <img class="#{Webbis.style[3]}" src="#{Webbis.mediaFiles[3].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="#{Webbis.style[3]} video" src="#{Webbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                       </a>
-                     </c:if>
+                    </c:if>
                   </div>
 								</div>
 							</div>

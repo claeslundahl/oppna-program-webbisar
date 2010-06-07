@@ -46,10 +46,10 @@ public class MainWebbisBean implements Serializable {
     private String email;
 
     private String[] selectedMainImages = new String[10];
-    private String imageBaseUrl;
+    private String mediaFileBaseUrl;
     private String userId;
 
-    public MainWebbisBean(Webbis webbis, String imageBaseUrl) {
+    public MainWebbisBean(Webbis webbis, String mediaFileBaseUrl) {
         this.mainWebbis = webbis;
         this.multipleBirthWebbisSiblings = webbis.getMultipleBirthSiblings();
 
@@ -71,20 +71,20 @@ public class MainWebbisBean implements Serializable {
 
         // Set selected main image to first image for now. May be changed in session, but when saved the selection
         // will be sorted as first image in list. Named as image1 or (birth sibling) [index]image1 in jsp.
-        if (mainWebbis.getImages() != null && mainWebbis.getImages().size() > 0) {
-            this.selectedMainImages[0] = "w0_image0";
+        if (mainWebbis.getMediaFiles() != null && mainWebbis.getMediaFiles().size() > 0) {
+            this.selectedMainImages[0] = "w0_mediaFile0";
         }
         if (multipleBirthWebbisSiblings != null) {
             for (int i = 0; i < multipleBirthWebbisSiblings.size(); i++) {
                 Webbis w = multipleBirthWebbisSiblings.get(i);
-                if (w.getImages() != null && w.getImages().size() > 0) {
+                if (w.getMediaFiles() != null && w.getMediaFiles().size() > 0) {
                     int relativeIndex = i + 1;
-                    this.selectedMainImages[relativeIndex] = "w" + relativeIndex + "_image0";
+                    this.selectedMainImages[relativeIndex] = "w" + relativeIndex + "_mediaFile0";
                 }
             }
         }
 
-        this.imageBaseUrl = imageBaseUrl;
+        this.mediaFileBaseUrl = mediaFileBaseUrl;
         this.userId = webbis.getAuthorId();
     }
 
@@ -168,16 +168,20 @@ public class MainWebbisBean implements Serializable {
         this.email = email;
     }
 
-    public String getImageBaseUrl() {
-        return imageBaseUrl;
+    public String getMediaFileBaseUrl() {
+        return mediaFileBaseUrl;
     }
 
-    public void setImageBaseUrl(String imageBaseUrl) {
-        this.imageBaseUrl = imageBaseUrl;
+    public void setMediaFileBaseUrl(String mediaFileBaseUrl) {
+        this.mediaFileBaseUrl = mediaFileBaseUrl;
     }
 
     public String[] getSelectedMainImages() {
         return selectedMainImages;
+    }
+
+    public String getVideoThumbUrl() {
+        return mediaFileBaseUrl + "/video-thumb.png";
     }
 
     public void setSelectedMainImages(String[] mainImages) {

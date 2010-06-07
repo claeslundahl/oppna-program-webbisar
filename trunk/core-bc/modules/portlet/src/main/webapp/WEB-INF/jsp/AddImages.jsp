@@ -48,14 +48,21 @@
 			
 				<div class="yui-b addwebbis">
 					<div class="yui-g">
-						<h3 class="webbis">Lägg till bilder</h3>
-					
+						<h3 class="webbis">Lägg till bilder / film</h3>
+            <div style="margin-left: 0.4em">
+              <c:choose>
+                <c:when test="${empty portletSessionScope['webbisForm.availableImageIds']}">
+                  <p>Det är endast tillåtet att lägga till fyra objekt, varav en film. Ta bort något befintligt objekt för att kunna ladda upp en annan bild/film.</p>
+                </c:when>
+                <c:otherwise>
+                  <p>Det är tillåtet att lägga till fyra objekt, varav en film. Maximalt kan fyra bilder, alternativt tre bilder och en film, laddas upp.<br/><br/>Maximal tillåten storlek på filmen är 10MB. Det är inte möjligt att välja film som "förstabild".</p>
+                </c:otherwise>
+              </c:choose>
+					  </div>
+            
 						<div class="yui-u first" style="margin-left: 0.4em">
-
-							<c:if test="${empty portletSessionScope['webbisForm.availableImageIds']}">
-								<p>Det är endast tillåtet att lägga till fyra bilder. Ta bort någon befintlig bild för att kunna ladda upp ytterligare bilder.</p>
-							</c:if>
 							<c:if test="${not empty validationMessages}">
+                <br/>
 								<p style="color: red">
 									<c:out value="${validationMessages[0]}"/>
 								</p>
@@ -63,18 +70,17 @@
 							<c:forEach var="current" items="${portletSessionScope['webbisForm.availableImageIds']}">
 								<br/>
 								<p>
-									<label for="<c:out value="${current}"/>">Välj bild: </label>
+									<label for="<c:out value="${current}"/>">Välj mediafil: </label>
 									<input name="<c:out value="${current}"/>" type="file" class="text" />	
 								</p>
 							</c:forEach>
-							<br/>
-							<br/>
+              <br/>
+              <br/>
 						</div>
 					</div>
 					<div class="yui-g">
 						<div class="yui-u first"></div>
 						<div class="yui-u" style="text-align: right">
-							
 							<c:if test="${not empty portletSessionScope['webbisForm.availableImageIds']}">
 								<input name="cancelAddImages" value="Avbryt" type="submit"/>
 								<input name="saveImages" value="Lägg till" type="submit"/>
@@ -83,8 +89,6 @@
 								<input name="cancelAddImages" value="Tillbaka" type="submit"/>
 							</c:if>
 						</div>
-						
-					
 					</div>	
 				</div>
 			</form>

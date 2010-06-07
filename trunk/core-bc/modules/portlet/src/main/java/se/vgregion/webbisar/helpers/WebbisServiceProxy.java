@@ -101,6 +101,10 @@ public class WebbisServiceProxy {
         return webbisService.isTestMode();
     }
 
+    public int getMaxVideoFileSize() {
+        return webbisService.getMaxVideoFileSize();
+    }
+
     public void reindex() {
         webbisService.reindex();
     }

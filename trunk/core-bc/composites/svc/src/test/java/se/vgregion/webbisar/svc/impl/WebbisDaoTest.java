@@ -42,10 +42,11 @@ import org.springframework.transaction.annotation.Transactional;
 import se.vgregion.webbisar.svc.WebbisDao;
 import se.vgregion.webbisar.types.BirthTime;
 import se.vgregion.webbisar.types.Hospital;
-import se.vgregion.webbisar.types.Image;
+import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Name;
 import se.vgregion.webbisar.types.Sex;
 import se.vgregion.webbisar.types.Webbis;
+import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 
 /**
  * Spring 2.5 POJO Test Cases
@@ -84,45 +85,53 @@ public class WebbisDaoTest {
     @Rollback(false)
     public void testInsert() throws Exception {
         List<Name> parents = new ArrayList<Name>();
-        List<Image> images = new ArrayList<Image>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Gunnar", "Bohlin"));
         parents.add(new Name("Jenny", "Lind"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
         webbisDao.save(new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma"));
 
         parents = new ArrayList<Name>();
-        images = new ArrayList<Image>();
+        images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Kalle", "Bohlin"));
         parents.add(new Name("Jenny", "Nilsson"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
         webbisDao.save(new Webbis("Gunnar", "someId", Sex.Male, new BirthTime(2009, 1, 4, 0, 0), 3453, 49,
                 Hospital.OSTRA, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma"));
 
         parents = new ArrayList<Name>();
-        images = new ArrayList<Image>();
+        images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Janne", "Johansson"));
         parents.add(new Name("Emma", "Svensson"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
         webbisDao.save(new Webbis("Kalle", "someOtherId", Sex.Male, new BirthTime(2009, 1, 2, 14, 34), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma"));
 
         parents = new ArrayList<Name>();
-        images = new ArrayList<Image>();
+        images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Kalle", "Bohlin"));
         parents.add(new Name("Jenny", "Nilsson"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
         Webbis webbis = new Webbis("Gunnar", "someId", Sex.Male, new BirthTime(2009, 1, 4, 0, 23), 3453, 49,
                 Hospital.NAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma");
@@ -130,12 +139,14 @@ public class WebbisDaoTest {
         webbisDao.save(webbis);
 
         parents = new ArrayList<Name>();
-        images = new ArrayList<Image>();
+        images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Urban", "Svensson"));
         parents.add(new Name("Anna", "Örland"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("http://somewhere.se/images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
+                MediaType.IMAGE, "image/jpeg"));
         webbisDao.save(new Webbis("Berra", "someOtherId", Sex.Male, new BirthTime(2009, 1, 5, 0, 24), 3453, 49,
                 Hospital.MOLNDAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande",
                 "email@email.se", "http://www.blog.se/mamma"));
