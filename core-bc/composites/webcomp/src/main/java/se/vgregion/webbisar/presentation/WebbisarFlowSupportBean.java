@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -40,7 +41,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.webflow.context.ExternalContext;
 
+import se.vgregion.webbisar.presentation.exceptions.WebbisNotFoundException;
 import se.vgregion.webbisar.svc.Configuration;
 import se.vgregion.webbisar.svc.WebbisService;
 import se.vgregion.webbisar.types.Webbis;
@@ -109,20 +112,29 @@ public class WebbisarFlowSupportBean {
 
         List<WebbisBean> list = new ArrayList<WebbisBean>();
         for (Webbis webbis : webbisar) {
-            list.add(new WebbisBean(cfg.getImageBaseUrl(), webbis, 0));
+            list.add(new WebbisBean(cfg.getMultimediaFileBaseUrl(), webbis, 0));
         }
         return new WebbisPageBean(pageNumber, pageNumber == 0, pageNumber == (numberOfPages - 1), list);
     }
 
-    public WebbisBean getWebbis(final Long webbisId, final Integer selectedImage) {
+    public WebbisBean getWebbis(final Long webbisId, final Integer selectedImage, ExternalContext externalContext)
+            throws WebbisNotFoundException {
         int imageId = (selectedImage == null) ? 0 : selectedImage;
 
         Webbis webbis = webbisService.getById(webbisId);
 
-        return new WebbisBean(cfg.getImageBaseUrl(), webbis, imageId);
+        if (webbis == null) {
+            if (externalContext != null && externalContext.getNativeResponse() instanceof HttpServletResponse) {
+                ((HttpServletResponse) externalContext.getNativeResponse()).setStatus(404);
+            }
+            throw new WebbisNotFoundException("Webbis med id " + webbisId + " finns inte.");
+        }
+
+        return new WebbisBean(cfg.getMultimediaFileBaseUrl(), webbis, imageId);
     }
 
-    public MailMessageResultBean sendWebbis(final Long webbisId, final MailMessageBean mailMessageBean) {
+    public MailMessageResultBean sendWebbis(final Long webbisId, final MailMessageBean mailMessageBean)
+            throws WebbisNotFoundException {
 
         // Validate email adresses first
         MailMessageResultBean result = validateEmailAddresses(mailMessageBean);
@@ -138,7 +150,7 @@ public class WebbisarFlowSupportBean {
 
         // use this map to store the information that will be merged into the html template
         Map<String, String> emailInformation = new HashMap<String, String>();
-        WebbisBean webbisBean = getWebbis(webbisId, null);
+        WebbisBean webbisBean = getWebbis(webbisId, null, null);
         Map<Long, String> webbisarIdNames = webbisBean.getMultipleBirthSiblingIdsAndNames();
 
         String messageText = mailMessageBean.getMessage();
@@ -191,7 +203,7 @@ public class WebbisarFlowSupportBean {
             helper.setText(msgText, true);
 
             // include the vgr logo
-            String logoPath = cfg.getImageBaseDir() + "/" + cfg.getMailLogo();
+            String logoPath = cfg.getMultimediaFileBaseDir() + "/" + cfg.getMailLogo();
             FileSystemResource res = new FileSystemResource(new File(logoPath));
             helper.addInline("imageIdentifier", res);
 

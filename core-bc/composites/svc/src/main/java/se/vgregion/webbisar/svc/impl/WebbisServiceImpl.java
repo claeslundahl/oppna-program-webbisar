@@ -33,7 +33,7 @@ import se.vgregion.webbisar.svc.Configuration;
 import se.vgregion.webbisar.svc.WebbisDao;
 import se.vgregion.webbisar.svc.WebbisService;
 import se.vgregion.webbisar.types.Hospital;
-import se.vgregion.webbisar.types.Image;
+import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Webbis;
 import se.vgregion.webbisar.util.CallContextUtil;
 
@@ -80,16 +80,15 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     public void save(String tempDir, Webbis w) {
-
-        // We expect the webbis to come with images in the temp folder.
-        copyWebbisImagesToDir(ImageUtil.getDirForTodaysDate(cfg.getImageBaseDir()), w);
+        // We expect the webbis to come with images/video in the temp folder.
+        copyWebbisMultimediaFilesToDir(ImageUtil.getDirForTodaysDate(cfg.getMultimediaFileBaseDir()), w);
 
         if (w.isPersisted()) {
             // Load the previous version of the Webbis.
             Webbis previousWebbis = this.webbisDao.get(w.getId());
 
             // Remove any unused images
-            removeImageFiles(w.getUnusedImages(previousWebbis));
+            removeImageFiles(w.getUnusedMediaFiles(previousWebbis));
             // Handle images for multiple birth siblings as well, if any.
             if (previousWebbis.getMultipleBirthSiblings() != null && w.getMultipleBirthSiblings() != null
                     && previousWebbis.getMultipleBirthSiblings().size() == w.getMultipleBirthSiblings().size()) {
@@ -98,7 +97,7 @@ public class WebbisServiceImpl implements WebbisService {
                 for (int i = 0; i < previousWebbis.getMultipleBirthSiblings().size(); i++) {
                     siblingWebbis = w.getMultipleBirthSiblings().get(i);
                     previousSiblingWebbis = previousWebbis.getMultipleBirthSiblings().get(i);
-                    removeImageFiles(siblingWebbis.getUnusedImages(previousSiblingWebbis));
+                    removeImageFiles(siblingWebbis.getUnusedMediaFiles(previousSiblingWebbis));
                 }
             }
 
@@ -117,7 +116,7 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     private File getFullTempDir(String tempDir) {
-        File tmpDir = new File(cfg.getImageTempDir(), tempDir);
+        File tmpDir = new File(cfg.getMultimediaFileTempDir(), tempDir);
         return tmpDir;
     }
 
@@ -125,29 +124,33 @@ public class WebbisServiceImpl implements WebbisService {
         ImageUtil.removeDir(dir);
     }
 
-    private void copyWebbisImagesToDir(File newDir, Webbis webbis) {
-        List<Image> images = webbis.getImages();
-        for (Image image : images) {
-            File fromImageFile = new File(cfg.getImageBaseDir(), image.getLocation());// the location of the image
-            // is relative
-            File toImageFile = new File(newDir.getPath(), fromImageFile.getName());
-            ImageUtil.copyFile(fromImageFile, toImageFile);
+    private void copyWebbisMultimediaFilesToDir(File newDir, Webbis webbis) {
+        List<MultimediaFile> images = webbis.getMediaFiles();
+        copySetLocationMultimediaFiles(newDir, images);
 
-            image.setLocation(separatorsToUnix(toImageFile.getPath()).replace(
-                    separatorsToUnix(cfg.getImageBaseDir()), ""));
-        }
-
-        // Handle images for multiple birth siblings as well, if any.
+        // Handle multimedia files for multiple birth siblings as well, if any.
         if (webbis.getMultipleBirthSiblings() != null) {
             for (Webbis w : webbis.getMultipleBirthSiblings()) {
-                copyWebbisImagesToDir(newDir, w);
+                copyWebbisMultimediaFilesToDir(newDir, w);
             }
         }
     }
 
-    private void removeImageFiles(List<Image> images) {
-        for (Image image : images) {
-            File imageFile = new File(cfg.getImageBaseDir(), image.getLocation());
+    private void copySetLocationMultimediaFiles(File newDir, List<MultimediaFile> files) {
+        for (MultimediaFile file : files) {
+            File fromImageFile = new File(cfg.getMultimediaFileBaseDir(), file.getLocation());
+            // the location of the image is relative
+            File toImageFile = new File(newDir.getPath(), fromImageFile.getName());
+            ImageUtil.copyFile(fromImageFile, toImageFile);
+
+            file.setLocation(separatorsToUnix(toImageFile.getPath()).replace(
+                    separatorsToUnix(cfg.getMultimediaFileBaseDir()), ""));
+        }
+    }
+
+    private void removeImageFiles(List<MultimediaFile> images) {
+        for (MultimediaFile image : images) {
+            File imageFile = new File(cfg.getMultimediaFileBaseDir(), image.getLocation());
             imageFile.delete();
         }
     }
@@ -160,7 +163,7 @@ public class WebbisServiceImpl implements WebbisService {
 
     public void delete(Long webbisId) {
         Webbis webbis = this.webbisDao.get(webbisId);
-        removeImageFiles(webbis.getImages());
+        removeImageFiles(webbis.getMediaFiles());
         this.webbisDao.delete(webbis);
         TraceLog.log("DELETED", CallContextUtil.getContext(), webbis);
     }
@@ -216,7 +219,7 @@ public class WebbisServiceImpl implements WebbisService {
 
     public Webbis prepareForEditing(String tempDir, Long webbisId) {
         Webbis copy = this.webbisDao.getDetached(webbisId);
-        copyWebbisImagesToDir(getFullTempDir(tempDir), copy);
+        copyWebbisMultimediaFilesToDir(getFullTempDir(tempDir), copy);
         return copy;
     }
 
@@ -225,7 +228,7 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     public String getImageBaseUrl() {
-        return cfg.getImageBaseUrl();
+        return cfg.getMultimediaFileBaseUrl();
     }
 
     public String getFtpConfiguration() {
@@ -234,5 +237,9 @@ public class WebbisServiceImpl implements WebbisService {
 
     public Boolean isTestMode() {
         return cfg.isTestMode();
+    }
+
+    public int getMaxVideoFileSize() {
+        return cfg.getMaxVideoFileSize();
     }
 }

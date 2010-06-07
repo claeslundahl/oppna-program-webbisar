@@ -64,8 +64,8 @@
           </div>
           <div class="yui-b topinfo">
             <p>
-              Här kan föräldrar lägga in bilder på sina nyfödda bebisar. Detta är en gratis och reklamfri webbtjänst som ägs 
-              och drivs av Västra Götalandsregionen. För att skapa ett konto behöver du ha en&#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.                 
+              Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
+              <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
             </p>
           </div>
           <div class="yui-b">
@@ -111,8 +111,8 @@
                         <a onclick="hideHoverFrames('#{W.webbisar[0].allWebbisIdString}');return true;"
                           href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[0].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                         <c:choose>
-                          <c:when test="#{not empty W.webbisar[0].imageUrls}">
-                            <img class="thumb" alt="#{W.webbisar[0].header}" src="#{W.webbisar[0].imageUrls[0]}" />
+                          <c:when test="#{not empty W.webbisar[0].mediaFiles}">
+                            <img class="thumb" alt="#{W.webbisar[0].header}" src="#{W.webbisar[0].mediaFiles[0].location}" />
                           </c:when>
                           <c:otherwise>
                             <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
@@ -174,8 +174,8 @@
                         <a onclick="hideHoverFrames('#{W.webbisar[1].allWebbisIdString}');return true;"
                           href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[1].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           <c:choose>
-                            <c:when test="#{not empty W.webbisar[1].imageUrls}">
-                              <img class="thumb" alt="#{W.webbisar[1].header}" src="#{W.webbisar[1].imageUrls[0]}" />
+                            <c:when test="#{not empty W.webbisar[1].mediaFiles}">
+                              <img class="thumb" alt="#{W.webbisar[1].header}" src="#{W.webbisar[1].mediaFiles[0].location}" />
                             </c:when>
                             <c:otherwise>
                               <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
@@ -239,8 +239,8 @@
                         <a onclick="hideHoverFrames('#{W.webbisar[2].allWebbisIdString}');return true;"
                           href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[2].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           <c:choose>
-                            <c:when test="#{not empty W.webbisar[2].imageUrls}">
-                              <img class="thumb" alt="#{W.webbisar[2].header}" src="#{W.webbisar[2].imageUrls[0]}" />
+                            <c:when test="#{not empty W.webbisar[2].mediaFiles}">
+                              <img class="thumb" alt="#{W.webbisar[2].header}" src="#{W.webbisar[2].mediaFiles[0].location}" />
                             </c:when>
                             <c:otherwise>
                               <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
@@ -303,8 +303,8 @@
                         <a onclick="hideHoverFrames('#{W.webbisar[3].allWebbisIdString}');return true;"
                           href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[3].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           <c:choose>
-                            <c:when test="#{not empty W.webbisar[3].imageUrls}">
-                              <img class="thumb" alt="#{W.webbisar[3].header}" src="#{W.webbisar[3].imageUrls[0]}" />
+                            <c:when test="#{not empty W.webbisar[3].mediaFiles}">
+                              <img class="thumb" alt="#{W.webbisar[3].header}" src="#{W.webbisar[3].mediaFiles[0].location}" />
                             </c:when>
                             <c:otherwise>
                               <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
@@ -368,8 +368,8 @@
                         <a onclick="hideHoverFrames('#{W.webbisar[4].allWebbisIdString}');return true;"
                           href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[4].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           <c:choose>
-                            <c:when test="#{not empty W.webbisar[4].imageUrls}">
-                              <img class="thumb" alt="#{W.webbisar[4].header}" src="#{W.webbisar[4].imageUrls[0]}" />
+                            <c:when test="#{not empty W.webbisar[4].mediaFiles}">
+                              <img class="thumb" alt="#{W.webbisar[4].header}" src="#{W.webbisar[4].mediaFiles[0].location}" />
                             </c:when>
                             <c:otherwise>
                               <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
@@ -430,8 +430,8 @@
                         <a onclick="hideHoverFrames('#{W.webbisar[5].allWebbisIdString}');return true;"
                           href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[5].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                           <c:choose>
-                            <c:when test="#{not empty W.webbisar[5].imageUrls}">
-                              <img class="thumb" alt="#{W.webbisar[5].header}" src="#{W.webbisar[5].imageUrls[0]}" />
+                            <c:when test="#{not empty W.webbisar[5].mediaFiles}">
+                              <img class="thumb" alt="#{W.webbisar[5].header}" src="#{W.webbisar[5].mediaFiles[0].location}" />
                             </c:when>
                             <c:otherwise>
                               <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />

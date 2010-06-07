@@ -30,6 +30,11 @@ Generation time : 2009-01-08 10:18:23 CET
       <artifactId>webbisar-core-bc-composite-types</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>javax.mail</groupId>

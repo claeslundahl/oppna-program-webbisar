@@ -28,10 +28,11 @@ public class ConfigurationImpl implements Configuration {
 
     Boolean testMode;
 
-    String imageBaseDir;
-    String imageBaseUrl;
+    String multimediaFileBaseDir;
+    String multimediaFileBaseUrl;
     ImageSize imageSize;
     float imageQuality;
+    int maxVideoFileSize;
 
     String baseUrl;
     String remoteEditUrl;
@@ -59,16 +60,24 @@ public class ConfigurationImpl implements Configuration {
         this.ftpConfiguration = ftpConfiguration;
     }
 
-    public String getImageBaseDir() {
-        return imageBaseDir;
+    public String getMultimediaFileBaseUrl() {
+        return multimediaFileBaseUrl;
     }
 
-    public String getImageTempDir() {
-        return new File(getImageBaseDir(), "temp").getAbsolutePath();
+    public void setMultimediaFileBaseUrl(String multimediaFileBaseUrl) {
+        this.multimediaFileBaseUrl = multimediaFileBaseUrl;
     }
 
-    public void setImageBaseDir(String dir) {
-        imageBaseDir = dir;
+    public String getMultimediaFileBaseDir() {
+        return multimediaFileBaseDir;
+    }
+
+    public String getMultimediaFileTempDir() {
+        return new File(getMultimediaFileBaseDir(), "temp").getAbsolutePath();
+    }
+
+    public void setMultimediaFileBaseDir(String dir) {
+        multimediaFileBaseDir = dir;
     }
 
     public ImageSize getImageSize() {
@@ -87,12 +96,12 @@ public class ConfigurationImpl implements Configuration {
         this.imageQuality = imageQuality;
     }
 
-    public String getImageBaseUrl() {
-        return imageBaseUrl;
+    public int getMaxVideoFileSize() {
+        return maxVideoFileSize;
     }
 
-    public void setImageBaseUrl(String imageBaseUrl) {
-        this.imageBaseUrl = imageBaseUrl;
+    public void setMaxVideoFileSize(int maxVideoFileSize) {
+        this.maxVideoFileSize = maxVideoFileSize;
     }
 
     public String getBaseUrl() {

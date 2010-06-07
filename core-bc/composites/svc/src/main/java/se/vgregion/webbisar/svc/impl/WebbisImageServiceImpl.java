@@ -43,7 +43,7 @@ public class WebbisImageServiceImpl implements WebbisImageService {
 		
 	public void resize(List<String> images) {
 		for(String imagePath : images) {
-			File imageFile = new File(cfg.getImageBaseDir(), imagePath);
+			File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
 			try {
 				System.out.println(imageFile.getAbsolutePath());
 				ImageUtil.scaleImage(imageFile, cfg.getImageSize(), cfg.getImageQuality());
@@ -56,13 +56,13 @@ public class WebbisImageServiceImpl implements WebbisImageService {
 
 	public void deleteImages(List<String> toBeDeletedList) {
 		for(String imagePath: toBeDeletedList) {
-			File imageFile = new File(cfg.getImageBaseDir(), imagePath);
+			File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
 			imageFile.delete();
 		}
 	}
 
 	public void cleanUpTempDir(String dir) {
-		File tempDir = new File(new File(cfg.getImageBaseDir(),"temp"), dir);
+		File tempDir = new File(new File(cfg.getMultimediaFileBaseDir(),"temp"), dir);
 		ImageUtil.removeDir(tempDir);
 	}
 

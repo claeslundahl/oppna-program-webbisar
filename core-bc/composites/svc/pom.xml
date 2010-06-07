@@ -63,7 +63,7 @@
       <groupId>quartz</groupId>
       <artifactId>quartz</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>

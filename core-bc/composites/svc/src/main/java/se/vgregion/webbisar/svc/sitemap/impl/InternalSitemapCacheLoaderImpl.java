@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import se.vgregion.webbisar.svc.sitemap.CacheLoader;
 import se.vgregion.webbisar.svc.sitemap.SitemapCache;
 import se.vgregion.webbisar.svc.sitemap.SitemapEntry;
-import se.vgregion.webbisar.types.Image;
+import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Webbis;
 import se.vgregion.webbisar.util.DateTimeUtil;
 
@@ -104,8 +104,8 @@ public class InternalSitemapCacheLoaderImpl implements CacheLoader<SitemapCache>
                     .getFullName() : "");
             entry.addExtraInformation("birthdate", DateTimeUtil.formatDateSwedish(webbis.getBirthTime()
                     .getTimeAsDate()));
-            if (webbis.getImages() != null && webbis.getImages().size() > 0) {
-                Image image = webbis.getImages().get(0);
+            if (webbis.getMediaFiles() != null && webbis.getMediaFiles().size() > 0) {
+                MultimediaFile image = webbis.getMediaFiles().get(0);
                 entry.addExtraInformation("imageLink", internalImageBaseURL + image.getLocation());
             }
 

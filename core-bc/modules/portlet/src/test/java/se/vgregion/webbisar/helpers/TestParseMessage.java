@@ -25,7 +25,7 @@ public class TestParseMessage {
 
     @Test
     public void testParse() throws Exception {
-        WebbisPortletHelper h = new WebbisPortletHelper("", null, Boolean.TRUE);
+        WebbisPortletHelper h = new WebbisPortletHelper("", null, Boolean.TRUE, 10485760);
         String r = h
                 .parseMessage("hello world testsaasASalkjsdsczxaaaanvcdsjhfdyriuweyskfgdhsgfhsdgfjhsdgfjshdgfjhsdgfjsdfghds");
 

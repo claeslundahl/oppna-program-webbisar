@@ -46,7 +46,37 @@
           <c:forEach items="${previewWebbis.webbisPreviews}" varStatus="refRow" var="previewWebbis">
             <h3 class="webbis"><c:out value="${previewWebbis.header}"/></h3>
             <div class="yui-gc">
-              <div class="yui-u first"><img class="full" src="${previewWebbis.selectedImageUrl}"></img>
+              <div class="yui-u first">
+                <c:choose>
+                  <c:when test="${previewWebbis.selectedImageMediaType != 'VIDEO'}">
+                    <img class="full" src="${previewWebbis.selectedImageUrl}"></img>
+                  </c:when>
+                  <c:otherwise>
+                    <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="player${refRow.index+3}" class="full">
+                      <param name="url" 
+                        value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
+                      <param name="src" 
+                        value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
+                      <param name="showcontrols" value="true" />
+                      <param name="autostart" value="false" />
+                        <br/>
+                        <b style="color: red">Kan inte visa film</b><br/>Filformatet stöds inte, webläsaren saknar den plugin som behövs för att kunna visa filmen.
+                        <br/><br/>
+                        Direktlänk till filmen finns <a href="<c:out value="${previewWebbis.selectedImageUrl}"/>"> här.</a>
+                        <br/>
+                      <!--[if !IE]>-->
+                      <object type="${previewWebbis.selectedImageContentType}" 
+                        data="<c:out value="${previewWebbis.selectedImageUrl}"/>" 
+                        class="full">
+                        <param name="src" 
+                          value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
+                        <param name="autostart" value="false" />
+                        <param name="controller" value="true" />
+                      </object>
+                      <!--<![endif]-->
+                    </object>
+                  </c:otherwise>
+                </c:choose>
               </div>
               
               <div class="yui-u" style="margin-left:0; margin-right:2px;">
@@ -110,25 +140,53 @@
                <div class="yui-g piclist">
                   <div class="yui-g first">
                     <div class="yui-u first">
-                      <c:if test="${previewWebbis.imageUrls[0] != null}">
-                        <img class="notselected" src="${previewWebbis.imageUrls[0]}"/>
+                      <c:if test="${previewWebbis.mediaFiles[0] != null}">
+                        <c:choose>
+                          <c:when test="${previewWebbis.mediaFiles[0].mediaType != 'VIDEO'}">
+                            <img class="notselected" src="${previewWebbis.mediaFileBaseUrl}${previewWebbis.mediaFiles[0].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="notselected" src="${previewWebbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                       </c:if>
                     </div>
                     <div class="yui-u">
-                      <c:if test="${previewWebbis.imageUrls[1] != null}">
-                        <img class="notselected" src="${previewWebbis.imageUrls[1]}"/>
+                      <c:if test="${previewWebbis.mediaFiles[1] != null}">
+                        <c:choose>
+                          <c:when test="${previewWebbis.mediaFiles[1].mediaType != 'VIDEO'}">
+                            <img class="notselected" src="${previewWebbis.mediaFileBaseUrl}${previewWebbis.mediaFiles[1].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="notselected" src="${previewWebbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                        </c:if>
                      </div>
                   </div>
                   <div class="yui-g">
                     <div class="yui-u first">
-                      <c:if test="${previewWebbis.imageUrls[2] != null}">
-                        <img class="notselected" src="${previewWebbis.imageUrls[2]}"/>
-                       </c:if>
+                      <c:if test="${previewWebbis.mediaFiles[2] != null}">
+                        <c:choose>
+                          <c:when test="${previewWebbis.mediaFiles[2].mediaType != 'VIDEO'}">
+                            <img class="notselected" src="${previewWebbis.mediaFileBaseUrl}${previewWebbis.mediaFiles[2].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="notselected" src="${previewWebbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
+                      </c:if>
                     </div>
                     <div class="yui-u">
-                      <c:if test="${previewWebbis.imageUrls[3] != null}">
-                        <img class="notselected" src="${previewWebbis.imageUrls[3]}"/>
+                      <c:if test="${previewWebbis.mediaFiles[3] != null}">
+                        <c:choose>
+                          <c:when test="${previewWebbis.mediaFiles[3].mediaType != 'VIDEO'}">
+                            <img class="notselected" src="${previewWebbis.mediaFileBaseUrl}${previewWebbis.mediaFiles[3].location}"/>
+                          </c:when>
+                          <c:otherwise>
+                            <img class="notselected" src="${previewWebbis.videoThumbUrl}"/>
+                          </c:otherwise>
+                        </c:choose>
                        </c:if>
                     </div>
                   </div>

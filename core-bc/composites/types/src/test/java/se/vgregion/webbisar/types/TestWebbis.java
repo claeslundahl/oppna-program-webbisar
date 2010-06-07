@@ -30,12 +30,7 @@ import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 import org.junit.Test;
 
-import se.vgregion.webbisar.types.BirthTime;
-import se.vgregion.webbisar.types.Hospital;
-import se.vgregion.webbisar.types.Image;
-import se.vgregion.webbisar.types.Name;
-import se.vgregion.webbisar.types.Sex;
-import se.vgregion.webbisar.types.Webbis;
+import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 
 public class TestWebbis {
 
@@ -48,12 +43,12 @@ public class TestWebbis {
     public void testOk() throws Exception {
 
         List<Name> parents = new ArrayList<Name>();
-        List<Image> images = new ArrayList<Image>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Gunnar", "Bohlin"));
         parents.add(new Name("Jenny", "Lind"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
 
         Webbis w = new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
@@ -67,12 +62,12 @@ public class TestWebbis {
     public void testEmailFail() throws Exception {
 
         List<Name> parents = new ArrayList<Name>();
-        List<Image> images = new ArrayList<Image>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Gunnar", "Bohlin"));
         parents.add(new Name("Jenny", "Lind"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
 
         Webbis w = new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email",
@@ -87,12 +82,12 @@ public class TestWebbis {
     public void testFailUrl() throws Exception {
 
         List<Name> parents = new ArrayList<Name>();
-        List<Image> images = new ArrayList<Image>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Gunnar", "Bohlin"));
         parents.add(new Name("Jenny", "Lind"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
 
         Webbis w = new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
@@ -128,12 +123,12 @@ public class TestWebbis {
     @Test
     public void testBirthDate() throws Exception {
         List<Name> parents = new ArrayList<Name>();
-        List<Image> images = new ArrayList<Image>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Gunnar", "Bohlin"));
         parents.add(new Name("Jenny", "Lind"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
-        images.add(new Image("images/12343.jpg", "Detta är en fin bild"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
+        images.add(new MultimediaFile("images/12343.jpg", "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
 
         Webbis w = new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2018, 1, 2, 14, 33), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",

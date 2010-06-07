@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import se.vgregion.webbisar.types.Image;
+import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Sex;
 import se.vgregion.webbisar.types.Webbis;
 
@@ -50,17 +50,19 @@ public class WebbisBean implements Serializable {
     private String siblings;
     private String home;
     private String hospital;
-    private String[] imageUrls;
+    private MultimediaFile[] mediaFiles;
     private String message;
     private String homePage;
     private int selectedImage;
     private String selectedImageComment;
+    private String selectedMediaType;
+    private String selectedContentType;
     private String[] styles = new String[] { "selected", "notselected", "notselected", "notselected" };
-    private String imageBaseUrl;
+    private String mediaFileBaseUrl;
     private Webbis mainMultipleBirthWebbis;
     private List<Webbis> multipleBirthSiblings;
 
-    public WebbisBean(String imageBaseUrl, Webbis webbis, int selectedImage) {
+    public WebbisBean(String mediaFileBaseUrl, Webbis webbis, int selectedImage) {
 
         this.id = webbis.getId();
         this.name = generateName(webbis);
@@ -77,24 +79,28 @@ public class WebbisBean implements Serializable {
         this.siblings = webbis.getSiblings();
         this.home = webbis.getHome();
         this.hospital = webbis.getHospital().toLongString();
-        this.imageUrls = new String[webbis.getImages().size()];
+        this.mediaFiles = new MultimediaFile[webbis.getMediaFiles().size()];
         int cnt = 0;
-        for (Image image : webbis.getImages()) {
-            this.imageUrls[cnt++] = imageBaseUrl + "/" + image.getLocation();
+        for (MultimediaFile file : webbis.getMediaFiles()) {
+            file.setLocation(mediaFileBaseUrl + "/" + file.getLocation());
+            this.mediaFiles[cnt++] = file;
         }
         this.selectedImage = setSelectedImage(selectedImage);
-        if (webbis.getImages().size() > 0) {
-            this.selectedImageComment = webbis.getImages().get(selectedImage).getText();
+        if (webbis.getMediaFiles().size() > selectedImage) {
+            MultimediaFile mediaFile = webbis.getMediaFiles().get(selectedImage);
+            this.selectedImageComment = mediaFile.getText();
+            this.selectedMediaType = mediaFile.getMediaType().toString();
+            this.selectedContentType = mediaFile.getContentType();
         }
         this.homePage = webbis.getHomePage();
         this.message = webbis.getMessage();
-        this.imageBaseUrl = imageBaseUrl;
+        this.mediaFileBaseUrl = mediaFileBaseUrl;
         this.mainMultipleBirthWebbis = webbis.getMainMultipleBirthWebbis();
         this.multipleBirthSiblings = webbis.getMultipleBirthSiblings();
     }
 
-    public WebbisBean(String imageBaseUrl, Webbis webbis) {
-        this(imageBaseUrl, webbis, 0);
+    public WebbisBean(String mediaFileBaseUrl, Webbis webbis) {
+        this(mediaFileBaseUrl, webbis, 0);
     }
 
     private int setSelectedImage(int selectedImage) {
@@ -232,23 +238,39 @@ public class WebbisBean implements Serializable {
         return homePage;
     }
 
-    public String getSelectedImageUrl() {
-        if (imageUrls.length == 0) {
-            return imageBaseUrl + "/no-image.jpg";
+    public String getSelectedMediaFileUrl() {
+        if (mediaFiles.length == 0) {
+            return mediaFileBaseUrl + "/no-image.jpg";
         }
-        return imageUrls[selectedImage];
+        return mediaFiles[selectedImage].getLocation();
+    }
+
+    public String getVideoThumbUrl() {
+        return mediaFileBaseUrl + "/video-thumb.png";
     }
 
     public String getSelectedImageComment() {
         return selectedImageComment;
     }
 
+    public String getSelectedMediaType() {
+        return selectedMediaType;
+    }
+
+    public String getSelectedContentType() {
+        return selectedContentType;
+    }
+
     public String[] getStyle() {
         return styles;
     }
 
-    public String[] getImageUrls() {
-        return imageUrls;
+    public MultimediaFile[] getMediaFiles() {
+        return mediaFiles;
+    }
+
+    public String getMediaFileBaseUrl() {
+        return mediaFileBaseUrl;
     }
 
     public int getMultipleBirthSiblingCount() {

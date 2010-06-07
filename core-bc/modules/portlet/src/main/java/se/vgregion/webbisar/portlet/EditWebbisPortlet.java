@@ -64,7 +64,7 @@ public class EditWebbisPortlet extends GenericPortlet {
     private static final String PREVIEW_VIEW = "PREVIEW_VIEW";
 
     private static final int SUPPORTED_MULTIPLE_BIRTH_SIBLINGS = 3; // Triplets
-    private static final int SUPPORTED_NO_OF_IMAGES = 4;
+    private static final int SUPPORTED_NO_OF_MEDIAFILES = 4;
 
     private WebbisPortletHelper helper = null;
     private WebbisServiceProxy webbisServiceProxy = null;
@@ -153,11 +153,14 @@ public class EditWebbisPortlet extends GenericPortlet {
 
             // Check if we have a file upload request
             if (PortletFileUpload.isMultipartContent(request)) {
-                // Save the images using FTP.
                 try {
-                    List<String> imageFiles = helper.parseAndSaveImages(request);
-                    // Now tell the server to resize them.
-                    webbisServiceProxy.resize(imageFiles);
+                    // Try to save the images/video using FTP.
+                    List<String> imageFiles = helper.parseAndSaveMultipartFiles(request);
+                    // If null then user probably pressed cancel
+                    if (imageFiles != null) {
+                        // Now tell the server to resize them.
+                        webbisServiceProxy.resize(imageFiles);
+                    }
                     response.setRenderParameter(VIEW, MAIN_VIEW);
                 } catch (WebbisValidationException e) {
                     request.setAttribute("validationMessages", e.getValidationMessages());
@@ -217,7 +220,7 @@ public class EditWebbisPortlet extends GenericPortlet {
                     webbisServiceProxy.cleanUpTempDir(request.getPortletSession(true).getId());
                     response.setRenderParameter(VIEW, SHOW_WEBBIS_LIST_VIEW);
                 } else {
-                    // Image: Add, remove or change main
+                    // MultimediaFile: Add, remove or change main
                     // Note: because we cannot rely on javascript we have to handle this on the server.
 
                     // Check if user wants to add image
@@ -254,26 +257,27 @@ public class EditWebbisPortlet extends GenericPortlet {
             String baseUrl = webbisServiceProxy.getImageBaseUrl();
             String ftpCfg = webbisServiceProxy.getFtpConfig();
             Boolean testMode = webbisServiceProxy.isTestMode();
+            int maxVideoFileSize = webbisServiceProxy.getMaxVideoFileSize();
 
             FileHandler fileHandler = new FileHandler(ftpCfg);
 
-            helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode);
+            helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode, maxVideoFileSize);
         }
     }
 
     private void handleImageOperations(ActionRequest request) {
         // For all multiple birth siblings, check if operation was performed
         siblingLoop: for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
-            // Check if we have a remove operation in request
-            for (int x = 0; x < SUPPORTED_NO_OF_IMAGES; x++) {
-                if (request.getParameter("w" + i + "_remove-image" + x) != null) {
-                    helper.removeImage(i, x, request);
+            // Check if we have a remove image operation in request
+            for (int x = 0; x < SUPPORTED_NO_OF_MEDIAFILES; x++) {
+                if (request.getParameter("w" + i + "_remove-mediaFile" + x) != null) {
+                    helper.removeMediaFile(i, x, request);
                     break siblingLoop;
                 }
             }
             // Check if we have a set main image operation in request
-            for (int x = 0; x < SUPPORTED_NO_OF_IMAGES; x++) {
-                if (request.getParameter("w" + i + "_image" + x + "-main-image") != null) {
+            for (int x = 0; x < SUPPORTED_NO_OF_MEDIAFILES; x++) {
+                if (request.getParameter("w" + i + "_mediaFile" + x + "-main-image") != null) {
                     helper.setMainImage(i, x, request);
                     break siblingLoop;
                 }

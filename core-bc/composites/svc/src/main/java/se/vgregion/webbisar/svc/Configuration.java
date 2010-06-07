@@ -20,15 +20,17 @@
 package se.vgregion.webbisar.svc;
 
 public interface Configuration {
-    String getImageBaseDir();
+    String getMultimediaFileBaseDir();
 
-    String getImageTempDir();
+    String getMultimediaFileTempDir();
+
+    String getMultimediaFileBaseUrl();
 
     ImageSize getImageSize();
 
     float getImageQuality();
 
-    String getImageBaseUrl();
+    int getMaxVideoFileSize();
 
     String getFtpConfiguration();
 

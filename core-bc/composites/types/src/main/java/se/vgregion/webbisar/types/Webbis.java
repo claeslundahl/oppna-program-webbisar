@@ -136,10 +136,10 @@ public class Webbis implements Serializable {
     @CollectionOfElements(fetch = FetchType.EAGER)
     @IndexColumn(name = "idx", base = 0)
     @IndexedEmbedded
-    @JoinTable(name = "WebbisImage", joinColumns = @JoinColumn(name = "webbis_id"))
+    @JoinTable(name = "WebbisMediaFile", joinColumns = @JoinColumn(name = "webbis_id"))
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @Valid
-    private List<Image> images = new ArrayList<Image>();
+    private List<MultimediaFile> mediaFiles = new ArrayList<MultimediaFile>();
 
     @Column(length = 512, nullable = true)
     @Length(max = 25)
@@ -182,11 +182,11 @@ public class Webbis implements Serializable {
     }
 
     public Webbis(Long id, String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,
-            Hospital hospital, String home, List<Name> parents, List<Image> images, String siblings,
+            Hospital hospital, String home, List<Name> parents, List<MultimediaFile> mediaFiles, String siblings,
             String message, String email, String homePage, Date created) {
 
-        this(name, authorId, sex, birthTime, weight, length, hospital, home, parents, images, siblings, message,
-                email, homePage);
+        this(name, authorId, sex, birthTime, weight, length, hospital, home, parents, mediaFiles, siblings,
+                message, email, homePage);
 
         this.id = id;
         if (created == null) {
@@ -198,7 +198,7 @@ public class Webbis implements Serializable {
     }
 
     public Webbis(String name, String authorId, Sex sex, BirthTime birthTime, int weight, int length,
-            Hospital hospital, String home, List<Name> parents, List<Image> images, String siblings,
+            Hospital hospital, String home, List<Name> parents, List<MultimediaFile> mediaFiles, String siblings,
             String message, String email, String homePage) {
         this.name = capitalize(trimToEmpty(name));
         this.authorId = trimToEmpty(authorId);
@@ -208,7 +208,7 @@ public class Webbis implements Serializable {
         this.length = length;
         this.hospital = hospital;
         this.home = capitalize(trimToEmpty(home));
-        this.images = images;
+        this.mediaFiles = mediaFiles;
         this.parents = parents;
         this.siblings = trimToEmpty(siblings);
         this.message = trimToEmpty(message);
@@ -220,10 +220,10 @@ public class Webbis implements Serializable {
         this.lastModified = this.created;
     }
 
-    public List<Image> getUnusedImages(Webbis previousWebbis) {
-        List<Image> unusedImages = new ArrayList<Image>();
-        for (Image othersImage : previousWebbis.getImages()) {
-            if (!getImages().contains(othersImage)) {
+    public List<MultimediaFile> getUnusedMediaFiles(Webbis previousWebbis) {
+        List<MultimediaFile> unusedImages = new ArrayList<MultimediaFile>();
+        for (MultimediaFile othersImage : previousWebbis.getMediaFiles()) {
+            if (!getMediaFiles().contains(othersImage)) {
                 unusedImages.add(othersImage);
             }
         }
@@ -294,15 +294,15 @@ public class Webbis implements Serializable {
         return fnames;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<MultimediaFile> getMediaFiles() {
+        return mediaFiles;
     }
 
-    public Image getSelectedImage() {
-        if (images.size() > 0) {
-            return images.get(0);
+    public MultimediaFile getSelectedImage() {
+        if (mediaFiles.size() > 0) {
+            return mediaFiles.get(0);
         } else {
-            return new Image(); // FIXME: Use default image here...
+            return new MultimediaFile(); // FIXME: Use default image here...
         }
     }
 
@@ -442,9 +442,9 @@ public class Webbis implements Serializable {
         sb.append("birthTime=").append(sdf.format(birthTime)).append(",");
         sb.append("weight=").append(weight).append(",");
         sb.append("length=").append(length).append(",");
-        sb.append("images=[");
-        for (Image i : images) {
-            sb.append("image=[").append(i).append("]").append(",");
+        sb.append("mediaFiles=[");
+        for (MultimediaFile i : mediaFiles) {
+            sb.append("mediaFile=[").append(i).append("]").append(",");
         }
         sb.append("]").append(",");
         if (multipleBirthSiblings != null && multipleBirthSiblings.size() > 0) {
@@ -479,9 +479,9 @@ public class Webbis implements Serializable {
         sb.append("birthTime=").append(sdf.format(birthTime)).append(",");
         sb.append("weight=").append(weight).append(",");
         sb.append("length=").append(length).append(",");
-        sb.append("images=[");
-        for (Image i : images) {
-            sb.append("image=[").append(i).append("]").append(",");
+        sb.append("mediaFiles=[");
+        for (MultimediaFile i : mediaFiles) {
+            sb.append("mediaFile=[").append(i).append("]").append(",");
         }
         sb.append("]").append(",");
         sb.append("disabled=").append(disabled).append(",");

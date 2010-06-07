@@ -51,10 +51,11 @@
     <bean id="configuration" class="se.vgregion.webbisar.svc.impl.ConfigurationImpl">
       <property name="testMode" value="${webbisar.testMode}"/>
     
-      <property name="imageBaseDir" value="${webbisar.imageBaseDir}"/>
-      <property name="imageBaseUrl" value="${webbisar.imageBaseUrl}"/>
+      <property name="multimediaFileBaseDir" value="${webbisar.multimediaFileBaseDir}"/>
+      <property name="multimediaFileBaseUrl" value="${webbisar.multimediaFileBaseUrl}"/>
       <property name="imageSize" value="${webbisar.imageSize}"/>
       <property name="imageQuality" value="${webbisar.imageQuality}"/>
+      <property name="maxVideoFileSize" value="${webbisar.maxVideoFileSize}"/>
       
       <property name="ftpConfiguration" value="${webbisar.ftpConfiguration}"/>
       <property name="baseUrl" value="${webbisar.baseUrl}"/>

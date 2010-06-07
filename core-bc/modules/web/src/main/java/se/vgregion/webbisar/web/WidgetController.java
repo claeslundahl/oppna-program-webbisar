@@ -60,7 +60,7 @@ public class WidgetController extends AbstractController {
 		List<WebbisBean> webbisList = new ArrayList<WebbisBean>();
 		if(id != null) {
 			Webbis w = webbisService.getById(parseId(id));
-			webbisList.add(new WebbisBean(cfg.getImageBaseUrl(), w, webbisList));
+			webbisList.add(new WebbisBean(cfg.getMultimediaFileBaseUrl(), w, webbisList));
 		} else {
 			int maxResult = parseNum(num);
 			Hospital hospital = parseHospital(h);
@@ -73,7 +73,7 @@ public class WidgetController extends AbstractController {
 			}
 	
 			for(Webbis w : webbisar){
-				webbisList.add(new WebbisBean(cfg.getImageBaseUrl(), w, webbisList));
+				webbisList.add(new WebbisBean(cfg.getMultimediaFileBaseUrl(), w, webbisList));
 			}
 		}
 		
