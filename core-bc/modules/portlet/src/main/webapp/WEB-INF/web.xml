@@ -35,7 +35,7 @@
   </listener>
   
   <servlet>
-    <servlet-name>EditWebbis</servlet-name>
+    <servlet-name>EditWebbisServlet</servlet-name>
     <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
     <init-param>
         <param-name>portlet-class</param-name>
@@ -44,12 +44,12 @@
     <load-on-startup>0</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>EditWebbis</servlet-name>
+    <servlet-name>EditWebbisServlet</servlet-name>
     <url-pattern>/EditWebbis/*</url-pattern>
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>AdminEditWebbis</servlet-name>
+    <servlet-name>AdminEditWebbisServlet</servlet-name>
     <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
     <init-param>
         <param-name>portlet-class</param-name>
@@ -58,7 +58,7 @@
     <load-on-startup>0</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>AdminEditWebbis</servlet-name>
+    <servlet-name>AdminEditWebbisServlet</servlet-name>
     <url-pattern>/AdminEditWebbis/*</url-pattern>
   </servlet-mapping>
   
