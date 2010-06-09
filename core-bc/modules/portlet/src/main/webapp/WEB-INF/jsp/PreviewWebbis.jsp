@@ -52,29 +52,16 @@
                     <img class="full" src="${previewWebbis.selectedImageUrl}"></img>
                   </c:when>
                   <c:otherwise>
-                    <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="player${refRow.index+3}" class="full">
-                      <param name="url" 
-                        value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
-                      <param name="src" 
-                        value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
+                    <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="player" class="full">
+                      <param name="url" value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
+                      <param name="src" value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
                       <param name="showcontrols" value="true" />
                       <param name="autostart" value="false" />
-                        <br/>
-                        <b style="color: red">Kan inte visa film</b><br/>Filformatet stöds inte, webläsaren saknar den plugin som behövs för att kunna visa filmen.
-                        <br/><br/>
-                        Direktlänk till filmen finns <a href="<c:out value="${previewWebbis.selectedImageUrl}"/>"> här.</a>
-                        <br/>
-                      <!--[if !IE]>-->
-                      <object type="${previewWebbis.selectedImageContentType}" 
-                        data="<c:out value="${previewWebbis.selectedImageUrl}"/>" 
-                        class="full">
-                        <param name="src" 
-                          value="<c:out value="${previewWebbis.selectedImageUrl}"/>" />
-                        <param name="autostart" value="false" />
-                        <param name="controller" value="true" />
-                      </object>
-                      <!--<![endif]-->
-                    </object>
+                      <embed width="430px" height="323px" name="player" 
+                        showcontrols="1" autoplay="0" controller="1" scale="tofit"
+                        src="<c:out value="${previewWebbis.selectedImageUrl}"/>" 
+                        type="${previewWebbis.selectedImageContentType}" />
+                    </object> 
                   </c:otherwise>
                 </c:choose>
               </div>
@@ -194,7 +181,7 @@
           </c:forEach>
 							
 					<div class="yui-g">
-						<div class="yui-u first">
+						<div class="yui-u first" style="margin-left: 0.4em">
 							<c:if test="${not empty validationMessages}">
 								<p style="color: red">Villkoren måste godkännas</p>
 							</c:if>
