@@ -38,12 +38,7 @@
 <script language="javascript" type="text/javascript">
 /* <![CDATA[ */
   function limitText(limitField, limitCount, limitNum) {
-      //if (limitField.value.length > limitNum) {
-      //limitField.value = limitField.value.substring(0, limitNum);
-      //alert('Max ' + limitNum + ' tecken tillåtna i detta fält.');
-      //} else {
       limitCount.value = limitNum - limitField.value.length;
-      //}
   }
 /* ]]> */
 </script>
@@ -75,9 +70,9 @@
               
             <div style="margin-left: 0.4em">
               <c:if test="${empty validationMessages}">
-                <p>Fyll i fälten nedan och klicka på ”Förhandsgranska”. Fält markerade med * är obligatoriska.<br/>
+                <p>Fyll i fälten nedan och klicka på ”Förhandsgranska”. Fält markerade med * är obligatoriska.<br/><br/>
                   <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis == null or portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id == null}">
-                    Har ni fått <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="1"/></portlet:renderURL>">tvillingar</a> eller <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="2"/></portlet:renderURL>">trillingar</a>?
+                    För er som fått <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="1"/></portlet:renderURL>">tvillingar</a> eller <a href="<portlet:renderURL><portlet:param name="VIEW" value="MAIN_VIEW"/><portlet:param name="noOfSiblings" value="2"/></portlet:renderURL>">trillingar</a>.
                   </c:if>
                 </p>
               </c:if>
@@ -96,7 +91,8 @@
 						<div class="yui-u first" style="margin-left: 0.4em">
 							<!-- Namn och kön -->
 							<div class="yui-g" style="padding-top: 10px;">
-                <h4 class="webbis">Webbis 1</h4>
+                
+                <h4 class="webbis">Webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></h4>
 								<div class="yui-u first">
 									<p>
 										<label for="w0_webbisname">Webbisens namn:</label><br/>
@@ -196,7 +192,7 @@
 						<div class="yui-u" style="padding-top: 10px;">
             
               <input name="addImages_w0" value="Lägg till bilder" type="submit"/>
-              <span style="padding-left: 20px;">Bilder på webbis 1</span>                
+              <span style="padding-left: 20px;">Bilder på webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></span>                
               <br/>
               <br/>
               
