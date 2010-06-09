@@ -22,43 +22,47 @@ package se.vgregion.webbisar.web;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ftpserver.FtpServer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class FtpServerListener implements ServletContextListener {
 
+    private static final Log LOGGER = LogFactory.getLog(FtpServerListener.class);
+
     public static final String FTPSERVER_CONTEXT_NAME = "org.apache.ftpserver";
-    
+
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("Stopping FtpServer");
-        
+        LOGGER.info("Stopping FtpServer");
+
         FtpServer server = (FtpServer) sce.getServletContext().getAttribute(FTPSERVER_CONTEXT_NAME);
-        
-        if(server != null) {
+
+        if (server != null) {
             server.stop();
-            
+
             sce.getServletContext().removeAttribute(FTPSERVER_CONTEXT_NAME);
-            
-            System.out.println("FtpServer stopped");
+
+            LOGGER.info("FtpServer stopped");
         } else {
-            System.out.println("No running FtpServer found");
+            LOGGER.info("No running FtpServer found");
         }
-        
+
     }
 
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("Starting FtpServer");   
+        LOGGER.info("Starting FtpServer");
 
         WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext());
-        
+
         FtpServer server = (FtpServer) ctx.getBean("myServer");
-        
+
         sce.getServletContext().setAttribute(FTPSERVER_CONTEXT_NAME, server);
-        
+
         try {
             server.start();
-            System.out.println("FtpServer started");
+            LOGGER.info("FtpServer started");
         } catch (Exception e) {
             throw new RuntimeException("Failed to start FtpServer", e);
         }
