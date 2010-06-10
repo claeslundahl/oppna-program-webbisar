@@ -29,10 +29,10 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.apache.log4j.WriterAppender;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -72,8 +72,20 @@ public class WebbisServiceImplTest {
         this.webbisService = webbisService;
     }
 
+    @Before
+    public void setup() throws Exception {
+        List<Name> parents = new ArrayList<Name>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
+
+        parents.add(new Name("Gunnar", "Bohlin"));
+        parents.add(new Name("Jenny", "Lind"));
+
+        webbisService.save(TEMP_DIR, new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
+                2345, 55, Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma"));
+    }
+
     @Test
-    @Rollback(false)
     public void testInsert() throws Exception {
         // We want to check that webbis changes are logged in trace log
         Logger logger = Logger.getLogger("tracelog");
@@ -84,15 +96,16 @@ public class WebbisServiceImplTest {
         List<Name> parents = new ArrayList<Name>();
         List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
-        parents.add(new Name("Gunnar", "Bohlin"));
-        parents.add(new Name("Jenny", "Lind"));
+        parents.add(new Name("Kalle", "Anka"));
+        parents.add(new Name("Kajsa", "Anka"));
 
-        webbisService.save(TEMP_DIR, new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
+        webbisService.save(TEMP_DIR, new Webbis("Pelle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
                 2345, 55, Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma"));
 
         // Ensure trace log was called
-        assertTrue(writer.toString().contains("CREATED : null - id=1,authorId=someId,name=Kalle"));
+        assertTrue(writer.toString().contains("CREATED : null"));
+        assertTrue(writer.toString().contains("authorId=someId,name=Pelle"));
     }
 
     @Test
@@ -114,7 +127,8 @@ public class WebbisServiceImplTest {
         assertEquals(Boolean.TRUE, toUpdate.isDisabled());
 
         // Ensure trace log was called
-        assertTrue(writer.toString().contains("UPDATED : null - id=1,authorId=someId,name=Kalle"));
+        assertTrue(writer.toString().contains("UPDATED : null"));
+        assertTrue(writer.toString().contains("authorId=someId,name=Kalle"));
     }
 
     @Test
@@ -134,7 +148,8 @@ public class WebbisServiceImplTest {
         assertEquals(0, list.size());
 
         // Ensure trace log was called
-        assertTrue(writer.toString().contains("DELETED : null - id=1,authorId=someId,name=Kalle"));
+        assertTrue(writer.toString().contains("DELETED : null"));
+        assertTrue(writer.toString().contains("authorId=someId,name=Kalle"));
     }
 
     @Test
