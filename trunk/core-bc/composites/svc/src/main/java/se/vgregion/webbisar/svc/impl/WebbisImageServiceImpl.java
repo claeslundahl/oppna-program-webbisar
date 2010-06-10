@@ -45,6 +45,9 @@ public class WebbisImageServiceImpl implements WebbisImageService {
         this.cfg = cfg;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void resize(List<String> images) {
         for (String imagePath : images) {
             File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
@@ -57,6 +60,9 @@ public class WebbisImageServiceImpl implements WebbisImageService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteImages(List<String> toBeDeletedList) {
         for (String imagePath : toBeDeletedList) {
             File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
@@ -64,6 +70,9 @@ public class WebbisImageServiceImpl implements WebbisImageService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void cleanUpTempDir(String dir) {
         File tempDir = new File(new File(cfg.getMultimediaFileBaseDir(), "temp"), dir);
         ImageUtil.removeDir(tempDir);

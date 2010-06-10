@@ -78,14 +78,23 @@ public class WebbisDaoHibernate implements WebbisDao {
         this.jpaTemplate = jpaTemplate;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void delete(Webbis webbis) {
         getJpaTemplate().remove(webbis);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Webbis get(Long id) {
         return getJpaTemplate().find(Webbis.class, id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Webbis getDetached(final Long id) {
         Object o = getJpaTemplate().execute(new JpaCallback() {
             public Object doInJpa(EntityManager em) throws PersistenceException {
@@ -105,6 +114,14 @@ public class WebbisDaoHibernate implements WebbisDao {
         return getJpaTemplate().merge(webbis);
     }
 
+    /**
+     * Creating a full text query for given criteria, matching e.g. name, parent name and birthdate
+     * 
+     * @param criteria
+     * @param includeDisabled
+     * @param em
+     * @return FullTextQuery object
+     */
     private FullTextQuery createSearchQuery(final String criteria, boolean includeDisabled, EntityManager em) {
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(em);
 
@@ -150,6 +167,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return fq;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Integer getNumberOfMatchesFor(final String criteria, final boolean includeDisabled) {
         Object result = getJpaTemplate().execute(new JpaCallback() {
             public Object doInJpa(EntityManager em) throws PersistenceException {
@@ -163,6 +183,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return (Integer) result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public List<Webbis> searchWebbis(final String criteria, final int firstResult, final int maxResults,
             final boolean includeDisabled) {
@@ -179,6 +202,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return (List<Webbis>) results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getNumberOfWebbisar() {
         Object results = getJpaTemplate().execute(new JpaCallback() {
             public Object doInJpa(EntityManager em) throws PersistenceException {
@@ -190,6 +216,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return (Long) results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public List<Webbis> getWebbisar(final int firstResult, final int maxResult) {
         Object results = getJpaTemplate().execute(new JpaCallback() {
@@ -211,6 +240,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return (List<Webbis>) results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public List<Webbis> findAllWebbis() {
         Object results = getJpaTemplate().execute(new JpaCallback() {
@@ -222,6 +254,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return (List<Webbis>) results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public List<Webbis> getWebbisarForAuthorId(final String authorId) {
         Object results = getJpaTemplate().execute(new JpaCallback() {
@@ -236,6 +271,9 @@ public class WebbisDaoHibernate implements WebbisDao {
         return (List<Webbis>) results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reindex() {
         getJpaTemplate().execute(new JpaCallback() {
             public Object doInJpa(EntityManager em) throws PersistenceException {
@@ -296,6 +334,9 @@ public class WebbisDaoHibernate implements WebbisDao {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public List<Webbis> getLastestWebbis(final Hospital hospital, final int maxResult) {
         Object results = getJpaTemplate().execute(new JpaCallback() {

@@ -70,9 +70,9 @@ public class WebbisPortletHelper {
     public static final String SESSION_ATTRIB_KEY_AVAILABLE_VIDEOIDS = "webbisForm.availableVideoIds";
     public static final String WEBBIS_INDEX_PREFIX = "w";
 
-    public static int MAX_NO_OF_MEDIAFILES = 4;
-    public static int MAX_NO_OF_VIDEOS = 1;
-    public static int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle twins and triplets
+    public static final int MAX_NO_OF_MEDIAFILES = 4;
+    public static final int MAX_NO_OF_VIDEOS = 1;
+    public static final int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle twins and triplets
 
     private String baseUrl;
     private DiskFileItemFactory diskFileItemFactory;

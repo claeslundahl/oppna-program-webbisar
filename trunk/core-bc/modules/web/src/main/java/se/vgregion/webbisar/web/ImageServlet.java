@@ -140,7 +140,7 @@ public class ImageServlet extends HttpServlet {
             try {
                 resource.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("Could not close resource", e);
             }
         }
     }

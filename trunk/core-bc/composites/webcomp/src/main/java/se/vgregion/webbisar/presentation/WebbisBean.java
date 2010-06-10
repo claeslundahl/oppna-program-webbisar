@@ -292,7 +292,7 @@ public class WebbisBean implements Serializable {
         }
         if (siblingList != null) {
             for (int i = 0; i < siblingList.size(); i++) {
-                if (siblingList.get(i).getId() != id) {
+                if (siblingList.get(i).getId() != null && !siblingList.get(i).getId().equals(id)) {
                     sb.append(",");
                     sb.append(siblingList.get(i).getId());
                 }
@@ -305,7 +305,8 @@ public class WebbisBean implements Serializable {
         String siblingsIds = getMultipleBirthSiblingIdString();
         StringBuilder sb = new StringBuilder();
         sb.append(id);
-        if (mainMultipleBirthWebbis != null && id != mainMultipleBirthWebbis.getId()) {
+        if (mainMultipleBirthWebbis != null && mainMultipleBirthWebbis.getId() != null
+                && !mainMultipleBirthWebbis.getId().equals(id)) {
             sb.append(",");
             sb.append(mainMultipleBirthWebbis.getId());
         }
@@ -326,7 +327,8 @@ public class WebbisBean implements Serializable {
             if (mainMultipleBirthWebbis.getMultipleBirthSiblings() != null) {
                 Webbis webbis = null;
                 for (int i = 0; i < mainMultipleBirthWebbis.getMultipleBirthSiblings().size(); i++) {
-                    if (mainMultipleBirthWebbis.getMultipleBirthSiblings().get(i).getId() != id) {
+                    if (mainMultipleBirthWebbis.getMultipleBirthSiblings().get(i).getId() != null
+                            && !mainMultipleBirthWebbis.getMultipleBirthSiblings().get(i).getId().equals(id)) {
                         webbis = mainMultipleBirthWebbis.getMultipleBirthSiblings().get(i);
                         retMap.put(webbis.getId(), webbis.getName());
                     }

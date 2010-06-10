@@ -21,15 +21,16 @@ package se.vgregion.webbisar.web;
 
 import java.util.List;
 
+import se.vgregion.webbisar.presentation.WebbisBean;
 import se.vgregion.webbisar.types.Webbis;
 
-public class WebbisBean extends se.vgregion.webbisar.presentation.WebbisBean {
+public class WidgetWebbisBean extends WebbisBean {
 
     private static final long serialVersionUID = 1L;
 
-    private List<WebbisBean> list;
+    private List<WidgetWebbisBean> list;
 
-    public WebbisBean(String mediaFileBaseUrl, Webbis webbis, List<WebbisBean> list) {
+    public WidgetWebbisBean(String mediaFileBaseUrl, Webbis webbis, List<WidgetWebbisBean> list) {
         super(mediaFileBaseUrl, webbis);
         this.list = list;
     }
