@@ -24,14 +24,15 @@ import java.io.InputStream;
 import java.net.SocketException;
 import java.util.StringTokenizer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
-import org.apache.log4j.Logger;
 
 public class FileHandler {
 
-    private static final Logger logger = Logger.getLogger(FileHandler.class);
+    private static final Log LOGGER = LogFactory.getLog(FileHandler.class);
 
     private String host;
     private int port;
@@ -39,7 +40,7 @@ public class FileHandler {
     private String password;
 
     public FileHandler(String ftpConfig) {
-        logger.info("FTP CONFIGURATION IS: " + ftpConfig);
+        LOGGER.info("FTP CONFIGURATION IS: " + ftpConfig);
 
         StringTokenizer t = new StringTokenizer(ftpConfig, ";");
         try {
@@ -48,7 +49,7 @@ public class FileHandler {
             this.userName = t.nextToken();
             this.password = t.nextToken();
         } catch (NumberFormatException e) {
-            logger.fatal("FTP CONFIGURATION: Failed to parse!!");
+            LOGGER.fatal("FTP CONFIGURATION: Failed to parse!!");
         }
     }
 
@@ -62,7 +63,7 @@ public class FileHandler {
             ftp.storeFile(fileName, is);
             ftp.logout();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Could not write tempfile " + fileName, e);
         } finally {
             try {
                 ftp.disconnect();

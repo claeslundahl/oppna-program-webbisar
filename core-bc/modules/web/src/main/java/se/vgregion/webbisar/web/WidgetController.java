@@ -49,6 +49,7 @@ public class WidgetController extends AbstractController {
         this.cfg = configuration;
     }
 
+    @Override
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
@@ -57,10 +58,10 @@ public class WidgetController extends AbstractController {
         String num = request.getParameter("num");
         String id = request.getParameter("id");
 
-        List<WebbisBean> webbisList = new ArrayList<WebbisBean>();
+        List<WidgetWebbisBean> webbisList = new ArrayList<WidgetWebbisBean>();
         if (id != null) {
             Webbis w = webbisService.getById(parseId(id));
-            webbisList.add(new WebbisBean(cfg.getMultimediaFileBaseUrl(), w, webbisList));
+            webbisList.add(new WidgetWebbisBean(cfg.getMultimediaFileBaseUrl(), w, webbisList));
         } else {
             int maxResult = parseNum(num);
             Hospital hospital = parseHospital(h);
@@ -73,7 +74,7 @@ public class WidgetController extends AbstractController {
             }
 
             for (Webbis w : webbisar) {
-                webbisList.add(new WebbisBean(cfg.getMultimediaFileBaseUrl(), w, webbisList));
+                webbisList.add(new WidgetWebbisBean(cfg.getMultimediaFileBaseUrl(), w, webbisList));
             }
         }
 
@@ -101,8 +102,9 @@ public class WidgetController extends AbstractController {
     }
 
     private int parseNum(String num) {
-        if (num == null)
+        if (num == null) {
             return 1;
+        }
         try {
             int res = Integer.parseInt(num);
             return res < 100 ? res : 100;

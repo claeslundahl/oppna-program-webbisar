@@ -38,6 +38,9 @@ import java.util.GregorianCalendar;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import se.vgregion.webbisar.svc.ImageSize;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -45,6 +48,8 @@ import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ImageUtil {
+
+    private static final Log LOGGER = LogFactory.getLog(ImageUtil.class);
 
     /**
      * Resizes and overwrites the image. Will keep the original pictures dimensions.
@@ -59,7 +64,7 @@ public class ImageUtil {
      */
     public synchronized static void scaleImage(File sourceFile, ImageSize imageSize, float quality)
             throws IOException {
-        System.gc();
+        // System.gc();
         BufferedImage sourceImage = ImageIO.read(sourceFile);
         int srcWidth = sourceImage.getWidth();
         int srcHeight = sourceImage.getHeight();
@@ -99,7 +104,6 @@ public class ImageUtil {
         int destHeight = (int) (src.getHeight() * multiplier);
 
         return new ImageSize(destWidth, destHeight);
-
     }
 
     /**
@@ -176,10 +180,11 @@ public class ImageUtil {
         OutputStream out = null;
 
         try {
-
             if (!destFile.getParentFile().exists()) {
-                destFile.getParentFile().mkdir();
-                // if(!destFile.exists()) destFile.createNewFile();
+                boolean created = destFile.getParentFile().mkdir();
+                if (!created) {
+                    LOGGER.error("Failed to create dir " + destFile.getParentFile().getName());
+                }
             }
 
             in = new FileInputStream(srcFile);
@@ -193,19 +198,17 @@ public class ImageUtil {
             }
 
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace(); // we just log when the file doesn't exist.
-            // throw new RuntimeException(ex);
+            // we just log when the file doesn't exist.
+            LOGGER.error("Could not copy file " + srcFile, ex);
         } catch (IOException e) {
-            e.printStackTrace();
-            // throw new RuntimeException(e);
+            LOGGER.error("Could not copy file " + srcFile, e);
         } finally {
             if (in != null) {
                 try {
                     in.close();
                     out.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    // throw new RuntimeException(e);
+                    LOGGER.error("Could not close stream", e);
                 }
             }
 
