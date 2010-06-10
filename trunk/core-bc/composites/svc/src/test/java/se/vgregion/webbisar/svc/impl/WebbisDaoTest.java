@@ -79,8 +79,6 @@ public class WebbisDaoTest {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddZ");
 
-    // TODO: AndersB - fixa testfall för tvilling/trilling!
-
     @Test
     @Rollback(false)
     public void testInsert() throws Exception {
@@ -138,6 +136,7 @@ public class WebbisDaoTest {
         webbis.disable();
         webbisDao.save(webbis);
 
+        // Test add twins
         parents = new ArrayList<Name>();
         images = new ArrayList<MultimediaFile>();
 
@@ -147,10 +146,19 @@ public class WebbisDaoTest {
                 MediaType.IMAGE, "image/jpeg"));
         images.add(new MultimediaFile("http://somewhere.se/images/12343.jpg", "Detta är en fin bild",
                 MediaType.IMAGE, "image/jpeg"));
-        webbisDao.save(new Webbis("Berra", "someOtherId", Sex.Male, new BirthTime(2009, 1, 5, 0, 24), 3453, 49,
-                Hospital.MOLNDAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande",
-                "email@email.se", "http://www.blog.se/mamma"));
 
+        List<Webbis> webbisList = new ArrayList<Webbis>();
+        webbis = new Webbis("Berra", "someOtherId", Sex.Male, new BirthTime(2009, 1, 5, 0, 24), 3453, 49,
+                Hospital.MOLNDAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande",
+                "email@email.se", "http://www.blog.se/mamma");
+        Webbis twinWebbis = new Webbis("Perra", "someOtherId", Sex.Male, new BirthTime(2009, 1, 5, 0, 14), 3400,
+                48, Hospital.MOLNDAL, "Göteborg", parents, images, "Lisa och Nisse", "Ett meddelande",
+                "email@email.se", "http://www.blog.se/mamma");
+        twinWebbis.setMainMultipleBirthWebbis(webbis);
+        webbisList.add(twinWebbis);
+        webbis.setMultipleBirthSiblings(webbisList);
+
+        webbisDao.save(webbis);
     }
 
     @Test
@@ -215,6 +223,16 @@ public class WebbisDaoTest {
 
         w = webbisDao.getLastestWebbis(Hospital.NAL, 1);
         assertEquals("Expected no webbis", 0, w.size());
+    }
+
+    @Test
+    public void testFindTwins() throws Exception {
+        List<Webbis> twin1List = webbisDao.searchWebbis("Perra", 0, 10, false);
+        List<Webbis> twin2List = webbisDao.searchWebbis("Berra", 0, 10, false);
+        assertEquals(1, twin1List.size());
+        assertEquals(1, twin2List.size());
+        assertEquals(twin2List.get(0), twin1List.get(0).getMainMultipleBirthWebbis());
+        assertEquals(twin1List.get(0), twin2List.get(0).getMultipleBirthSiblings().get(0));
     }
 
     @Test

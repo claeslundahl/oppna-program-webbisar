@@ -19,20 +19,30 @@
 
 package se.vgregion.webbisar.svc.impl;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import se.vgregion.webbisar.svc.ImageSize;
-import se.vgregion.webbisar.svc.impl.ImageUtil;
-
 
 public class TestImageUtil {
 
-	@Test
-	public void testCalculate() throws Exception {
-		ImageSize src = new ImageSize(2048,1024);
-		ImageSize dest = new ImageSize(1024,768);
-		
-		ImageSize res = ImageUtil.calculateImageSize(src, dest);
-		System.out.println(res);
-	}
+    @Test
+    public void testCalculate() throws Exception {
+        ImageSize src = new ImageSize(2048, 1024);
+        ImageSize dest = new ImageSize(1024, 768);
+
+        ImageSize res = ImageUtil.calculateImageSize(src, dest);
+        assertEquals(1024, res.getWidth(), 0);
+        assertEquals(512, res.getHeight(), 0);
+    }
+
+    @Test
+    public void testMax() throws Exception {
+        ImageSize src = new ImageSize(2048, 1024);
+        assertEquals(2048, src.max(), 0);
+
+        src = new ImageSize(1024, 2048);
+        assertEquals(2048, src.max(), 0);
+    }
 }
