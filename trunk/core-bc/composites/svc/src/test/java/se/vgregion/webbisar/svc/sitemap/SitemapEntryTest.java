@@ -23,27 +23,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SitemapEntryTest {
-  private SitemapEntry sitemapEntry;
-  private SitemapEntry otherSitemapEntry;
+    private SitemapEntry sitemapEntry;
+    private SitemapEntry otherSitemapEntry;
 
-  @Before
-  public void setUp() {
-    sitemapEntry = new SitemapEntry("http://localhost", "2010-02-20T16:13:00.000+01:00", "weekly");
-    otherSitemapEntry = new SitemapEntry("http://other", "2008-03-11T07:00:00.000+01:00", "weekly");
-  }
+    @Before
+    public void setUp() {
+        sitemapEntry = new SitemapEntry("http://localhost", "2010-02-20T16:13:00.000+01:00", "weekly");
+        otherSitemapEntry = new SitemapEntry("http://other", "2008-03-11T07:00:00.000+01:00", "weekly");
+    }
 
-  @Test
-  public void testHashCode() {
-    assertEquals(-1301564960, sitemapEntry.hashCode());
-    assertEquals(-1127002019, otherSitemapEntry.hashCode());
-  }
+    @Test
+    public void testHashCode() {
+        assertEquals(-1301564960, sitemapEntry.hashCode());
+        assertEquals(-1127002019, otherSitemapEntry.hashCode());
+    }
 
-  @Test
-  public void testEqualsObject() {
-    assertTrue(sitemapEntry.equals(sitemapEntry));
-    assertFalse(sitemapEntry.equals(null));
-    assertFalse(sitemapEntry.equals(this));
-    assertFalse(sitemapEntry.equals(otherSitemapEntry));
-    assertTrue(sitemapEntry.equals(new SitemapEntry("http://localhost", "2008-03-11T07:00:00.000+01:00", "weekly")));
-  }
+    @Test
+    public void testEqualsObject() {
+        assertTrue(sitemapEntry.equals(sitemapEntry));
+        assertFalse(sitemapEntry.equals(null));
+        assertFalse(sitemapEntry.equals(this));
+        assertFalse(sitemapEntry.equals(otherSitemapEntry));
+        assertTrue(sitemapEntry.equals(new SitemapEntry("http://localhost", "2008-03-11T07:00:00.000+01:00",
+                "weekly")));
+    }
 }

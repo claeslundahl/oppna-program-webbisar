@@ -19,7 +19,6 @@
 
 package se.vgregion.webbisar.types;
 
-
 public enum Sex {
-	Male, Female;
+    Male, Female;
 }

@@ -28,7 +28,7 @@ import org.hibernate.search.filter.CachingWrapperFilter;
 
 public class EnabledWebbisFilterFactory {
 
-	@Factory
+    @Factory
     public Filter getFilter() {
         Filter enabledWebbisFilter = new QueryWrapperFilter(new TermQuery(new Term("disabled", "false")));
         return new CachingWrapperFilter(enabledWebbisFilter);

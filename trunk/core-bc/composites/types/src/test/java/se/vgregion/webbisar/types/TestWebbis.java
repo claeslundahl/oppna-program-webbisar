@@ -37,8 +37,6 @@ public class TestWebbis {
     ClassValidator<Webbis> validator = new ClassValidator<Webbis>(Webbis.class, ResourceBundle.getBundle(
             "se.vgregion.webbisar.types.ValidatorMessages", new Locale("sv")));
 
-    // TODO: AndersB - fixa testfall för tvilling/trilling!
-
     @Test
     public void testOk() throws Exception {
 
@@ -56,6 +54,8 @@ public class TestWebbis {
 
         InvalidValue[] invalidValues = validator.getInvalidValues(w);
         assertEquals(getInvalidValues(invalidValues), 0, invalidValues.length);
+        assertNull(w.getMainMultipleBirthWebbis());
+        assertNull(w.getMultipleBirthSiblings());
     }
 
     @Test
@@ -137,6 +137,37 @@ public class TestWebbis {
         InvalidValue[] invalidValues = validator.getInvalidValues(w);
         assertEquals("Unexpected " + getInvalidValues(invalidValues), 1, invalidValues.length);
         assertEquals("Expected failing birthTime", "birthTime", invalidValues[0].getPropertyName());
+    }
+
+    @Test
+    public void testTriplets() {
+        List<Name> parents = new ArrayList<Name>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
+        List<Webbis> siblings = new ArrayList<Webbis>();
+
+        parents.add(new Name("Gunnar", "Bohlin"));
+        parents.add(new Name("Jenny", "Lind"));
+
+        Webbis main = new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 47,
+                Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma");
+        Webbis sibling1 = new Webbis("Pelle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 43), 2346, 48,
+                Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma");
+        sibling1.setMainMultipleBirthWebbis(main);
+        siblings.add(sibling1);
+        Webbis sibling2 = new Webbis("Olle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 53), 2347, 49,
+                Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma");
+        sibling2.setMainMultipleBirthWebbis(main);
+        siblings.add(sibling2);
+
+        main.setMultipleBirthSiblings(siblings);
+
+        assertEquals(2, main.getMultipleBirthSiblings().size());
+        assertNull(main.getMainMultipleBirthWebbis());
+        assertEquals(main, main.getMultipleBirthSiblings().get(0).getMainMultipleBirthWebbis());
+        assertEquals("Olle", main.getMultipleBirthSiblings().get(1).getName());
     }
 
     private String getInvalidValues(InvalidValue[] values) {
