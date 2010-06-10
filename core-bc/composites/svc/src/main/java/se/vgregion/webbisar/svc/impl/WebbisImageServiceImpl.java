@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,36 +36,37 @@ import se.vgregion.webbisar.svc.WebbisImageService;
 @Transactional
 public class WebbisImageServiceImpl implements WebbisImageService {
 
-	private Configuration cfg;
-	
-	@Autowired
-	void setConfiguration(Configuration cfg) {
-		this.cfg = cfg;
-	} 
-		
-	public void resize(List<String> images) {
-		for(String imagePath : images) {
-			File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
-			try {
-				System.out.println(imageFile.getAbsolutePath());
-				ImageUtil.scaleImage(imageFile, cfg.getImageSize(), cfg.getImageQuality());
-			} catch (IOException e) {
-				// TODO: Do proper logging here!
-				e.printStackTrace();
-			}
-		}
-	}
+    private static final Log LOGGER = LogFactory.getLog(WebbisImageServiceImpl.class);
 
-	public void deleteImages(List<String> toBeDeletedList) {
-		for(String imagePath: toBeDeletedList) {
-			File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
-			imageFile.delete();
-		}
-	}
+    private Configuration cfg;
 
-	public void cleanUpTempDir(String dir) {
-		File tempDir = new File(new File(cfg.getMultimediaFileBaseDir(),"temp"), dir);
-		ImageUtil.removeDir(tempDir);
-	}
+    @Autowired
+    void setConfiguration(Configuration cfg) {
+        this.cfg = cfg;
+    }
+
+    public void resize(List<String> images) {
+        for (String imagePath : images) {
+            File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
+            try {
+                System.out.println(imageFile.getAbsolutePath());
+                ImageUtil.scaleImage(imageFile, cfg.getImageSize(), cfg.getImageQuality());
+            } catch (IOException e) {
+                LOGGER.error("Failed to resize image " + imagePath, e);
+            }
+        }
+    }
+
+    public void deleteImages(List<String> toBeDeletedList) {
+        for (String imagePath : toBeDeletedList) {
+            File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
+            imageFile.delete();
+        }
+    }
+
+    public void cleanUpTempDir(String dir) {
+        File tempDir = new File(new File(cfg.getMultimediaFileBaseDir(), "temp"), dir);
+        ImageUtil.removeDir(tempDir);
+    }
 
 }
