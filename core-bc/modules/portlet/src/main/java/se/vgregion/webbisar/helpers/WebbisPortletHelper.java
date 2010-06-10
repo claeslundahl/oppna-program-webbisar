@@ -237,7 +237,10 @@ public class WebbisPortletHelper {
         MultimediaFile image = new MultimediaFile();
         image.setLocation("temp/" + session.getId() + "/" + filename);
         image.setMediaType(mediaType);
-        image.setContentType(contentType);
+        if (contentType != null) {
+            // IE sets its own jpeg mime type when uploading (!?!)
+            image.setContentType(contentType.replace("pjpeg", "jpeg"));
+        }
         webbis.getMediaFiles().add(image);
     }
 
