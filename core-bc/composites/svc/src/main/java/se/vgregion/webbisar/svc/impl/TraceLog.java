@@ -25,9 +25,9 @@ import se.vgregion.webbisar.types.Webbis;
 import se.vgregion.webbisar.util.CallContext;
 
 public class TraceLog {
-	private static Logger tracelog = Logger.getLogger("tracelog");
+    private static Logger tracelog = Logger.getLogger("tracelog");
 
-	public static void log(String event, CallContext cc, Webbis w) {
-		tracelog.info(event + " : " + cc + " - " + w);
-	}
+    public static void log(String event, CallContext cc, Webbis w) {
+        tracelog.info(event + " : " + cc + " - " + w);
+    }
 }

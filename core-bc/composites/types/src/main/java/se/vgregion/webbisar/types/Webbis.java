@@ -455,7 +455,6 @@ public class Webbis implements Serializable {
             sb.append("multipleBirthSiblings=[");
             for (Webbis w : multipleBirthSiblings) {
                 sb.append(w.toWebbisInfoOnlyString()).append(",");
-                ;
             }
             sb.append("]").append(",");
         }

@@ -58,14 +58,14 @@ public class WebbisCacheLoaderImplTest {
          * {@inheritDoc}
          */
         public void cleanUp(String tempDir) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public void delete(Long webbisId) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
@@ -79,133 +79,133 @@ public class WebbisCacheLoaderImplTest {
          * {@inheritDoc}
          */
         public Webbis getById(Long webbisId) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public String getFtpConfiguration() {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public String getImageBaseUrl() {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public List<Webbis> getLatestWebbisar(int maxResult) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public List<Webbis> getLatestWebbisar(Hospital hospital, int maxResult) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public int getMaxVideoFileSize() {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public Integer getNumberOfMatchesFor(String criteria) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public Integer getNumberOfMatchesForIncludeDisabled(String criteria) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public long getNumberOfWebbisar() {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public List<Webbis> getWebbisar(int firstResult, int maxResult) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public List<Webbis> getWebbisarForAuthorId(String userId) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public Boolean isTestMode() {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public Webbis prepareForEditing(String tempDir, Long webbisId) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public void reindex() {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public void save(String tempDir, Webbis webbis) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public void saveAll(Set<Webbis> webbisar) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public List<Webbis> searchWebbisar(String criteria, int firstResult, int maxResults) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public List<Webbis> searchWebbisarIncludeDisabled(String criteria, int firstResult, int maxResults) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         /**
          * {@inheritDoc}
          */
         public void toggleEnableDisable(String webbisId) {
-            throw new UnsupportedOperationException("TODO: Implement this method");
+            throw new UnsupportedOperationException("Not implemented yet.");
         }
 
     }

@@ -22,11 +22,11 @@ package se.vgregion.webbisar.svc;
 import java.util.List;
 
 public interface WebbisImageService {
-	
-	public void resize(List<String> images);
 
-	public void deleteImages(List<String> toBeDeletedList);
+    public void resize(List<String> images);
 
-	public void cleanUpTempDir(String dir);
-	
+    public void deleteImages(List<String> toBeDeletedList);
+
+    public void cleanUpTempDir(String dir);
+
 }
