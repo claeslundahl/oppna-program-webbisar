@@ -338,6 +338,10 @@ public class Webbis implements Serializable {
         return lastModified;
     }
 
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
     public Webbis getMainMultipleBirthWebbis() {
         return multipleBirthMainWebbis;
     }
