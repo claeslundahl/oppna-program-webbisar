@@ -81,7 +81,9 @@ public class WebbisServiceImpl implements WebbisService {
 
     public void save(String tempDir, Webbis w) {
         // We expect the webbis to come with images/video in the temp folder.
-        copyWebbisMultimediaFilesToDir(ImageUtil.getDirForTodaysDate(cfg.getMultimediaFileBaseDir()), w);
+        if (w.getMediaFiles().size() > 0) {
+            copyWebbisMultimediaFilesToDir(ImageUtil.getDirForTodaysDate(cfg.getMultimediaFileBaseDir()), w);
+        }
 
         if (w.isPersisted()) {
             // Load the previous version of the Webbis.
