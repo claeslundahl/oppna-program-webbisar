@@ -38,14 +38,14 @@ public class P3PFilter implements Filter {
      * Default constructor.
      */
     public P3PFilter() {
-        // TODO Auto-generated constructor stub
+        // Empty constructor
     }
 
     /**
      * @see Filter#destroy()
      */
     public void destroy() {
-        // TODO Auto-generated method stub
+        // Empty destroy
     }
 
     /**
@@ -65,7 +65,7 @@ public class P3PFilter implements Filter {
      * @see Filter#init(FilterConfig)
      */
     public void init(FilterConfig fConfig) throws ServletException {
-        // TODO Auto-generated method stub
+        // Empty init
     }
 
 }
