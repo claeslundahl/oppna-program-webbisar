@@ -46,7 +46,7 @@ Anledningen till detta upplägg är att man får ett fel då en användarsession
 
 == Loggning == 
 
-Applikationen har en eventlog som hittas under Apache Tomcats installations-katalog under `logs`. Filen heter `tracelog.log`. I den kan man se när användare skapat, uppdaterat samt tagit bort webbisar.
+Applikationen har en eventlog som hittas under Apache Tomcats installations-katalog under `logs`. Filen heter `tracelog.log`. I den kan man se när användare skapat, uppdaterat samt tagit bort webbisar. Övrig loggning sker i `webbisar.log`.
 
 == Tredjepartsramverk ==
 Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene-index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
@@ -104,7 +104,7 @@ Genom att titta på exemplet, ffa widget.js, så kan man förstå hur man kan an
 Notera att sökvägar till widget.js samt json-controller är hårdkodade i skript/html.
 
 = Databas = 
-Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (!WebbisParent) och en som innehåller bildinformation (!WebbisImage). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
+Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (!WebbisParent) och en som innehåller mediainformation (!WebbisMediaFile). Webbis_id i sub-tabellerna kopplar till id i Webbis tabellen.
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/db_tabeller.png
 
