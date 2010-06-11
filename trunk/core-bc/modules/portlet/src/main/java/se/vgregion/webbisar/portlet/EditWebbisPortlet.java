@@ -85,7 +85,6 @@ public class EditWebbisPortlet extends GenericPortlet {
         Object view = request.getParameter(VIEW);
 
         if ((view == null) || (view.equals(SHOW_WEBBIS_LIST_VIEW))) {
-
             // CleanUp so the session is empty
             helper.cleanUp(request.getPortletSession(true));
 
@@ -112,14 +111,6 @@ public class EditWebbisPortlet extends GenericPortlet {
                 request.setAttribute("hospitals", Hospital.values());
                 dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
             }
-        } else if (view.equals(MAIN_VIEW)) {
-            helper.populateDefaults(request.getPortletSession(true), request.getParameter("noOfSiblings"));
-
-            // this is used in the jsp
-            request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
-            request.setAttribute("hospitals", Hospital.values());
-            // show the main edit webbis page
-            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
         } else if (view.equals(ADD_IMAGES_VIEW)) {// show add picture page
             dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/AddImages.jsp");
         } else if (view.equals(PREVIEW_VIEW)) {// show preview page
@@ -128,6 +119,15 @@ public class EditWebbisPortlet extends GenericPortlet {
             dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/Confirmation.jsp");
         } else if (view.equals(CONFIRM_DELETE_WEBBIS_VIEW)) {// show confirm delete page
             dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ConfirmDelete.jsp");
+        } else {
+            // MAIN_VIEW and any other (unexpected/undefined) view
+            helper.populateDefaults(request.getPortletSession(true), request.getParameter("noOfSiblings"));
+
+            // this is used in the jsp
+            request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
+            request.setAttribute("hospitals", Hospital.values());
+            // show the main edit webbis page
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
         }
 
         dispatcher.include(request, response);
