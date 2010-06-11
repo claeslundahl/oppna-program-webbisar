@@ -40,21 +40,21 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import se.vgregion.webbisar.svc.Configuration;
 
 /**
- * Servlet implementation class ImageServlet
+ * Servlet implementation class MediaServlet
  */
-public class ImageServlet extends HttpServlet {
+public class MediaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private static final Log LOGGER = LogFactory.getLog(ImageServlet.class);
+    private static final Log LOGGER = LogFactory.getLog(MediaServlet.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
 
-    private String imagePath;
+    private String baseFilePath;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ImageServlet() {
+    public MediaServlet() {
         super();
     }
 
@@ -62,7 +62,7 @@ public class ImageServlet extends HttpServlet {
     public void init() throws ServletException {
         WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         Configuration config = (Configuration) ctx.getBean("configuration");
-        imagePath = config.getMultimediaFileBaseDir();
+        baseFilePath = config.getMultimediaFileBaseDir();
         super.init();
     }
 
@@ -70,27 +70,27 @@ public class ImageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         // Get requested image by path info.
-        String requestedImage = request.getPathInfo();
-        LOGGER.info("requestedImage: " + requestedImage);
+        String requestedFile = request.getPathInfo();
+        LOGGER.info("requestedFile: " + requestedFile);
 
-        if (requestedImage == null) {
+        if (requestedFile == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
             return;
         }
 
-        File image = new File(imagePath, URLDecoder.decode(requestedImage, "UTF-8"));
-        LOGGER.info("imagePath: " + image.getAbsolutePath());
-        LOGGER.info("imageName" + image.getName());
+        File file = new File(baseFilePath, URLDecoder.decode(requestedFile, "UTF-8"));
+        LOGGER.info("filePath: " + file.getAbsolutePath());
+        LOGGER.info("fileName: " + file.getName());
 
         // Check if file exists
-        if (!image.exists()) {
+        if (!file.exists()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
             return;
         }
 
         // Get content type by filename.
-        String contentType = getServletContext().getMimeType(image.getName().replace(".JPG", ".jpg"));
-        if (contentType == null && image.getName().endsWith("3gp")) {
+        String contentType = getServletContext().getMimeType(file.getName().replace(".JPG", ".jpg"));
+        if (contentType == null && file.getName().endsWith("3gp")) {
             contentType = "video/3gpp";
         }
 
@@ -103,12 +103,12 @@ public class ImageServlet extends HttpServlet {
         response.reset();
         response.setBufferSize(DEFAULT_BUFFER_SIZE);
         response.addHeader("Content-Type", contentType);
-        response.addHeader("Content-Length", String.valueOf(image.length()));
+        response.addHeader("Content-Length", String.valueOf(file.length()));
 
         response.addHeader("Expires", "Sun, 17 Jan 2038 19:14:07 GMT");
         response.addHeader("Cache-Control", "public");
 
-        response.addHeader("Content-Disposition", "inline; filename=\"" + image.getName() + "\"");
+        response.addHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");
 
         // Prepare streams.
         BufferedInputStream input = null;
@@ -116,7 +116,7 @@ public class ImageServlet extends HttpServlet {
 
         try {
             // Open streams.
-            input = new BufferedInputStream(new FileInputStream(image), DEFAULT_BUFFER_SIZE);
+            input = new BufferedInputStream(new FileInputStream(file), DEFAULT_BUFFER_SIZE);
             output = new BufferedOutputStream(response.getOutputStream(), DEFAULT_BUFFER_SIZE);
 
             // Write file contents to response.
