@@ -200,13 +200,13 @@
   <!-- end spring remoting -->
   
   <servlet>
-    <servlet-name>ImageServingServlet</servlet-name>
-    <servlet-class>se.vgregion.webbisar.web.ImageServlet</servlet-class>
+    <servlet-name>MediaServingServlet</servlet-name>
+    <servlet-class>se.vgregion.webbisar.web.MediaServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ImageServingServlet</servlet-name>
-    <url-pattern>/images/*</url-pattern>
+    <servlet-name>MediaServingServlet</servlet-name>
+    <url-pattern>/media/*</url-pattern>
   </servlet-mapping>
 
   <!-- Error servlet -->
