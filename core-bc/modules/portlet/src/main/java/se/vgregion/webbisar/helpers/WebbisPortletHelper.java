@@ -190,7 +190,10 @@ public class WebbisPortletHelper {
 
                         // Add temp image
                         String contentType = item.getContentType();
-                        String suffix = item.getName().substring(item.getName().indexOf('.'));
+                        String suffix = item.getName().substring(item.getName().lastIndexOf('.'));
+                        if (suffix != null) {
+                            suffix = suffix.toLowerCase();
+                        }
                         String filename = generateGUID() + suffix;
                         fileHandler.writeTempFile(filename, session.getId(), item.getInputStream());
                         if (MediaType.IMAGE.equals(mediaType)) {
