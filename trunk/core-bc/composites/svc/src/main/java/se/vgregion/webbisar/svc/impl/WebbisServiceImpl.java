@@ -42,16 +42,12 @@ import se.vgregion.webbisar.util.CallContextUtil;
 public class WebbisServiceImpl implements WebbisService {
 
     private WebbisDao webbisDao;
-    private Configuration cfg;
+    private Configuration configuration;
 
     @Autowired
-    void setWebbisDao(WebbisDao webbisDao) {
+    public WebbisServiceImpl(WebbisDao webbisDao, Configuration configuration) {
         this.webbisDao = webbisDao;
-    }
-
-    @Autowired
-    void setConfiguration(Configuration cfg) {
-        this.cfg = cfg;
+        this.configuration = configuration;
     }
 
     @Transactional(readOnly = true)
@@ -82,7 +78,8 @@ public class WebbisServiceImpl implements WebbisService {
     public void save(String tempDir, Webbis w) {
         // We expect the webbis to come with images/video in the temp folder.
         if (w.getMediaFiles().size() > 0) {
-            copyWebbisMultimediaFilesToDir(ImageUtil.getDirForTodaysDate(cfg.getMultimediaFileBaseDir()), w);
+            copyWebbisMultimediaFilesToDir(
+                    ImageUtil.getDirForTodaysDate(configuration.getMultimediaFileBaseDir()), w);
         }
 
         if (w.isPersisted()) {
@@ -118,7 +115,7 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     private File getFullTempDir(String tempDir) {
-        File tmpDir = new File(cfg.getMultimediaFileTempDir(), tempDir);
+        File tmpDir = new File(configuration.getMultimediaFileTempDir(), tempDir);
         return tmpDir;
     }
 
@@ -140,19 +137,19 @@ public class WebbisServiceImpl implements WebbisService {
 
     private void copySetLocationMultimediaFiles(File newDir, List<MultimediaFile> files) {
         for (MultimediaFile file : files) {
-            File fromImageFile = new File(cfg.getMultimediaFileBaseDir(), file.getLocation());
+            File fromImageFile = new File(configuration.getMultimediaFileBaseDir(), file.getLocation());
             // the location of the image is relative
             File toImageFile = new File(newDir.getPath(), fromImageFile.getName());
             ImageUtil.copyFile(fromImageFile, toImageFile);
 
             file.setLocation(separatorsToUnix(toImageFile.getPath()).replace(
-                    separatorsToUnix(cfg.getMultimediaFileBaseDir()), ""));
+                    separatorsToUnix(configuration.getMultimediaFileBaseDir()), ""));
         }
     }
 
     private void removeImageFiles(List<MultimediaFile> images) {
         for (MultimediaFile image : images) {
-            File imageFile = new File(cfg.getMultimediaFileBaseDir(), image.getLocation());
+            File imageFile = new File(configuration.getMultimediaFileBaseDir(), image.getLocation());
             imageFile.delete();
         }
     }
@@ -230,18 +227,18 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     public String getImageBaseUrl() {
-        return cfg.getMultimediaFileBaseUrl();
+        return configuration.getMultimediaFileBaseUrl();
     }
 
     public String getFtpConfiguration() {
-        return cfg.getFtpConfiguration();
+        return configuration.getFtpConfiguration();
     }
 
     public Boolean isTestMode() {
-        return cfg.isTestMode();
+        return configuration.isTestMode();
     }
 
     public int getMaxVideoFileSize() {
-        return cfg.getMaxVideoFileSize();
+        return configuration.getMaxVideoFileSize();
     }
 }

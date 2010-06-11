@@ -175,6 +175,14 @@ public class WebbisDaoTest {
     }
 
     @Test
+    public void testFindKallePlusGunnarMinusKSS() throws Exception {
+        List<Webbis> l = webbisDao.searchWebbis("+kalle -gunnar KSS", 0, 10, true);
+        assertEquals(1, l.size());
+        assertEquals("Kalle", l.get(0).getName());
+        assertEquals(new BirthTime(2009, 1, 2, 14, 34), l.get(0).getBirthTime());
+    }
+
+    @Test
     public void testFindGunnar() throws Exception {
         List<Webbis> l = webbisDao.searchWebbis("gunnar", 0, 10, false);
         assertEquals(2, l.size());
@@ -206,6 +214,12 @@ public class WebbisDaoTest {
     public void testGetWebbisarForAuthorId() throws Exception {
         List<Webbis> l = webbisDao.getWebbisarForAuthorId("someId");
         assertEquals(2, l.size());
+    }
+
+    @Test
+    public void testGetWebbisar() throws Exception {
+        List<Webbis> l = webbisDao.getWebbisar(0, 10);
+        assertEquals(5, l.size());
     }
 
     @Test

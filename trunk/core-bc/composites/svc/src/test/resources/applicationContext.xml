@@ -53,7 +53,6 @@
 <!--    </tx:advice>-->
     
     <bean id="configuration" class="se.vgregion.webbisar.svc.impl.ConfigurationImpl">
-      <property name="multimediaFileBaseDir" value="${webbisar.multimediaFileBaseDir}"/>
       <property name="imageSize" value="1024x768"/>
       <property name="imageQuality" value="95"/>
     </bean>

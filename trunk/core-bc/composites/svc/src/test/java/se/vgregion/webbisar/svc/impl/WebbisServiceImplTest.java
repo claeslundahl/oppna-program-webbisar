@@ -21,7 +21,9 @@ package se.vgregion.webbisar.svc.impl;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,11 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.vgregion.webbisar.svc.Configuration;
+import se.vgregion.webbisar.svc.WebbisDao;
 import se.vgregion.webbisar.svc.WebbisService;
 import se.vgregion.webbisar.types.BirthTime;
 import se.vgregion.webbisar.types.Hospital;
@@ -47,6 +52,7 @@ import se.vgregion.webbisar.types.MultimediaFile;
 import se.vgregion.webbisar.types.Name;
 import se.vgregion.webbisar.types.Sex;
 import se.vgregion.webbisar.types.Webbis;
+import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 
 /**
  * Spring 2.5 POJO Test Cases
@@ -59,28 +65,29 @@ import se.vgregion.webbisar.types.Webbis;
 @Transactional
 public class WebbisServiceImplTest {
 
-    private final static String TEMP_DIR = "C:/";
+    private static String tempDir;
+
+    @Autowired
+    private WebbisDao webbisDao;
+
+    @Autowired
+    private Configuration config;
 
     @Autowired
     private WebbisService webbisService;
 
-    public WebbisService getWebbisService() {
-        return webbisService;
-    }
-
-    public void setWebbisService(WebbisService webbisService) {
-        this.webbisService = webbisService;
-    }
-
     @Before
     public void setup() throws Exception {
+        URL fileUrl = Thread.currentThread().getContextClassLoader().getResource("TestImage.jpg");
+        tempDir = fileUrl.getFile().replace("TestImage.jpg", "temp");
+
         List<Name> parents = new ArrayList<Name>();
         List<MultimediaFile> images = new ArrayList<MultimediaFile>();
 
         parents.add(new Name("Gunnar", "Bohlin"));
         parents.add(new Name("Jenny", "Lind"));
 
-        webbisService.save(TEMP_DIR, new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
+        webbisService.save(tempDir, new Webbis("Kalle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
                 2345, 55, Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma"));
     }
@@ -99,7 +106,7 @@ public class WebbisServiceImplTest {
         parents.add(new Name("Kalle", "Anka"));
         parents.add(new Name("Kajsa", "Anka"));
 
-        webbisService.save(TEMP_DIR, new Webbis("Pelle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
+        webbisService.save(tempDir, new Webbis("Pelle", "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33),
                 2345, 55, Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma"));
 
@@ -121,7 +128,7 @@ public class WebbisServiceImplTest {
         assertEquals("Kalle", toUpdate.getName());
 
         toUpdate.toggleEnableDisable();
-        webbisService.save(TEMP_DIR, toUpdate);
+        webbisService.save(tempDir, toUpdate);
 
         toUpdate = webbisService.getById(toUpdate.getId());
         assertEquals(Boolean.TRUE, toUpdate.isDisabled());
@@ -155,5 +162,37 @@ public class WebbisServiceImplTest {
     @Test
     public void testGetNumberOfWebbisar() throws Exception {
         assertEquals(1, webbisService.getNumberOfWebbisar());
+    }
+
+    @Test
+    public void testImage() throws Exception {
+
+        // We want to check that webbis changes are logged in trace log
+        Logger logger = Logger.getLogger("tracelog");
+        final StringWriter writer = new StringWriter();
+        Appender appender = new WriterAppender(new SimpleLayout(), writer);
+        logger.addAppender(appender);
+
+        List<Webbis> list = webbisService.getAllWebbisar();
+        Webbis toUpdate = list.get(0);
+
+        URL fileUrl = Thread.currentThread().getContextClassLoader().getResource("TestImage.jpg");
+
+        toUpdate.getMediaFiles().add(
+                new MultimediaFile(fileUrl.getFile(), "Detta är en fin bild", MediaType.IMAGE, "image/jpeg"));
+
+        ReflectionTestUtils.setField(config, "multimediaFileBaseDir", fileUrl.getFile().replace("TestImage.jpg",
+                ""));
+        WebbisService localServiceInstance = new WebbisServiceImpl(webbisDao, config);
+
+        localServiceInstance.save(tempDir, toUpdate);
+
+        // Ensure trace log was called
+        assertTrue(writer.toString().contains("UPDATED : null"));
+        assertTrue(writer.toString().contains("authorId=someId,name=Kalle"));
+
+        // Try to cleanup...
+        File todayDir = ImageUtil.getDirForTodaysDate(config.getMultimediaFileBaseDir());
+        ImageUtil.removeDir(todayDir);
     }
 }

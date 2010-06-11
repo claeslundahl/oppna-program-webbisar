@@ -44,14 +44,14 @@ class WebbisCacheLoaderMock implements CacheLoader<WebbisCache> {
         Date created = new BirthTime(2010, 1, 1, 01, 00).getTimeAsDate();
         Date modified = new BirthTime(2010, 1, 11, 01, 00).getTimeAsDate();
 
-        webbisCache.add(createWebbis(123, "Kalle", created, created));
-        webbisCache.add(createWebbis(456, "Pelle", created, modified));
-        webbisCache.add(createWebbis(789, "Olle", created, created));
+        webbisCache.add(createWebbis1(123, "Kalle", created, created));
+        webbisCache.add(createWebbis2(456, "Pelle", created, modified));
+        webbisCache.add(createWebbis1(789, "Olle", created, created));
 
         return webbisCache;
     }
 
-    private Webbis createWebbis(long id, String name, Date created, Date modified) {
+    private Webbis createWebbis1(long id, String name, Date created, Date modified) {
         Webbis webbis = null;
         List<Name> parents = new ArrayList<Name>();
         List<MultimediaFile> images = new ArrayList<MultimediaFile>();
@@ -65,6 +65,20 @@ class WebbisCacheLoaderMock implements CacheLoader<WebbisCache> {
 
         webbis = new Webbis(id, name, "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55,
                 Hospital.KSS, "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
+                "http://www.blog.se/mamma", created);
+
+        webbis.setLastModified(modified);
+
+        return webbis;
+    }
+
+    private Webbis createWebbis2(long id, String name, Date created, Date modified) {
+        Webbis webbis = null;
+        List<Name> parents = new ArrayList<Name>();
+        List<MultimediaFile> images = new ArrayList<MultimediaFile>();
+
+        webbis = new Webbis(id, name, "someId", Sex.Male, new BirthTime(2009, 1, 2, 14, 33), 2345, 55, null,
+                "Mölndal", parents, images, "Johanna", "Ett meddelande", "email@email.se",
                 "http://www.blog.se/mamma", created);
 
         webbis.setLastModified(modified);
