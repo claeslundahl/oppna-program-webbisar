@@ -191,8 +191,8 @@
             
 						<div class="yui-u" style="padding-top: 10px;">
             
-              <input name="addImages_w0" value="Lägg till bilder" type="submit"/>
-              <span style="padding-left: 20px;">Bilder på webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></span>                
+              <input name="addImages_w0" value="Lägg till bilder/film" type="submit"/>
+              <span style="padding-left: 20px;">Bilder/film på webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></span>                
               <br/>
               <br/>
               
@@ -431,8 +431,8 @@
               </div>
               
               <div class="yui-u" style="padding-top: 10px;">
-                <input name="addImages_w${refRow.index+1}" value="Lägg till bilder" type="submit"/>                
-                <span style="padding-left: 20px;">Bilder på webbis ${refRow.index+2}</span>                
+                <input name="addImages_w${refRow.index+1}" value="Lägg till bilder/film" type="submit"/>                
+                <span style="padding-left: 20px;">Bilder/film på webbis ${refRow.index+2}</span>                
                 <br/>
                 <br/>
                 <!-- Any images object? -->
