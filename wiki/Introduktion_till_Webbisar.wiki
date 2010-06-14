@@ -228,7 +228,7 @@ Tomcat är i produktionsmiljön installerad som en windows service (Apache Tomca
 
 För att t.ex. öka minnet för Tomcat får man gå in i programmenyn / Apache Tomcat 6.0 / Configure Tomcat
 
-= WebSphere eller Liferay i test och produktion (portlets) = 
+= websphere eller liferay i test och produktion (portlets) = 
 
 För närvarande används WebSphere för test och produktion när det gäller portlets. Tanken är att migrering skall ske till Liferay inom kort, vilket även förberetts för i projektet.
 
