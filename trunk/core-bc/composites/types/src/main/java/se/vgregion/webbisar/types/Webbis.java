@@ -67,8 +67,6 @@ import org.hibernate.validator.Pattern;
 import org.hibernate.validator.Range;
 import org.hibernate.validator.Valid;
 
-import se.vgregion.webbisar.types.MultimediaFile.MediaType;
-
 @Entity
 @Indexed
 @Analyzer(impl = org.apache.lucene.analysis.standard.StandardAnalyzer.class)
@@ -304,7 +302,7 @@ public class Webbis implements Serializable {
         if (mediaFiles.size() > 0) {
             return mediaFiles.get(0);
         } else {
-            return new MultimediaFile("images/no-image.jpg", null, MediaType.IMAGE, "image/jpeg");
+            return null;
         }
     }
 

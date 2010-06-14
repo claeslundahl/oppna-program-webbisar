@@ -43,17 +43,6 @@ import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 public class WebbisGenerator {
 
     private static Random rand = new Random(new Date().getTime());
-    private static final String IMAGES_URL_ROOT = "http://localhost/~sofiajonsson/images/";
-
-    /*
-     * private static final String IMAGES_URL_ROOT = "http://140.166.83.38:8080/images/";
-     * 
-     * /*
-     * 
-     * 
-     * 
-     * private static final String IMAGES_URL_ROOT = "http://140.166.208.204/~parwen/webbisar/images/";
-     */
 
     /**
      * @param args
@@ -146,7 +135,6 @@ public class WebbisGenerator {
 
     private MultimediaFile generateImage() {
         int n = rand.nextInt(11);
-        // return new MultimediaFile(IMAGES_URL_ROOT+ n +".jpg", "Lilla gosan");
         return new MultimediaFile(n + ".jpg", "lilla gosan", MediaType.IMAGE, "image/jpeg");
     }
 
