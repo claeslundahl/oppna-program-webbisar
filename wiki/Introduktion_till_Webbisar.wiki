@@ -174,7 +174,7 @@ Skapa en katalog där du vill att lucene-indexet skall ligga. Peka ut denna kata
 
 == Skapa en lokal katalog för mediafiler ==
 
-Skapa en katalog där mediafiler kan sparas lokalt. Peka ut denna katalog ifrån projektet core-bc/composite/svc -> filen users.properties -> propertyn `ftpserver.user.testuser.homedirectory` samt 
+Skapa en katalog där mediafiler kan sparas lokalt. Peka ut denna katalog ifrån projektet core-bc/modules/web -> filen security.properties -> propertyn `ftpserver.user.testuser.homedirectory` samt 
 projekten core-bc/modules/web och tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseDir`. 
 
 == Konfigurera din lokala Tomcat att serva mediafiler ==
@@ -184,14 +184,14 @@ Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
 
-Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka användaren till felsidan. Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klass) som finns för detta syfte eller så lägger man manuellt upp en eller flera webbisar via portletten (se nästa steg). Observera att testdataskriptet lägger upp _mycket_ testdata och därför tar relativt lång tid att köra: 
+Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka användaren till felsidan. Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klass) som finns för detta syfte, eller så lägger man manuellt upp en eller flera webbisar via portletten.
+
+Observera att testdataskriptet lägger upp _mycket_ testdata och därför tar relativt lång tid att köra: 
 
   * Kör tools/data-generator -> !WebbisGenerator.java (OBS tar lång tid! Kontrollera loggen efter "Closing JPA !EntityManagerFactory for persistence unit 'dbschema'", detta indikerar att skriptet är klart.)
   * Kör därefter tools/data-generator -> !WebbisIndexer.java för att indexera om - även detta tar lång tid. 
 
 Testskriptet skapar webbisar som länkar till ett antal [http://oppna-program-webbisar.googlecode.com/svn/trunk/tools/data-generator/test-images/images.zip testbilder] som behöver läggas upp manuellt. Testbilderna (som heter 0-10.jpg) finns zippade under tools/data-generator/test-images. Packa upp [http://oppna-program-webbisar.googlecode.com/svn/trunk/tools/data-generator/test-images/images.zip testbilderna] i roten på din lokala katalog för mediafilerna.
-
-Vill man inte köra skriptet för att fylla databasen med testdata kan man alltså lägga till webbisar via portletten. 
 
 == Testa portlets/webapp lokalt ==
 
