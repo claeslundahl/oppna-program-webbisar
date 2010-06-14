@@ -77,7 +77,14 @@
 								<div class="yui-u first">
                   <c:choose>
                     <c:when test="${Webbis.selectedMediaType != 'VIDEO'}">
-                      <img class="full" src="#{Webbis.selectedMediaFileUrl}"></img>
+                      <c:choose>
+                        <c:when test="#{not empty Webbis.selectedMediaFileUrl}">
+                          <img class="full" src="#{Webbis.selectedMediaFileUrl}"></img>
+                        </c:when>
+                        <c:otherwise>
+                          <img class="full" alt="ingen bild" src="images/no-image.jpg" />
+                        </c:otherwise>
+                      </c:choose>
                     </c:when>
                     <c:otherwise>
                       <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="player" class="full">
@@ -168,7 +175,9 @@
                     <a href="#{Webbis.selectedMediaFileUrl}" target="new">
                       <c:choose>
                         <c:when test="${Webbis.selectedMediaType != 'VIDEO'}">
-                          Visa större bild
+                          <c:if test="#{not empty Webbis.selectedMediaFileUrl}">
+                            Visa större bild
+                          </c:if>  
                         </c:when>
                         <c:otherwise>
                           Visa/hämta film
@@ -186,10 +195,17 @@
                       <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=0&amp;javax.faces.ViewState=${flowExecutionContext.key}">
                         <c:choose>
                           <c:when test="${Webbis.mediaFiles[0].mediaType != 'VIDEO'}">
-                            <img class="#{Webbis.style[0]}" src="#{Webbis.mediaFiles[0].location}"/>
+                            <c:choose>
+                              <c:when test="#{not empty Webbis.mediaFiles[0].location}">
+                                <img class="#{Webbis.style[0]}" src="#{Webbis.mediaFiles[0].location}"/>
+                              </c:when>
+                              <c:otherwise>
+                                <img class="#{Webbis.style[0]}" src="images/no-image.jpg"/>
+                              </c:otherwise>
+                            </c:choose>
                           </c:when>
                           <c:otherwise>
-                            <img class="#{Webbis.style[0]} video" src="#{Webbis.videoThumbUrl}"/>
+                            <img class="#{Webbis.style[0]} video" src="images/video-thumb.png"/>
                           </c:otherwise>
                         </c:choose>
                       </a>
@@ -200,10 +216,17 @@
                       <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=1&amp;javax.faces.ViewState=${flowExecutionContext.key}">
 			  							  <c:choose>
                           <c:when test="${Webbis.mediaFiles[1].mediaType != 'VIDEO'}">
-                            <img class="#{Webbis.style[1]}" src="#{Webbis.mediaFiles[1].location}"/>
+                            <c:choose>
+                              <c:when test="#{not empty Webbis.mediaFiles[1].location}">
+                                <img class="#{Webbis.style[1]}" src="#{Webbis.mediaFiles[1].location}"/>
+                              </c:when>
+                              <c:otherwise>
+                                <img class="#{Webbis.style[1]}" src="images/no-image.jpg"/>
+                              </c:otherwise>
+                            </c:choose>
                           </c:when>
                           <c:otherwise>
-                            <img class="#{Webbis.style[1]} video" src="#{Webbis.videoThumbUrl}"/>
+                            <img class="#{Webbis.style[1]} video" src="images/video-thumb.png"/>
                           </c:otherwise>
                         </c:choose>
                       </a>
@@ -215,11 +238,18 @@
                     <c:if test="#{Webbis.mediaFiles[2] != null}">
                       <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=2&amp;javax.faces.ViewState=${flowExecutionContext.key}">
   			  							<c:choose>
-                          <c:when test="${Webbis.mediaFiles[2].mediaType != 'VIDEO'}">                          
-                            <img class="#{Webbis.style[2]}" src="#{Webbis.mediaFiles[2].location}"/>
+                          <c:when test="${Webbis.mediaFiles[2].mediaType != 'VIDEO'}">
+                            <c:choose>
+                              <c:when test="#{not empty Webbis.mediaFiles[2].location}">
+                                <img class="#{Webbis.style[2]}" src="#{Webbis.mediaFiles[2].location}"/>
+                              </c:when>
+                              <c:otherwise>
+                                <img class="#{Webbis.style[2]}" src="images/no-image.jpg"/>
+                              </c:otherwise>
+                            </c:choose>
                           </c:when>
                           <c:otherwise>
-                            <img class="#{Webbis.style[2]} video" src="#{Webbis.videoThumbUrl}"/>
+                            <img class="#{Webbis.style[2]} video" src="images/video-thumb.png"/>
                           </c:otherwise>
                         </c:choose>
                       </a>
@@ -230,10 +260,17 @@
                       <a href="${flowExecutionUrl}&amp;_eventId=selectWebbisImageAction&amp;selectedImage=3&amp;javax.faces.ViewState=${flowExecutionContext.key}">
 			  							  <c:choose>
                           <c:when test="${Webbis.mediaFiles[3].mediaType != 'VIDEO'}">
-                            <img class="#{Webbis.style[3]}" src="#{Webbis.mediaFiles[3].location}"/>
+                            <c:choose>
+                              <c:when test="#{not empty Webbis.mediaFiles[3].location}">
+                                <img class="#{Webbis.style[3]}" src="#{Webbis.mediaFiles[3].location}"/>
+                              </c:when>
+                              <c:otherwise>
+                                <img class="#{Webbis.style[3]}" src="images/no-image.jpg"/>
+                              </c:otherwise>
+                            </c:choose>
                           </c:when>
                           <c:otherwise>
-                            <img class="#{Webbis.style[3]} video" src="#{Webbis.videoThumbUrl}"/>
+                            <img class="#{Webbis.style[3]} video" src="images/video-thumb.png"/>
                           </c:otherwise>
                         </c:choose>
                       </a>
