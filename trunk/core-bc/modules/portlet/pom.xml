@@ -67,12 +67,7 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
+    
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
@@ -86,5 +81,32 @@
     </dependency>
 
   </dependencies>
+  
+   <profiles>
+    <!-- JSTL: MUST BE PROVIDED FOR WSP, BUT MUST NOT FOR TOMCAT -->
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- JSTL: MUST BE PROVIDED FOR WSP, BUT MUST NOT FOR TOMCAT -->
+    <profile>
+      <id>wsp</id>
+      <dependencies>
+        <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
 </project>
