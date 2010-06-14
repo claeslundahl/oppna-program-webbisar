@@ -12,7 +12,7 @@ Det finns även en "widget" som kan användas på andra webbsidor för att länk
 
 = Systemöversikt =
 
-Webbisar består av två huvudkomponenter, en webapplikation som exekverar i en web-container, i dagsläget Apache Tomcat och en portlet webbapplikation med två portlets som exekverar i en JSR 286-kompatibel portal, t ex i IBM Websphere Portal. Förutom dessa två komponenter finns det även en images komponent som servar mediafiler. I dagsläget görs detta från Apache Tomcat (se nedan för konfiguration) men mediafilerna skulle även kunna ligga någon annanstans. 
+Webbisar består av två huvudkomponenter, en webapplikation som exekverar i en web-container, i dagsläget Apache Tomcat och en portlet webbapplikation med två portlets som exekverar i en JSR 286-kompatibel portal, t ex i IBM Websphere Portal. Förutom dessa två komponenter finns det även en mediaservlet som servar mediafiler. I dagsläget görs detta från Apache Tomcat (se nedan för konfiguration) men mediafilerna skulle även kunna ligga någon annanstans. 
 
 Webbapplikationen innefattar funktionalitet för att söka efter och visa upp webbisar samt för att spara och uppdatera webbisar. Det är dock portlet-komponenten som implementerar gränssnittet för att lägga till och uppdatera webbisar. Detta för att användaren ska tvingas logga in (vi utnyttjar portalens inloggning mha e-id) innan han/hon lägger upp sina webbisar. Portlet-komponenterna kommunicerar med webapplikationen via HTTP (på URL:en `http://<host>/webbisar/remoting`) och FTP. HTTP används för att göra remote-anrop via Spring Remoting och FTP används för att överföra mediafiler. Dessa gränssnitt är ej åtkomliga utifrån utan nås bara från portalen.
 
@@ -53,17 +53,17 @@ Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessut
 
 = Servning av mediafiler =
 
-Som en temporär lösning lagras mediafiler direkt på den lokala disken på Apache Tomcat-maskinen (t ex under `C:/webbisar/images`). För att dessa mediafiler ska kunna kommas åt via http behöver följande konfiguration göras i Tomcat: 
+Som en temporär lösning lagras mediafiler direkt på den lokala disken på Apache Tomcat-maskinen (t ex under `C:/webbisar/mediafiles`). För att dessa mediafiler ska kunna kommas åt via http behöver följande konfiguration göras i Tomcat: 
 
-Under .../tomcat/conf/Catalina/localhost/ finns filen images.xml med innehållet
+Under .../tomcat/conf/Catalina/localhost/ eller .../tomcat/conf, beroende på Tomcat-version, finns filen mediafiles.xml med innehållet
 
 {{{
 <?xml version='1.0' encoding='utf-8'?>
-<Context path = "/images" docBase="C:/webbisar/images">
+<Context path = "/media" docBase="C:/webbisar/mediafiles">
 </Context>
 }}}
 
-Denna konfiguration innebär att det går att komma åt mediafiler i den lokala katalogen `C:/webbisar/images` och dess underkataloger via Tomcat-servern: `http://<host>/images/`. 
+Denna konfiguration innebär att det går att komma åt mediafiler i den lokala katalogen `C:/webbisar/mediafiles` och dess underkataloger via Tomcat-servern: `http://<host>/media/`. 
 
 = Portlets - för att editera webbisar = 
 Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt för att uppdatera lucene-indexet. 
