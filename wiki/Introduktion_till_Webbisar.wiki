@@ -192,9 +192,9 @@ Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klas
 Observera att testdataskriptet lägger upp _mycket_ testdata och därför tar relativt lång tid att köra: 
 
   * Kör tools/data-generator -> !WebbisGenerator.java (OBS tar lång tid! Kontrollera loggen efter "Closing JPA !EntityManagerFactory for persistence unit 'dbschema'", detta indikerar att skriptet är klart.)
-  * Kör därefter tools/data-generator -> !WebbisIndexer.java för att indexera om - även detta tar lång tid. 
+  * Kör därefter tools/data-generator -> !WebbisIndexer.java för att indexera om - även detta tar lång tid. Alternativt kan man aktivera indexeringen via admin-portleten.
 
-Testskriptet skapar webbisar som länkar till ett antal [http://oppna-program-webbisar.googlecode.com/svn/trunk/tools/data-generator/test-images/images.zip testbilder] som behöver läggas upp manuellt. Testbilderna (som heter 0-10.jpg) finns zippade under tools/data-generator/test-images. Packa upp [http://oppna-program-webbisar.googlecode.com/svn/trunk/tools/data-generator/test-images/images.zip testbilderna] i roten på din lokala katalog för mediafilerna.
+Testskriptet skapar webbisar som länkar till ett antal testbilder som behöver läggas upp manuellt. Testbilderna skall heta 0-10.jpg och placeras i roten på din lokala katalog för mediafilerna. Tidigare låg en zip med bilder incheckad under data-generator/test-images, men denna har tagits bort av rättighets-/integritetsskäl.
 
 == Testa portlets/webapp lokalt ==
 
