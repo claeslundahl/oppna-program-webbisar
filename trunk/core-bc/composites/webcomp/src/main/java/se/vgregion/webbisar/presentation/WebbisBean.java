@@ -240,13 +240,9 @@ public class WebbisBean implements Serializable {
 
     public String getSelectedMediaFileUrl() {
         if (mediaFiles.length == 0) {
-            return mediaFileBaseUrl + "/no-image.jpg";
+            return null;
         }
         return mediaFiles[selectedImage].getLocation();
-    }
-
-    public String getVideoThumbUrl() {
-        return mediaFileBaseUrl + "/video-thumb.png";
     }
 
     public String getSelectedImageComment() {
