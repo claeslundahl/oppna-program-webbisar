@@ -187,7 +187,7 @@ Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen
 
 == Populera den lokala databasen och lucene-indexet med testdata ==
 
-Utan en enda webbis i databasen/indexet kommer webbapplikationen att skicka användaren till felsidan. Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klass) som finns för detta syfte, eller så lägger man manuellt upp en eller flera webbisar via portletten.
+Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klass) som finns för detta syfte, eller så lägger man manuellt upp en eller flera webbisar via portletten.
 
 Observera att testdataskriptet lägger upp _mycket_ testdata och därför tar relativt lång tid att köra: 
 
