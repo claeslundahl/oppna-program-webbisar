@@ -115,9 +115,12 @@ Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbil
 
 = Konfiguration = 
 
-Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources` i respektive projekt (not: Under src/test/resources finns konfigurationsfiler som används vid enhetstester - dessa inställningar bör dock fungera utan ändringar. Se t ex projektet core-bc/composites/svc). Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil: 
+Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources` i respektive projekt (not: Under src/test/resources finns konfigurationsfiler som används vid enhetstester - dessa inställningar bör dock fungera utan ändringar. Se t ex projektet core-bc/composites/svc). 
+I services-config.xml (composites/webcomp, module/portlet samt module/web) och faces-config.xml (modules/web) anges om det är dev, poc eller prod-konfigurationen som skall användas.
 
 Under core-bc/modules/web finns en security.properties.template som innehåller definition av de properties som inte är publika. Värden för dessa properties finns incheckade i motsvarande security.properties i VGR's interna repo, denna fil måste manuellt checkas ut och kopieras in på samma ställe som .template-filen.
+
+Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil: 
 
 || *Projekt* || *Konfigurations-fil* || *Inställning/property* || *Förklaring* ||
 ||core-bc/composites/webcomp, core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator||services-config.xml (applicationContext-hibernate.xml för tools/data-generator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut application-prod.properties, application-poc.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller i projektet. ||
