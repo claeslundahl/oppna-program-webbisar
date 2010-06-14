@@ -192,7 +192,7 @@
 						<div class="yui-u" style="padding-top: 10px;">
             
               <input name="addImages_w0" value="Lägg till bilder/film" type="submit"/>
-              <span style="padding-left: 20px;">Bilder/film på webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></span>                
+              <span style="padding-left: 10px;">Bilder/film på webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></span>                
               <br/>
               <br/>
               
@@ -432,7 +432,7 @@
               
               <div class="yui-u" style="padding-top: 10px;">
                 <input name="addImages_w${refRow.index+1}" value="Lägg till bilder/film" type="submit"/>                
-                <span style="padding-left: 20px;">Bilder/film på webbis ${refRow.index+2}</span>                
+                <span style="padding-left: 10px;">Bilder/film på webbis ${refRow.index+2}</span>                
                 <br/>
                 <br/>
                 <!-- Any images object? -->
@@ -457,19 +457,22 @@
                           </c:otherwise>
                         </c:choose>
                         
-                        <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index}" value="Radera"/>
-                        
-                        <div style="float: right; margin-right: 5px;">
-                          <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${image.location}"/>" target="_new">
-                            <c:choose>
-                              <c:when test="${image.mediaType != 'VIDEO'}">
-                                Se stor bild
-                              </c:when>
-                              <c:otherwise>
-                                Se/hämta film
-                              </c:otherwise>
-                            </c:choose>
-                          </a>
+                        <div style="height: 27px;">
+                          <div style="float: left;">
+                            <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index}" value="Radera"/>
+                          </div>
+                          <div style="float: right; margin-right: 5px;">
+                            <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${image.location}"/>" target="_new">
+                              <c:choose>
+                                <c:when test="${image.mediaType != 'VIDEO'}">
+                                  Se stor bild
+                                </c:when>
+                                <c:otherwise>
+                                  Se/hämta film
+                                </c:otherwise>
+                              </c:choose>
+                            </a>
+                          </div>
                         </div>
                         
                         <div style="height: 27px; margin-top: 2px;">
@@ -506,19 +509,22 @@
                             </c:otherwise>
                           </c:choose>
                           
-                          <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index+1}" value="Radera"/>
-                          
-                          <div style="float: right; margin-right: 5px;">
-                            <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>" target="_new">
-                              <c:choose>
-                                <c:when test="${imageSecondIdx.mediaType != 'VIDEO'}">
-                                  Se stor bild
-                                </c:when>
-                                <c:otherwise>
-                                  Se/hämta film
-                                </c:otherwise>
-                              </c:choose>
-                            </a>
+                          <div style="height: 27px;">
+                            <div style="float: left;">
+                              <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index+1}" value="Radera"/>
+                            </div>
+                            <div style="float: right; margin-right: 5px;">
+                              <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>" target="_new">
+                                <c:choose>
+                                  <c:when test="${imageSecondIdx.mediaType != 'VIDEO'}">
+                                    Se stor bild
+                                  </c:when>
+                                  <c:otherwise>
+                                    Se/hämta film
+                                  </c:otherwise>
+                                </c:choose>
+                              </a>
+                            </div>
                           </div>
                           
                           <div style="height: 27px; margin-top: 2px;">
