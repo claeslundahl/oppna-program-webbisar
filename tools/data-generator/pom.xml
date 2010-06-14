@@ -88,6 +88,12 @@
       <artifactId>logdriver</artifactId>
       <version>1.0.0</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.ftpserver</groupId>
+      <artifactId>ftpserver-core</artifactId>
+      <version>1.0.4</version>
+    </dependency>
   </dependencies>
 
 </project>
