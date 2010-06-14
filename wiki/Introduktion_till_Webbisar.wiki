@@ -187,70 +187,19 @@ Testskriptet skapar webbisar som länkar till ett antal [http://oppna-program-we
 
 Vill man inte köra skriptet för att fylla databasen med testdata kan man alltså lägga till webbisar via portletten. 
 
-== Testa portlets lokalt ==
+== Testa portlets/webapp lokalt ==
 
-!OpenPortlet Container på Glassfish används för utveckling och test av portlet-delarna. Se [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/docs/Teknisk_arkitektur/Systemutveckling/JavaEE/Anvisningar_Anslutningsskikt_Portlet.doc referensarkitekturens anvisningar för portlets] för mer information om utveckling av JSR 286-portlets och hur installationen av !OpenPortlet Container och Glassfish går till.
+Projektet byggs och deployas som de flesta andra projekt på Öppna program, bygg med maven och deploya via VGR's bundlade Eclipse på en lokal instans av Liferay.
 
-=== Deploy av portlets till !OpenPortlet Container === 
+= Deployment / Release = 
 
-Starta Glassfish. Gå därefter till http://localhost:8080/portletdriver/admin. Välj webbisar-portlett.war och tryck på Deploy. Gå därefter till Portlets-fliken där default-portletfönstret automatiskt har uppdaterats med webbisar-portlettarna; _!EditWebbis_ och _!AdminEditWebbis_. 
+För att bygga till utv-miljö/test/produktion behöver man se till att rätt properties är satta i respektive projekt. Se avsnittet [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration konfiguration] ovan för information om vilka properties som behöver sättas. application-xyz.properties skall pekas ut i web och portlet-modulerna samt att Lucene-indexet ska pekas ut rätt i hibernate.cfg.xml. Dessutom måste rätt properties vara tillgängliga i security.properties.
 
-= Att skapa en release på google code =
+Ett tillägg till mavenbygget är att det finns ytterligare en profil att ta hänsyn till. Om portletarna skall deployas på WebSphere måste profilen 'wsp' användas. Annars byggs/releasas projektet som vanligt enligt [http://code.google.com/p/oppna-program/wiki/Bygganvisningar_Oppna_Program Bygganvisningar, Öppna program].
 
-Att skapa en release: 
+= Tomcat i test/produktion (webapp) = 
 
-  * Kopiera från trunk till tag
-{{{ 
-svn copy -m "Taging for release"  https://oppna-program-webbisar.googlecode.com/svn/trunk/ 
-https://oppna-program-webbisar.googlecode.com/svn/tags/<release version>
-}}}
-  * Checka ut tagen
-{{{
-svn co https://oppna-program-webbisar.googlecode.com/svn/tags/<release version>
-}}}
-  * Stega up versionen i trunk (ändra version i alla pom-filer). Not: Om det är en milestone eller release candidate som releasas så behövs ej detta - då ska trunk ligga kvar på SNAPSHOT.
-  * Gör commit på trunk (om versionen har stegats upp):
-{{{
-svn -m "Increasing version for new development in trunk" commit
-}}}
-  * Ändra versionen i alla pom-filer under tagen 
-  * Gör commit på tagen:
-{{{
-svn -m "Setting version for release of <release version>" commit
-}}}
-  * Kontrollera så att googleCode-svn-serverns användarnamn och lösenord stämmer i mavenfilen $USER_HOME/.m2/settings.xml (se exempel [http://oppna-program.googlecode.com/svn/reference-architecture/trunk/src/tools/maven-settings/settings.xml här]). 
-  * Kör sedan maven deploy i katalogen /tags/<release version>/ för att deploya maven-artefakterna till [https://oppna-program-webbisar.googlecode.com/svn/maven maven-repot] (TODO: ev bör detta köras av byggservern):
-{{{
-mvn deploy
-}}}
-  * Samla ihop alla filer, inkl dokument, och skapa en src-download: 
-    * Kör `maven clean` för att ta bort alla target-folders.
-    * Kör `maven eclipse:clean` för att ta bort alla eclipse-filer.
-    * Ta bort alla svn-foldrar, t ex (på Linux/Mac) med `find . -type d -name '*.svn' -print0 | xargs -0 rm -rdf`. 
-    * Zippa ihop och lägg upp filen under downloads.
-  * Not: För icke-bakåtkompatibla releaser (major-versioner) kan vissa wiki-sidor behöva sparas i enlighet med den tidigare versionen. Detta får bedömas från fall till fall. 
-  * Not: Om en separat branch skulle behövas, t ex för buggfixar görs detta vid behov (dvs när första buggen skall fixas) genom att kopiera från tags till branches:
-{{{ 
-svn copy -m "Branching release"  https://oppna-program-webbisar.googlecode.com/svn/tags/<release version> 
-https://oppna-program-webbisar.googlecode.com/svn/branches/<release version>
-}}} 
-
-
-= Deployment till utv/test = 
-
-För att bygga en release till test/utv-miljön (samt produktion) behöver man se till att rätt properties är satta i respektive projekt. Se avsnittet [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration konfiguration] ovan för information om vilka properties som behöver sättas. I normalfallet skall application-prod.properties pekas ut i web och portlet-modulerna samt att Lucene-indexet ska pekas ut rätt i hibernate.cfg.xml.
-
-Sedan bygger man med `mvn clean install`.
-
-För att deploya på Tomcat har vi har använt Tomcats administratörsgränssnitt:
-
-`http://<host>/manager/html`
-
-Börja alltid med att göra undeploy på webbisar-applikationen. Applikationen deployar i vissa fall inte av sig ordentligt, så man brukar behöva stoppa Tomcat (som går som en windows service), ta bort webbisar katalogen under webapps och starta om Tomcat. Därefter går det bra att deploya en ny version genom att ladda upp war-filen via administratörsgränssnittet.
-
-TODO Denna process bör automatiseras och utföras av byggservern. 
-
-= Tomcat = 
+== Test ==
 Tomcat är i test/utv-miljön installerat som en windows service (Apache Tomcat Tomcat55).
 
 För att avinstallera:
@@ -264,6 +213,15 @@ För att installera
 `> service.bat install Tomcat55`
 
 Man kan editera service.bat skriptet för att t ex öka minnet för Tomcat.
+
+== Produktion ==
+Tomcat är i produktionsmiljön installerad som en windows service (Apache Tomcat 6).
+
+För att t.ex. öka minnet för Tomcat får man gå in i programmenyn / Apache Tomcat 6.0 / Configure Tomcat
+
+= WebSphere/Liferay i test/produktion (portlets) = 
+
+För närvarande används WebSphere för test och produktion när det gäller portlets. Tanken är att migrering skall ske till Liferay inom kort, vilket även förberetts för i projektet.
 
 = Subversion = 
 Se [http://code.google.com/p/oppna-program-webbisar/source/checkout Source] för information om hur du checkar ut källkoden. 
