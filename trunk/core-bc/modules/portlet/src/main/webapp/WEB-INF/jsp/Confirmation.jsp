@@ -52,7 +52,6 @@
 							</p>
 						</div>
 						<div class="yui-u" style="text-align: right">
-<!--							<a href="<portlet:renderURL><portlet:param name="VIEW" value="SHOW_WEBBIS_LIST_VIEW"/></portlet:renderURL>">Tillbaka</a>-->
 							<form action="<portlet:actionURL/>" method="post" name="back_from_confirm" id="back_from_confirm">			
 								<input type="submit" name="backFromConfirm" value="Tillbaka"/>
 							</form>		

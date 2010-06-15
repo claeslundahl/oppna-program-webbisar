@@ -237,14 +237,12 @@
                       </div>
                       
                       <div style="height: 27px; margin-top: 2px;">
-                        <c:if test="${image.mediaType != 'VIDEO'}">
-                          <c:set var="imageId" value="w0_mediaFile${refRow.index}"/>
-                          <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                            <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
-                          </c:if>
-                          <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                            <input type="submit" name="w0_mediaFile${refRow.index}-main-image" value="Sätt som förstabild"/>
-                          </c:if>
+                        <c:set var="imageId" value="w0_mediaFile${refRow.index}"/>
+                        <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
+                          <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
+                        </c:if>
+                        <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
+                          <input type="submit" name="w0_mediaFile${refRow.index}-main-image" value="Sätt som förstaval"/>
                         </c:if>
                       </div>
                      
@@ -289,14 +287,12 @@
                         </div>
                         
                         <div style="height: 27px; margin-top: 2px;">
-                          <c:if test="${imageSecondIdx.mediaType != 'VIDEO'}">
-                            <c:set var="imageId2" value="w0_mediaFile${refRow.index+1}"/>
-                            <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                              <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
-                            </c:if>
-                            <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                              <input type="submit" name="w0_mediaFile${refRow.index+1}-main-image" value="Sätt som förstabild"/>
-                            </c:if>
+                          <c:set var="imageId2" value="w0_mediaFile${refRow.index+1}"/>
+                          <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
+                            <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
+                          </c:if>
+                          <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
+                            <input type="submit" name="w0_mediaFile${refRow.index+1}-main-image" value="Sätt som förstaval"/>
                           </c:if>
                         </div>
                         
@@ -476,14 +472,12 @@
                         </div>
                         
                         <div style="height: 27px; margin-top: 2px;">
-                          <c:if test="${image.mediaType != 'VIDEO'}">
-                            <c:set var="imageId" value="w${refRow.index+1}_mediaFile${refImgRow.index}"/>
-                            <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                              <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
-                            </c:if>
-                            <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                              <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index}-main-image" value="Sätt som förstabild"/>
-                            </c:if>
+                          <c:set var="imageId" value="w${refRow.index+1}_mediaFile${refImgRow.index}"/>
+                          <c:if test="${imageId eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
+                            <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
+                          </c:if>
+                          <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
+                            <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index}-main-image" value="Sätt som förstaval"/>
                           </c:if>
                         </div>
                         
@@ -528,14 +522,12 @@
                           </div>
                           
                           <div style="height: 27px; margin-top: 2px;">
-                            <c:if test="${imageSecondIdx.mediaType != 'VIDEO'}">
-                              <c:set var="imageId2" value="w${refRow.index+1}_mediaFile${refImgRow.index+1}"/>
-                              <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                                <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna bild är förstabild</span></p>
-                              </c:if>
-                              <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                                <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index+1}-main-image" value="Sätt som förstabild"/>
-                              </c:if>
+                            <c:set var="imageId2" value="w${refRow.index+1}_mediaFile${refImgRow.index+1}"/>
+                            <c:if test="${imageId2 eq portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
+                              <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
+                            </c:if>
+                            <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
+                              <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index+1}-main-image" value="Sätt som förstaval"/>
                             </c:if>
                           </div>
                           
