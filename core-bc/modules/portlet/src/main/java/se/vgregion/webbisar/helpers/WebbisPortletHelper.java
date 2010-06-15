@@ -144,9 +144,9 @@ public class WebbisPortletHelper {
         try {
             PortletSession session = request.getPortletSession(true);
             PortletFileUpload upload = new PortletFileUpload(diskFileItemFactory);
-            List<FileItem> fileItemLocations = upload.parseRequest(request);
+            List<FileItem> fileItems = upload.parseRequest(request);
             // first check which button was clicked; submit or cancel
-            for (FileItem item : fileItemLocations) {
+            for (FileItem item : fileItems) {
                 if (item.isFormField()) {
                     if (item.getFieldName().equals("cancelAddImages")) {
                         // do nothing more - the user has pressed 'cancel'.
@@ -155,37 +155,24 @@ public class WebbisPortletHelper {
                 }
             }
             List<String> imageFiles = null;
+
+            // Check if "main" or multiple birth sibling webbis
+            Integer webbisIndex = 0;
+            if (session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX) != null) {
+                webbisIndex = (Integer) session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX);
+            }
+
+            // Validate mediafiles, e.g. size and/or number of video files
+            validateMediafiles(fileItems, webbisIndex, session);
+
             // parse and save the images on the temp area
-            for (FileItem item : fileItemLocations) {
+            for (FileItem item : fileItems) {
                 if (!item.isFormField()) {
 
                     if (item.getSize() > 0) {
                         MediaType mediaType = MediaType.IMAGE;
-
-                        // Check if "main" or multiple birth sibling webbis
-                        Integer webbisIndex = 0;
-                        if (session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX) != null) {
-                            webbisIndex = (Integer) session.getAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX);
-                        }
-
-                        // Check what we got...
-                        if (!item.getContentType().startsWith("image")) {
-                            if (item.getContentType().startsWith("video")) {
-                                // Validate size
-                                if (item.getSize() > maxVideoFileSize) {
-                                    throw new WebbisValidationException(
-                                            "Videofilen är för stor, maximalt tillåten storlek är 10MB.");
-                                }
-                                // Validate that max videos not already reached
-                                if (maxVideosReached(webbisIndex, session)) {
-                                    throw new WebbisValidationException(
-                                            "Det är inte tillåtet att ladda upp mer än en videofil.");
-                                }
-                                mediaType = MediaType.VIDEO;
-                            } else {
-                                throw new WebbisValidationException(
-                                        "Bildfiler måste vara av typen JPEG, GIF eller PNG\nVideofilen måste vara av typen WMV, AVI, MPEG, MOV eller 3GP");
-                            }
+                        if (item.getContentType().startsWith("video")) {
+                            mediaType = MediaType.VIDEO;
                         }
 
                         // Add temp image
@@ -211,7 +198,6 @@ public class WebbisPortletHelper {
                                     item.getFieldName().length() - 1)), request);
                         }
                     }
-
                 }
             }
             return imageFiles;
@@ -247,7 +233,40 @@ public class WebbisPortletHelper {
         webbis.getMediaFiles().add(image);
     }
 
-    private boolean maxVideosReached(Integer webbisIndex, PortletSession session) {
+    private void validateMediafiles(List<FileItem> fileItems, Integer webbisIndex, PortletSession session)
+            throws WebbisValidationException {
+        int noOfUploadedVideos = 0;
+        // Check what we got...
+        for (FileItem item : fileItems) {
+            if (!item.isFormField()) {
+                if (item.getSize() > 0) {
+                    if (!item.getContentType().startsWith("image")) {
+                        if (item.getContentType().startsWith("video")) {
+                            // Validate size
+                            if (item.getSize() > maxVideoFileSize) {
+                                throw new WebbisValidationException("Videofilen " + item.getName()
+                                        + " är för stor, maximalt tillåten storlek är 10MB.");
+                            }
+                            noOfUploadedVideos++;
+                        } else {
+                            // File does not seem to be image nor video
+                            throw new WebbisValidationException("Filen " + item.getName()
+                                    + " verkar inte vara av bild- eller videoformat.");
+                        }
+                    }
+                }
+            }
+        }
+
+        // Validate that max videos has not been reached
+        int newNoOfVideosForWebbis = currentNoOfVideosForWebbis(webbisIndex, session) + noOfUploadedVideos;
+        if (newNoOfVideosForWebbis > MAX_NO_OF_VIDEOS) {
+            throw new WebbisValidationException("Det är inte tillåtet att ladda upp mer än en videofil.");
+        }
+
+    }
+
+    private int currentNoOfVideosForWebbis(Integer webbisIndex, PortletSession session) {
         MainWebbisBean mainWebbisBean = (MainWebbisBean) session.getAttribute(SESSION_ATTRIB_KEY_MAINWEBBISBEAN);
 
         Webbis webbis = null;
@@ -264,7 +283,7 @@ public class WebbisPortletHelper {
             }
         }
 
-        return (noOfVideos >= MAX_NO_OF_VIDEOS);
+        return noOfVideos;
     }
 
     /**
