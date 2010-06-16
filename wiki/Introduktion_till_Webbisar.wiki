@@ -21,7 +21,7 @@ Två diskareor används lokalt på Apache Tomcat servern. En för att lagra medi
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png
 
 = Webbapplikationen - för att visa webbisar =
-Web-applikationen är skriven enligt [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA Öppna programs referensarkitektur] och är därför baserad på [http://www.springsource.org/webflow Spring Webflow version 2] och [http://java.sun.com/javaee/javaserverfaces/ JSF]/[https://facelets.dev.java.net/ Facelets]. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
+Web-applikationen är utvecklad i enlighet med [http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA Öppna programs referensarkitektur] och är därför baserad på [http://www.springsource.org/webflow Spring Webflow version 2] och [http://java.sun.com/javaee/javaserverfaces/ JSF]/[https://facelets.dev.java.net/ Facelets]. Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
 
   # `http://<host>/webbisar/`
   # `http://<host>/webbisar/?webbisId=<id>`
