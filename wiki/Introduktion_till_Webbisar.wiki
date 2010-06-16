@@ -8,7 +8,7 @@
 
 Webbisar är en webbapplikation som har som huvudsyfte att lagra och visa bilder/film på nyfödda bäbisar, sk "webbisar". Genom att logga in i portalen (i VGRs fall med e-id) kan nyblivna föräldrar själva lägga upp och administrera mediafiler på sina nyfödda. Webbapplikationen visar sedan upp webbisarna. 
 
-Det finns även en "widget" som kan användas på andra webbsidor för att länka till webbisar-applikationen. 
+Det finns även en "widget" som kan användas på andra webbsidor för att länka till webbisar-applikationen. Se webbisar på adressen http://vard.vgregion.se
 
 = Systemöversikt =
 
