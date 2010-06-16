@@ -29,7 +29,7 @@ Web-applikationen är utvecklad i enlighet med [http://code.google.com/p/oppna-p
 Den första URL:en gör att man hamnar på förstasidan och den andra att man hamnar direkt på en webbis med det angivna id:et.
 
 == Integration med !EpiServer ==
-Hos VGR är webbapplikationen integrerad i !EpiServer. Bilden nedan visar hur Webbisar integrerar med !EpiServer. På sidan i !EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
+Den naturliga ingången för en användare är via VGRs publika vårdportal http://vard.vgregion.se . Vårdportalen baseras på !EpiServer och webbisar är inlemmad som en gadget i denna. När användaren klickar på gadgeten så hamnar han/hon på sidan som visas i bilden nedan. Bilden nedan visar hur Webbisar integrerar med !EpiServer. På sidan i !EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis. 
 
 http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/integration_med_episerver.png
  
