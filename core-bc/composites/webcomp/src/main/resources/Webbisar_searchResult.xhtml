@@ -37,7 +37,7 @@
               <div class="yui-b topinfo">
                 <p>
                   Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
-              <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
+                  <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
                 </p>
               </div>
           		<div class="yui-b">
@@ -52,7 +52,7 @@
           				<div class="yui-u searchfield">
                     <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
       								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
-      								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
+      								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton"/>
       							</form>
           				</div>
 						      <div class="yui-u" style="text-align: right">
@@ -64,53 +64,21 @@
                   </div>
         			</div>
           		</div>	
+              <!-- 
               <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+               -->
           	</div>
+            
           	<div id="bd">
-          		<div id="yui-main">
-          			<div class="yui-u first">
-                  <div class="search_item">
-                    #{SearchResultPage.numberOfHits} träffar
-                  </div>
-                </div>
-                <c:forEach var="sr" items="#{SearchResultPage.searchResults}" begin="0">
-      			      <div class="yui-u">
-                    <div class="search_item">
-		  		             <a href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{sr.id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                        #{sr.header}
-                        </a>
-                    </div>
-                    <div class="search_info">
-                      <p>
-                        #{sr.info}                        
-                      </p>
-                    </div>
-                  </div>
-                </c:forEach>
+          		<div id="yui-main" style="margin-top: 10px;">
+                <iframe id="searchResult" src="#{msgBundle['webbisar.searchEngineBaseUrl']}?#{SearchCriteria.searchEngineQueryParameters}" frameborder="0" scrolling="no" height="650px" width="660px">
+                  Kan tyvärr inte visa sökresultatet, din webläsare har inte stöd för IFrames.
+                </iframe>
           		</div>
           	</div>
+            
           	<div id="ft">
               <div class="yui-b">
-                <div class="yui-ge">
-                  <div class="yui-u first"> 
-                    <c:if test="#{!SearchResultPage.firstPage}">
-                      <p>
-                        <a href="${flowExecutionUrl}&amp;_eventId=showPrevPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                           &lt; Föregående
-                        </a>
-                      </p>
-                    </c:if>
-                  </div>
-                  <div class="yui-u" style="text-align: right">
-                    <c:if test="#{!SearchResultPage.lastPage}">
-                      <p>
-                        <a href="${flowExecutionUrl}&amp;_eventId=howNextPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">
-                          Nästa &gt;
-                        </a>
-                      </p>
-                    </c:if>
-                  </div>
-                </div>
               </div>     
             </div>
           </div>

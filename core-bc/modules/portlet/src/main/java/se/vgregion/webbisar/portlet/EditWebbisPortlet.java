@@ -257,11 +257,12 @@ public class EditWebbisPortlet extends GenericPortlet {
             String baseUrl = webbisServiceProxy.getImageBaseUrl();
             String ftpCfg = webbisServiceProxy.getFtpConfig();
             Boolean testMode = webbisServiceProxy.isTestMode();
+            int maxNoOfVideoFiles = webbisServiceProxy.getMaxNoOfVideoFiles();
             int maxVideoFileSize = webbisServiceProxy.getMaxVideoFileSize();
 
             FileHandler fileHandler = new FileHandler(ftpCfg);
 
-            helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode, maxVideoFileSize);
+            helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode, maxNoOfVideoFiles, maxVideoFileSize);
         }
     }
 

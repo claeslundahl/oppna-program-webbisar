@@ -191,7 +191,7 @@
             
 						<div class="yui-u" style="padding-top: 10px;">
             
-              <input name="addImages_w0" value="Lägg till bilder/film" type="submit"/>
+              <input name="addImages_w0" value="&nbsp;Lägg till bilder/film&nbsp;" type="submit"/>
               <span style="padding-left: 10px;">Bilder/film på webbis<c:if test="${not empty portletSessionScope['webbisForm.mainWebbisBean'].multipleBirthWebbisSiblings}"> 1</c:if></span>                
               <br/>
               <br/>
@@ -220,7 +220,7 @@
                       
                       <div style="height: 27px;">
                         <div style="float: left;">
-                          <input type="submit" name="w0_remove-mediaFile${refRow.index}" value="Radera"/>
+                          <input type="submit" name="w0_remove-mediaFile${refRow.index}" value="&nbsp;Radera&nbsp;"/>
                         </div>
                         <div style="float: right; margin-right: 5px;">
                           <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${image.location}"/>" target="_new">
@@ -242,7 +242,7 @@
                           <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
                         </c:if>
                         <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                          <input type="submit" name="w0_mediaFile${refRow.index}-main-image" value="Sätt som förstaval"/>
+                          <input type="submit" name="w0_mediaFile${refRow.index}-main-image" value="&nbsp;Sätt som förstaval&nbsp;"/>
                         </c:if>
                       </div>
                      
@@ -270,7 +270,7 @@
                         
                         <div style="height: 27px;">
                           <div style="float: left;">
-                            <input type="submit" name="w0_remove-mediaFile${refRow.index+1}" value="Radera"/>
+                            <input type="submit" name="w0_remove-mediaFile${refRow.index+1}" value="&nbsp;Radera&nbsp;"/>
                           </div>
                           <div style="float: right; margin-right: 5px;">
                             <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>" target="_new">
@@ -292,7 +292,7 @@
                             <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
                           </c:if>
                           <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[0]}">
-                            <input type="submit" name="w0_mediaFile${refRow.index+1}-main-image" value="Sätt som förstaval"/>
+                            <input type="submit" name="w0_mediaFile${refRow.index+1}-main-image" value="&nbsp;Sätt som förstaval&nbsp;"/>
                           </c:if>
                         </div>
                         
@@ -427,7 +427,7 @@
               </div>
               
               <div class="yui-u" style="padding-top: 10px;">
-                <input name="addImages_w${refRow.index+1}" value="Lägg till bilder/film" type="submit"/>                
+                <input name="addImages_w${refRow.index+1}" value="&nbsp;Lägg till bilder/film&nbsp;" type="submit"/>                
                 <span style="padding-left: 10px;">Bilder/film på webbis ${refRow.index+2}</span>                
                 <br/>
                 <br/>
@@ -455,7 +455,7 @@
                         
                         <div style="height: 27px;">
                           <div style="float: left;">
-                            <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index}" value="Radera"/>
+                            <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index}" value="&nbsp;Radera&nbsp;"/>
                           </div>
                           <div style="float: right; margin-right: 5px;">
                             <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${image.location}"/>" target="_new">
@@ -477,7 +477,7 @@
                             <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
                           </c:if>
                           <c:if test="${imageId ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                            <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index}-main-image" value="Sätt som förstaval"/>
+                            <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index}-main-image" value="&nbsp;Sätt som förstaval&nbsp;"/>
                           </c:if>
                         </div>
                         
@@ -505,7 +505,7 @@
                           
                           <div style="height: 27px;">
                             <div style="float: left;">
-                              <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index+1}" value="Radera"/>
+                              <input type="submit" name="w${refRow.index+1}_remove-mediaFile${refImgRow.index+1}" value="&nbsp;Radera&nbsp;"/>
                             </div>
                             <div style="float: right; margin-right: 5px;">
                               <a href="<c:out value="${portletSessionScope['webbisForm.mainWebbisBean'].mediaFileBaseUrl}"/><c:out value="${imageSecondIdx.location}"/>" target="_new">
@@ -527,7 +527,7 @@
                               <p style="padding-top: 7px;"><span style="white-space: nowrap;">Denna är förstaval</span></p>
                             </c:if>
                             <c:if test="${imageId2 ne portletSessionScope['webbisForm.mainWebbisBean'].selectedMainImages[refRow.index+1]}">
-                              <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index+1}-main-image" value="Sätt som förstaval"/>
+                              <input type="submit" name="w${refRow.index+1}_mediaFile${refImgRow.index+1}-main-image" value="&nbsp;Sätt som förstaval&nbsp;"/>
                             </c:if>
                           </div>
                           
@@ -670,9 +670,9 @@
 					<div class="yui-g">
 						<div class="yui-u first"></div>
 						<div class="yui-u" style="text-align: right;">
-							<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id != null}"><input name="deleteWebbis" value="Radera webbis" type="submit"/></c:if>
-							<input name="cancel" value="Avbryt" type="submit"/>
-							<input name="preview" value="Förhandsgranska" type="submit"/>
+							<c:if test="${portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis.id != null}"><input name="deleteWebbis" value="&nbsp;Radera webbis&nbsp;" type="submit"/></c:if>
+							<input name="cancel" value="&nbsp;Avbryt&nbsp;" type="submit"/>
+							<input name="preview" value="&nbsp;Förhandsgranska&nbsp;" type="submit"/>
 						</div>
 					</div>
 				</div>

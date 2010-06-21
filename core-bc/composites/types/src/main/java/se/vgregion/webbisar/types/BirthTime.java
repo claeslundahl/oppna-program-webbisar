@@ -23,6 +23,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.IllegalFieldValueException;
@@ -30,6 +32,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
 public class BirthTime implements Comparable<BirthTime>, Serializable {
+
+    private static final Log LOGGER = LogFactory.getLog(BirthTime.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -74,7 +78,7 @@ public class BirthTime implements Comparable<BirthTime>, Serializable {
                 error = false;
             } catch (IllegalFieldValueException e) {
                 String s = e.getFieldName();
-                System.out.println(e);
+                LOGGER.error("Failed to create DateTime object.", e);
                 if ("dayOfMonth".equals(s)) {
                     day = (day > e.getUpperBound().intValue()) ? e.getUpperBound().intValue() : e.getLowerBound()
                             .intValue();

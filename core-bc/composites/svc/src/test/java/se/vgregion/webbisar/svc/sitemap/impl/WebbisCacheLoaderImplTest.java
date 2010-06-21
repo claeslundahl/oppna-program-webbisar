@@ -120,6 +120,13 @@ public class WebbisCacheLoaderImplTest {
         /**
          * {@inheritDoc}
          */
+        public int getMaxNoOfVideoFiles() {
+            throw new UnsupportedOperationException("Not implemented yet.");
+        }
+
+        /**
+         * {@inheritDoc}
+         */
         public Integer getNumberOfMatchesFor(String criteria) {
             throw new UnsupportedOperationException("Not implemented yet.");
         }

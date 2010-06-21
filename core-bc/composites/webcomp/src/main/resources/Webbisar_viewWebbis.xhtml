@@ -31,7 +31,6 @@
 <body>
 	<ui:composition template="/template.xhtml">
 		<ui:define name="body">
-    
 			<div id="custom-doc">
 				<div id="hd">
 					<div class="yui-b header"><h2>Webbisar</h2></div>
@@ -49,13 +48,21 @@
                     Till startsidan
                   </h:outputLink>
 						  		<br/>
-                  <a href="${flowExecutionUrl}&amp;_eventId=backToWebbisarAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">Tillbaka</a>
+                  <c:choose>
+                    <c:when test="#{not empty SearchCriteria.searchEngineQueryParameters}">
+                      <a href="${flowExecutionUrl}&amp;_eventId=searchForWebbisAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">Tillbaka</a>
+                    </c:when>
+                    <c:otherwise>
+                      <a href="${flowExecutionUrl}&amp;_eventId=backToWebbisarAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">Tillbaka</a>
+                    </c:otherwise>
+                  </c:choose>
                 </p>
 							</div>
 							<div class="yui-u searchfield">
                 <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
+                  <input type="text" name="searchEngineQueryParameters" id="searchEngineQueryParameters" jsfc="h:inputHidden" value="#{SearchCriteria.searchEngineQueryParameters}"/>
   								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
-  								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="Hitta" jsfc="h:commandButton"/>
+  								<input class="btn" type="submit" forceId="true" id="searchButtonId" action="searchForWebbisAction" immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton"/>
   							</form>
 							</div>
     						<div class="yui-u" style="text-align: right">
@@ -67,7 +74,9 @@
                 </div>
 						</div>
 					</div>	
-        <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+          <!-- 
+          <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+           -->
 				</div>
 				<div id="bd">
 					<div id="yui-main">

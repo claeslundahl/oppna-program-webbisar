@@ -241,4 +241,8 @@ public class WebbisServiceImpl implements WebbisService {
     public int getMaxVideoFileSize() {
         return configuration.getMaxVideoFileSize();
     }
+
+    public int getMaxNoOfVideoFiles() {
+        return configuration.getMaxNoOfVideoFiles();
+    }
 }

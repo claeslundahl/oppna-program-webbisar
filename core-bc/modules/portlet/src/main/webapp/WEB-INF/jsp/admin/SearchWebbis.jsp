@@ -51,7 +51,7 @@
 				
 					<div class="yui-g">
 						<div class="yui-u first" style="margin-left: 0.4em">
-							Sök webbis: <input type="text" name="searchField"/>&nbsp;<input name="searchButton" id="searchButton" value="Sök" type="submit"/>
+							Sök webbis: <input type="text" name="searchField"/>&nbsp;<input name="searchButton" id="searchButton" value="&nbsp;Sök&nbsp;" type="submit"/>
 						</div>
 						<div class="yui-u" style="text-align: right">
 						</div>
@@ -59,7 +59,7 @@
           <br/>
           <div class="yui-g">
             <div class="yui-u first" style="margin-left: 0.4em">
-              <input name="reindex" id="reindex" value="Indexera om" type="submit"/>
+              <input name="reindex" id="reindex" value="&nbsp;Indexera om&nbsp;" type="submit"/>
               <br/>
               <span style="white-space:nowrap">Att indexera om kan ta ett antal minuter, så hav tålamod och tryck inte flera gånger...</span>
             </div>

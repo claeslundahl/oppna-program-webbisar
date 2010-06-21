@@ -32,11 +32,15 @@ public interface Configuration {
 
     int getMaxVideoFileSize();
 
+    int getMaxNoOfVideoFiles();
+
     String getFtpConfiguration();
 
     String getBaseUrl();
 
     String getRemoteEditUrl();
+
+    String getSearchEngineBaseUrl();
 
     String getMailHost();
 

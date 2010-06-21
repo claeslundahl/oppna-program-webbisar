@@ -55,7 +55,7 @@
                   <p>Det är endast tillåtet att lägga till fyra objekt, varav en film. Ta bort något befintligt objekt för att kunna ladda upp en annan bild/film.</p>
                 </c:when>
                 <c:otherwise>
-                  <p>Det är tillåtet att lägga till fyra objekt, varav en film. Maximalt kan fyra bilder, alternativt tre bilder och en film, laddas upp.<br/><br/>Maximal tillåten storlek på filmen är 10MB.</p>
+                  <p>Det är tillåtet att lägga till fyra objekt, varav en film. Maximalt kan fyra bilder, alternativt tre bilder och en film, laddas upp. Maximal tillåten storlek på filmen är ${portletSessionScope['webbisForm.maxVideoMb']}MB.</p>
                 </c:otherwise>
               </c:choose>
 					  </div>
@@ -82,11 +82,11 @@
 						<div class="yui-u first"></div>
 						<div class="yui-u" style="text-align: right">
 							<c:if test="${not empty portletSessionScope['webbisForm.availableImageIds']}">
-								<input name="cancelAddImages" value="Avbryt" type="submit"/>
-								<input name="saveImages" value="Lägg till" type="submit"/>
+								<input name="cancelAddImages" value="&nbsp;Avbryt&nbsp;" type="submit"/>
+								<input name="saveImages" value="&nbsp;Lägg till&nbsp;" type="submit"/>
 							</c:if>
 							<c:if test="${empty portletSessionScope['webbisForm.availableImageIds']}">
-								<input name="cancelAddImages" value="Tillbaka" type="submit"/>
+								<input name="cancelAddImages" value="&nbsp;Tillbaka&nbsp;" type="submit"/>
 							</c:if>
 						</div>
 					</div>	
