@@ -32,10 +32,12 @@ public class ConfigurationImpl implements Configuration {
     String multimediaFileBaseUrl;
     ImageSize imageSize;
     float imageQuality;
+    int maxNoOfVideoFiles;
     int maxVideoFileSize;
 
     String baseUrl;
     String remoteEditUrl;
+    String searchEngineBaseUrl;
     String ftpConfiguration;
 
     String mailHost;
@@ -104,6 +106,14 @@ public class ConfigurationImpl implements Configuration {
         this.maxVideoFileSize = maxVideoFileSize;
     }
 
+    public int getMaxNoOfVideoFiles() {
+        return maxNoOfVideoFiles;
+    }
+
+    public void setMaxNoOfVideoFiles(int maxNoOfVideoFiles) {
+        this.maxNoOfVideoFiles = maxNoOfVideoFiles;
+    }
+
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -118,6 +128,14 @@ public class ConfigurationImpl implements Configuration {
 
     public void setRemoteEditUrl(String remoteEditUrl) {
         this.remoteEditUrl = remoteEditUrl;
+    }
+
+    public String getSearchEngineBaseUrl() {
+        return searchEngineBaseUrl;
+    }
+
+    public void setSearchEngineBaseUrl(String searchEngineBaseUrl) {
+        this.searchEngineBaseUrl = searchEngineBaseUrl;
     }
 
     public String getMailFromAddress() {

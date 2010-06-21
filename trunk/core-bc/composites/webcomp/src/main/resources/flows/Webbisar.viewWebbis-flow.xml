@@ -29,7 +29,7 @@
   <input name="SearchCriteria" value="flowScope.SearchCriteria" />
   
 	<action-state id="showWebbis">
-    <evaluate expression="Webbisar_WebbisarFlowSupportBean.getWebbis(flowScope.webbisId, flowScope.selectedImage, externalContext)" 
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.getWebbis(flowScope.webbisId, flowScope.selectedImage, externalContext, requestParameters, flowScope.SearchCriteria)" 
       result="flowScope.Webbis" />
 		<transition on="success" to="viewPage" />
     <transition on-exception="se.vgregion.webbisar.presentation.exceptions.WebbisNotFoundException" to="showWebbis.noHit" />

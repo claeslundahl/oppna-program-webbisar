@@ -70,4 +70,6 @@ public interface WebbisService {
     Boolean isTestMode();
 
     int getMaxVideoFileSize();
+
+    int getMaxNoOfVideoFiles();
 }

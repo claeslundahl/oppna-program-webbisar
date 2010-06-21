@@ -52,7 +52,7 @@ public class WebbisImageServiceImpl implements WebbisImageService {
         for (String imagePath : images) {
             File imageFile = new File(cfg.getMultimediaFileBaseDir(), imagePath);
             try {
-                System.out.println(imageFile.getAbsolutePath());
+                LOGGER.info("resize: " + imageFile.getAbsolutePath());
                 ImageUtil.scaleImage(imageFile, cfg.getImageSize(), cfg.getImageQuality());
             } catch (IOException e) {
                 LOGGER.error("Failed to resize image " + imagePath, e);

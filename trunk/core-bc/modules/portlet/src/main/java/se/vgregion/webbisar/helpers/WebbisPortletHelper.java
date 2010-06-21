@@ -68,10 +68,10 @@ public class WebbisPortletHelper {
     public static final String SESSION_ATTRIB_KEY_MAINWEBBISBEAN = "webbisForm.mainWebbisBean";
     public static final String SESSION_ATTRIB_KEY_AVAILABLE_IMAGEIDS = "webbisForm.availableImageIds";
     public static final String SESSION_ATTRIB_KEY_AVAILABLE_VIDEOIDS = "webbisForm.availableVideoIds";
+    public static final String SESSION_ATTRIB_KEY_MAX_VIDEO_MB = "webbisForm.maxVideoMb";
     public static final String WEBBIS_INDEX_PREFIX = "w";
 
     public static final int MAX_NO_OF_MEDIAFILES = 4;
-    public static final int MAX_NO_OF_VIDEOS = 1;
     public static final int MAX_NO_OF_MULTIPLE_BIRTH_SIBLINGS = 3; // Handle twins and triplets
 
     private String baseUrl;
@@ -81,7 +81,9 @@ public class WebbisPortletHelper {
 
     private Boolean testMode;
 
+    private int maxNoOfVideoFiles;
     private int maxVideoFileSize;
+    private int maxVideoFileSizeMB;
 
     public class WebbisValidationException extends Exception {
         private static final long serialVersionUID = 1L;
@@ -118,17 +120,23 @@ public class WebbisPortletHelper {
      *            utility handling file (transfer) operations
      * @param testMode
      *            flagging testmode, will affect e.g. validation of userId/authorId
+     * @param maxNoOfVideoFiles
+     *            max num of video files allowed for upload
      * @param maxVideoFileSize
      *            max allowed size for video file upload
      * 
      */
-    public WebbisPortletHelper(String baseUrl, FileHandler fileHandler, Boolean testMode, int maxVideoFileSize) {
+    public WebbisPortletHelper(String baseUrl, FileHandler fileHandler, Boolean testMode, int maxNoOfVideoFiles,
+            int maxVideoFileSize) {
 
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + '/';
         this.diskFileItemFactory = new DiskFileItemFactory();
         this.fileHandler = fileHandler;
         this.testMode = testMode;
+        this.maxNoOfVideoFiles = maxNoOfVideoFiles;
         this.maxVideoFileSize = maxVideoFileSize;
+
+        this.maxVideoFileSizeMB = (maxVideoFileSize / 1024) / 1024;
     }
 
     /**
@@ -245,7 +253,8 @@ public class WebbisPortletHelper {
                             // Validate size
                             if (item.getSize() > maxVideoFileSize) {
                                 throw new WebbisValidationException("Videofilen " + item.getName()
-                                        + " är för stor, maximalt tillåten storlek är 10MB.");
+                                        + " är för stor, maximalt tillåten storlek är " + maxVideoFileSizeMB
+                                        + "MB.");
                             }
                             noOfUploadedVideos++;
                         } else {
@@ -260,7 +269,7 @@ public class WebbisPortletHelper {
 
         // Validate that max videos has not been reached
         int newNoOfVideosForWebbis = currentNoOfVideosForWebbis(webbisIndex, session) + noOfUploadedVideos;
-        if (newNoOfVideosForWebbis > MAX_NO_OF_VIDEOS) {
+        if (newNoOfVideosForWebbis > maxNoOfVideoFiles) {
             throw new WebbisValidationException("Det är inte tillåtet att ladda upp mer än en videofil.");
         }
 
@@ -333,6 +342,7 @@ public class WebbisPortletHelper {
 
         session.setAttribute(SESSION_ATTRIB_KEY_AVAILABLE_IMAGEIDS, availableImageIds);
         session.setAttribute(SESSION_ATTRIB_KEY_WEBBIS_INDEX, webbisIndex);
+        session.setAttribute(SESSION_ATTRIB_KEY_MAX_VIDEO_MB, maxVideoFileSizeMB);
     }
 
     /**

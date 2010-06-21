@@ -55,11 +55,13 @@
       <property name="multimediaFileBaseUrl" value="${webbisar.multimediaFileBaseUrl}"/>
       <property name="imageSize" value="${webbisar.imageSize}"/>
       <property name="imageQuality" value="${webbisar.imageQuality}"/>
+      <property name="maxNoOfVideoFiles" value="${webbisar.maxNoOfVideoFiles}"/>
       <property name="maxVideoFileSize" value="${webbisar.maxVideoFileSize}"/>
       
       <property name="ftpConfiguration" value="${webbisar.ftpConfiguration}"/>
       <property name="baseUrl" value="${webbisar.baseUrl}"/>
       <property name="remoteEditUrl" value="${webbisar.remoteEditUrl}"/>
+      <property name="searchEngineBaseUrl" value="${webbisar.searchEngineBaseUrl}"/>
       
       <property name="mailHost" value="${webbisar.mailHost}"/>
       <property name="mailFromAddress" value="${webbisar.mailFromAddress}"/>

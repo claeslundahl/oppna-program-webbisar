@@ -22,8 +22,10 @@ package se.vgregion.webbisar.presentation;
 import java.io.File;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -34,6 +36,8 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -42,6 +46,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.webflow.context.ExternalContext;
+import org.springframework.webflow.core.collection.LocalParameterMap;
 
 import se.vgregion.webbisar.presentation.exceptions.WebbisNotFoundException;
 import se.vgregion.webbisar.svc.Configuration;
@@ -50,12 +55,13 @@ import se.vgregion.webbisar.types.Webbis;
 
 public class WebbisarFlowSupportBean {
 
+    private static final Log LOGGER = LogFactory.getLog(WebbisarFlowSupportBean.class);
+
     private static final Pattern RFC2822_MAIL_PATTERN = Pattern
             .compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
 
     private static final String ENCODING_UTF8 = "UTF-8";
     private static final int NUMBER_OF_WEBBIS_ON_BROWSE_PAGE = 6;
-    private static final int NUMBER_OF_WEBBIS_ON_SEARCH_PAGE = 8;
     private WebbisService webbisService;
     private Configuration cfg;
     private JavaMailSender mailSender;
@@ -117,20 +123,34 @@ public class WebbisarFlowSupportBean {
         return new WebbisPageBean(pageNumber, pageNumber == 0, pageNumber == (numberOfPages - 1), list);
     }
 
-    public WebbisBean getWebbis(final Long webbisId, final Integer selectedImage, ExternalContext externalContext)
-            throws WebbisNotFoundException {
+    public WebbisBean getWebbis(final Long webbisId, final Integer selectedImage,
+            final ExternalContext externalContext, LocalParameterMap parameterMap,
+            SearchCriteriaBean searchCriteria) throws WebbisNotFoundException {
         int imageId = (selectedImage == null) ? 0 : selectedImage;
 
+        // Get webbis
         Webbis webbis = webbisService.getById(webbisId);
 
+        // No webbis found, set 404 and throw error
         if (webbis == null) {
             if (externalContext != null && externalContext.getNativeResponse() instanceof HttpServletResponse) {
-                ((HttpServletResponse) externalContext.getNativeResponse()).setStatus(404);
+                ((HttpServletResponse) externalContext.getNativeResponse())
+                        .setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
             throw new WebbisNotFoundException("Webbis med id " + webbisId + " finns inte.");
         }
 
-        return new WebbisBean(cfg.getMultimediaFileBaseUrl(), webbis, imageId);
+        // Create bean
+        WebbisBean webbisBean = new WebbisBean(cfg.getMultimediaFileBaseUrl(), webbis, imageId);
+
+        // If we came here via search engine direct link, also populate serachCriteria
+        if (parameterMap != null && parameterMap.contains("q")) {
+            StringBuilder searchEngineQuerySB = getSearchEngineQueryString(parameterMap);
+
+            searchCriteria.setSearchEngineQueryParameters(searchEngineQuerySB.toString());
+        }
+
+        return webbisBean;
     }
 
     public MailMessageResultBean sendWebbis(final Long webbisId, final MailMessageBean mailMessageBean)
@@ -150,7 +170,7 @@ public class WebbisarFlowSupportBean {
 
         // use this map to store the information that will be merged into the html template
         Map<String, String> emailInformation = new HashMap<String, String>();
-        WebbisBean webbisBean = getWebbis(webbisId, null, null);
+        WebbisBean webbisBean = getWebbis(webbisId, null, null, null, null);
         Map<Long, String> webbisarIdNames = webbisBean.getMultipleBirthSiblingIdsAndNames();
 
         String messageText = mailMessageBean.getMessage();
@@ -180,7 +200,7 @@ public class WebbisarFlowSupportBean {
             msgWriter = new StringWriter();
             template.merge(context, msgWriter);
         } catch (Exception e1) {
-            System.err.println(e1.getMessage());
+            LOGGER.error("Failed to get/merge velocity template.", e1);
             result.setSuccess(Boolean.FALSE);
             result.setMessage("Internt fel, webbis kunde inte skickas.");
             return result;
@@ -209,12 +229,12 @@ public class WebbisarFlowSupportBean {
 
             mailSender.send(mimeMessage);
         } catch (MailException ex) {
-            System.err.println(ex.getMessage());
+            LOGGER.error("Failed to create/send mail.", ex);
             result.setSuccess(Boolean.FALSE);
             result.setMessage("Internt fel, webbis kunde inte skickas.");
             return result;
         } catch (MessagingException e) {
-            System.err.println(e.getMessage());
+            LOGGER.error("Failed to create/send mail.", e);
             result.setSuccess(Boolean.FALSE);
             result.setMessage("Internt fel, webbis kunde inte skickas.");
             return result;
@@ -226,44 +246,63 @@ public class WebbisarFlowSupportBean {
         return result;
     }
 
-    public SearchResultPageBean search(SearchCriteriaBean searchCriteria) {
-        int numberOfHits = webbisService.getNumberOfMatchesFor(searchCriteria.getText());
-
-        int numberOfPages = numberOfHits / NUMBER_OF_WEBBIS_ON_SEARCH_PAGE
-                + ((numberOfHits % NUMBER_OF_WEBBIS_ON_SEARCH_PAGE) != 0 ? 1 : 0);
-
-        List<Webbis> resultList = webbisService.searchWebbisar(searchCriteria.getText(), 0,
-                NUMBER_OF_WEBBIS_ON_SEARCH_PAGE);
-        List<SearchResultBean> list = new ArrayList<SearchResultBean>();
-        for (Webbis webbis : resultList) {
-            list.add(new SearchResultBean(webbis));
+    /**
+     * Will add q= before query string and sort=revisiondate:DESCENDING& for descending sort on date (unless q
+     * and/or sort parameter has already been appended)
+     * 
+     * @param searchCriteria
+     * @return SearchCriteriaBean with search engine query URL parameters
+     * @throws UnsupportedEncodingException
+     */
+    public SearchCriteriaBean search(SearchCriteriaBean searchCriteria) throws UnsupportedEncodingException {
+        // Copy to searchEngineQueryParameters, a hidden field that will not be displayed
+        if (!StringUtils.isBlank(searchCriteria.getText())) {
+            searchCriteria.setSearchEngineQueryParameters(searchCriteria.getText());
         }
-        return new SearchResultPageBean(searchCriteria, numberOfHits, 0, true, numberOfPages < 2, list);
-    }
-
-    private SearchResultPageBean internalLoadSearchPage(SearchCriteriaBean searchCriteria, int pageNumber) {
-        int numberOfHits = webbisService.getNumberOfMatchesFor(searchCriteria.getText());
-        int numberOfPages = numberOfHits / NUMBER_OF_WEBBIS_ON_SEARCH_PAGE
-                + ((numberOfHits % NUMBER_OF_WEBBIS_ON_SEARCH_PAGE) != 0 ? 1 : 0);
-
-        List<Webbis> resultList = webbisService.searchWebbisar(searchCriteria.getText(), pageNumber
-                * NUMBER_OF_WEBBIS_ON_SEARCH_PAGE, NUMBER_OF_WEBBIS_ON_SEARCH_PAGE);
-        List<SearchResultBean> list = new ArrayList<SearchResultBean>();
-        for (Webbis webbis : resultList) {
-            list.add(new SearchResultBean(webbis));
+        // Ensure we have q= before search string query parameter
+        if (searchCriteria.getSearchEngineQueryParameters() != null
+                && !searchCriteria.getSearchEngineQueryParameters().contains("q=")) {
+            searchCriteria.setSearchEngineQueryParameters("q=" + searchCriteria.getSearchEngineQueryParameters());
         }
-        return new SearchResultPageBean(searchCriteria, numberOfHits, pageNumber, pageNumber == 0,
-                pageNumber == (numberOfPages - 1), list);
+        // Ensure we have sort=revisiondate:DESCENDING before search string query parameter
+        if (searchCriteria.getSearchEngineQueryParameters() != null
+                && !searchCriteria.getSearchEngineQueryParameters().contains("sort=")) {
+            searchCriteria.setSearchEngineQueryParameters("sort=revisiondate:DESCENDING&"
+                    + searchCriteria.getSearchEngineQueryParameters());
+        }
+
+        return searchCriteria;
     }
 
-    public SearchResultPageBean loadNextSearchPage(SearchResultPageBean o) {
-        int pageNumber = o.getPageNumber() + 1;
-        return internalLoadSearchPage(o.getSearchCriteria(), pageNumber);
-    }
+    @SuppressWarnings("unchecked")
+    private StringBuilder getSearchEngineQueryString(LocalParameterMap parameterMap) {
+        String parmName = null;
+        String parmValue = null;
+        StringBuilder searchEngineQuerySB = new StringBuilder();
+        Iterator<Map.Entry<String, String>> i = parameterMap.asMap().entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry<String, String> entry = i.next();
+            parmName = entry.getKey();
+            if ("webbisId".equals(parmName)) {
+                // Don't append webbisId, that is not part of the search engine query
+                continue;
+            }
+            parmValue = entry.getValue();
 
-    public SearchResultPageBean loadPrevSearchPage(SearchResultPageBean o) {
-        int pageNumber = o.getPageNumber() - 1;
-        return internalLoadSearchPage(o.getSearchCriteria(), pageNumber);
+            if (searchEngineQuerySB.length() > 0) {
+                searchEngineQuerySB.append("&");
+            }
+            searchEngineQuerySB.append(parmName);
+            searchEngineQuerySB.append("=");
+
+            try {
+                parmValue = URLEncoder.encode(parmValue, ENCODING_UTF8);
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.error("Failed to URL encode search engine parameter value = " + parmValue, e);
+            }
+            searchEngineQuerySB.append(parmValue);
+        }
+        return searchEngineQuerySB;
     }
 
     private MailMessageResultBean validateEmailAddresses(MailMessageBean mailMessageBean) {

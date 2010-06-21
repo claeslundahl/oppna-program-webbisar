@@ -26,6 +26,7 @@ public class SearchCriteriaBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String text;
+    private String searchEngineQueryParameters;
 
     public String getText() {
         return text;
@@ -35,10 +36,19 @@ public class SearchCriteriaBean implements Serializable {
         this.text = text;
     }
 
+    public String getSearchEngineQueryParameters() {
+        return searchEngineQueryParameters;
+    }
+
+    public void setSearchEngineQueryParameters(String searchEngineQueryParameters) {
+        this.searchEngineQueryParameters = searchEngineQueryParameters;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("text=").append(text);
+        sb.append(", searchEngineQueryParameters=").append(searchEngineQueryParameters);
         return sb.toString();
     }
 }

@@ -86,7 +86,7 @@
         </c:forEach>
         <div class="yui-u">
           <form action="<portlet:actionURL/>" method="post" id="search_webbis_result_form">
-            <input name="cancel" id="cancel" value="Tillbaka" type="submit"/>
+            <input name="cancel" id="cancel" value="&nbsp;Tillbaka&nbsp;" type="submit"/>
           </form>
         </div>
 		</div>

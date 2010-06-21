@@ -29,26 +29,12 @@
   
 	<action-state id="searchWebbis">
     <evaluate expression="Webbisar_WebbisarFlowSupportBean.search(flowScope.SearchCriteria)" 
-      result="flowScope.SearchResultPage" />
+      result="flowScope.SearchCriteria" />
     <transition on="success" to="viewPage" />
 	</action-state>
 
-  <action-state id="actionNextPage">
-    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadNextSearchPage(flowScope.SearchResultPage)" 
-      result="flowScope.SearchResultPage" />
-    <transition on="success" to="viewPage" />
-  </action-state>
-    
-  <action-state id="actionPrevPage">
-    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadPrevSearchPage(flowScope.SearchResultPage)" 
-      result="flowScope.SearchResultPage" />
-    <transition on="success" to="viewPage" />
-  </action-state>
-  
 	<view-state id="viewPage" view="/Webbisar_searchResult.xhtml">
     <transition on="showWebbisDetailsAction" to="showWebbisDetails"/>
-    <transition on="showNextPageAction" to="actionNextPage"/>
-    <transition on="showPrevPageAction" to="actionPrevPage"/>
     <transition on="searchForWebbisAction" to="searchWebbis"/>
 	</view-state>
 	
