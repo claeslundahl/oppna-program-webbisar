@@ -247,8 +247,7 @@ public class WebbisarFlowSupportBean {
     }
 
     /**
-     * Will add q= before query string and sort=revisiondate:DESCENDING& for descending sort on date (unless q
-     * and/or sort parameter has already been appended)
+     * Will add q= before search engine query string if not already included
      * 
      * @param searchCriteria
      * @return SearchCriteriaBean with search engine query URL parameters
@@ -263,12 +262,6 @@ public class WebbisarFlowSupportBean {
         if (searchCriteria.getSearchEngineQueryParameters() != null
                 && !searchCriteria.getSearchEngineQueryParameters().contains("q=")) {
             searchCriteria.setSearchEngineQueryParameters("q=" + searchCriteria.getSearchEngineQueryParameters());
-        }
-        // Ensure we have sort=revisiondate:DESCENDING before search string query parameter
-        if (searchCriteria.getSearchEngineQueryParameters() != null
-                && !searchCriteria.getSearchEngineQueryParameters().contains("sort=")) {
-            searchCriteria.setSearchEngineQueryParameters("sort=revisiondate:DESCENDING&"
-                    + searchCriteria.getSearchEngineQueryParameters());
         }
 
         return searchCriteria;
