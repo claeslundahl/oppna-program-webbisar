@@ -31,7 +31,7 @@
       webbisar : [
       	<c:forEach var="w" items="${webbisar}" >
 		{ 
-			"img" : "<c:out value="${w.selectedImageUrl}"/>",
+			"img" : "<c:out value="${w.selectedMediaFileUrl}"/>",
 	  		"name" : "<c:out value="${w.name}"/>",
 	  		"time" : "<c:out value="${w.smartTime}"/>",
 	  		"parents" : "<c:out value="${w.parentsShort}"/>",
