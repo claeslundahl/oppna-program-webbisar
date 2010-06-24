@@ -82,7 +82,7 @@
   
   <bean id="sitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.ExternalSitemapCacheLoaderImpl">
     <constructor-arg ref="webbisCacheService"/>
-    <constructor-arg value="${webbisar.baseUrl}" />
+    <constructor-arg value="${webbisar.externalBaseUrl}" />
   </bean>
   
   <bean id="sitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
@@ -107,7 +107,7 @@
   
   <bean id="internalSitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
     <constructor-arg ref="webbisCacheService"/>
-    <constructor-arg value="${webbisar.baseUrl}" />
+    <constructor-arg value="${webbisar.externalBaseUrl}" />
     <constructor-arg value="${webbisar.multimediaFileBaseUrl}" />
   </bean>
   
