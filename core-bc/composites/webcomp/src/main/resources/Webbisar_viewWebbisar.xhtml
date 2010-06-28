@@ -80,7 +80,7 @@
                       immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton" />
                   </form>
                 </div>
-                <div class="yui-u" style="text-align: right">
+                <div class="rightHand yui-u">
                   <p>
                     <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
                       Lägg till / Redigera webbis
@@ -258,7 +258,7 @@
                   <p><a href="${flowExecutionUrl}&amp;_eventId=showPrevPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">&lt; Föregående </a></p>
                 </c:if>
               </div>
-              <div class="yui-u" style="text-align: right">
+              <div class="rightHand yui-u">
                 <c:if test="#{!W.lastPage}">
                   <p><a href="${flowExecutionUrl}&amp;_eventId=showNextPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}"> Nästa &gt;</a></p>
                 </c:if>
