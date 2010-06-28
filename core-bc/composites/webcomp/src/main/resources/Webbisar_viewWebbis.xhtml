@@ -65,7 +65,7 @@
   								<input class="btn" type="submit" forceId="true" id="searchButtonId" action="searchForWebbisAction" immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton"/>
   							</form>
 							</div>
-    						<div class="yui-u" style="text-align: right">
+    						<div class="rightHand yui-u">
                   <p>
                     <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
                       Lägg till / Redigera webbis
@@ -109,7 +109,7 @@
                     </c:otherwise>
                   </c:choose>
                 </div>
-								<div class="yui-u" style="margin-left:0; margin-right:5px; padding-left:2px;">
+								<div class="yui-u" style="margin-left: 0; margin-right: 5px; padding-left: 2px;">
 									<p><b>Född:</b> #{Webbis.longDate}</p>
                   <c:if test="#{Webbis.weight != '0g'}">
                     <p><b>Vikt:</b> #{Webbis.weight}</p>
@@ -154,19 +154,14 @@
 									<p><b><a href="#{Webbis.homePage}" target="new">Länk till egen webbsida</a></b></p>
                   </c:if>
                   <br/>
-                  <!-- Was removed during review. Considered difficult to understand. PW 090206 
-                  <p>
-                    <a href="http://vard.vgregion.se/sv/Webbisar2/Sok-webbisar/?_flowId=Webbisar.view-flow&amp;webbisId=#{Webbis.id}" target="new">Direktlänk till webbisen</a>
-								    </p>
-                    -->
                   <p><a href="${flowExecutionUrl}&amp;_eventId=showSendWebbisAction&amp;webbisId=#{Webbis.id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">Skicka webbis till vän</a></p>
                   <c:if test="#{not empty MailMessageResult.message}">
                     <p>#{MailMessageResult.message}</p>
                   </c:if>  
                 </div>
 							</div>
-							<div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
-                <div class="yui-u first" style="width: 42%">
+							<div class="yui-gb webbisSelectedImageComment">
+                <div class="yui-u first" style="width:42%">
                   <p>
                     <c:choose>
                       <c:when test="#{not empty Webbis.selectedImageComment}">
@@ -178,9 +173,8 @@
                     </c:choose>
                   </p>
                 </div>
-								<div class="yui-u" style="width: 22%">
-                  <p style="text-align: right">
-                    <!-- img src="resources/images/magnifying-glass.png" style="height:1.2em; padding-right:0.5em;"/ -->
+								<div class="yui-u" style="width:22%">
+                  <p class="rightHand">
                     <a href="#{Webbis.selectedMediaFileUrl}" target="new">
                       <c:choose>
                         <c:when test="${Webbis.selectedMediaType != 'VIDEO'}">
