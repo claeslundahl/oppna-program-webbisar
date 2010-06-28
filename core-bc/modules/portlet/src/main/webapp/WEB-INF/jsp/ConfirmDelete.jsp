@@ -47,7 +47,7 @@
 			<div class="yui-b addwebbis">
 				<div class="yui-g">
 					<h3 class="webbis">Ta bort webbis</h3>
-					<div class="yui-u first"  style="margin-left: 0.4em">
+					<div class="yui-u first" style="margin-left: 0.4em">
 						<p>Är du säker på att du vill ta bort webbisen?</p>
 					</div>
 					<div class="yui-u" style="text-align: right">
@@ -55,6 +55,7 @@
 						<input type="submit" name="confirmDelete" value="Ta bort"/>
 					</div>
 				</div>
+        <p style="margin-left: 0.4em">(Notera att det kan ta några minuter innan webbisen tas bort från sökresultat och liknande)</p>
 			</div>
 		</form>		
 	    </div>
