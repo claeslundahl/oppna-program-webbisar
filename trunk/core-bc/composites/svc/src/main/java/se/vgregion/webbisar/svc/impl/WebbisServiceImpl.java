@@ -61,8 +61,8 @@ public class WebbisServiceImpl implements WebbisService {
     }
 
     @Transactional(readOnly = true)
-    public List<Webbis> getAllWebbisar() {
-        return this.webbisDao.findAllWebbis();
+    public List<Webbis> getAllEnabledWebbisar() {
+        return this.webbisDao.findAllEnabledWebbis();
     }
 
     @Transactional(readOnly = true)

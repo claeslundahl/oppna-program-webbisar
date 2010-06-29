@@ -71,7 +71,7 @@ public class WebbisCacheLoaderImplTest {
         /**
          * {@inheritDoc}
          */
-        public List<Webbis> getAllWebbisar() {
+        public List<Webbis> getAllEnabledWebbisar() {
             return new ArrayList<Webbis>();
         }
 

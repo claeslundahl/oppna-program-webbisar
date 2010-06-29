@@ -258,6 +258,20 @@ public class WebbisDaoHibernate implements WebbisDao {
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    public List<Webbis> findAllEnabledWebbis() {
+        Object results = getJpaTemplate().execute(new JpaCallback() {
+            public Object doInJpa(EntityManager em) throws PersistenceException {
+                Query q = em.createQuery("from Webbis where disabled = 0");
+                return q.getResultList();
+            }
+        });
+        return (List<Webbis>) results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public List<Webbis> getWebbisarForAuthorId(final String authorId) {
         Object results = getJpaTemplate().execute(new JpaCallback() {
             public Object doInJpa(EntityManager em) throws PersistenceException {

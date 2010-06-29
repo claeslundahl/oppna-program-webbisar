@@ -206,12 +206,17 @@ public class ImageUtil {
             if (in != null) {
                 try {
                     in.close();
-                    out.close();
                 } catch (IOException e) {
-                    LOGGER.error("Could not close stream", e);
+                    LOGGER.error("Could not close input stream", e);
                 }
             }
-
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    LOGGER.error("Could not close output stream", e);
+                }
+            }
         }
     }
 

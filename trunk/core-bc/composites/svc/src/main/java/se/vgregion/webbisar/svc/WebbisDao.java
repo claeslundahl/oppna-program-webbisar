@@ -45,6 +45,8 @@ public interface WebbisDao {
 
     public List<Webbis> findAllWebbis();
 
+    public List<Webbis> findAllEnabledWebbis();
+
     public void reindex();
 
     public List<Webbis> getWebbisarForAuthorId(final String authorId);

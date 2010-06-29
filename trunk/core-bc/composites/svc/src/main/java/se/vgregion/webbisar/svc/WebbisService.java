@@ -33,7 +33,7 @@ public interface WebbisService {
 
     List<Webbis> getWebbisar(final int firstResult, final int maxResult);
 
-    List<Webbis> getAllWebbisar();
+    List<Webbis> getAllEnabledWebbisar();
 
     void save(final String tempDir, final Webbis webbis);
 

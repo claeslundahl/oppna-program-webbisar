@@ -52,7 +52,7 @@ public class WebbisCacheLoaderImpl implements CacheLoader<WebbisCache> {
     public WebbisCache loadCache() {
         WebbisCache cache = new WebbisCache();
 
-        List<Webbis> webbisar = webbisService.getAllWebbisar();
+        List<Webbis> webbisar = webbisService.getAllEnabledWebbisar();
         for (Webbis webbis : webbisar) {
             cache.add(webbis);
         }

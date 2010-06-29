@@ -60,6 +60,7 @@
       
       <property name="ftpConfiguration" value="${webbisar.ftpConfiguration}"/>
       <property name="baseUrl" value="${webbisar.baseUrl}"/>
+      <property name="externalBaseUrl" value="${webbisar.externalBaseUrl}"/>
       <property name="remoteEditUrl" value="${webbisar.remoteEditUrl}"/>
       <property name="searchEngineBaseUrl" value="${webbisar.searchEngineBaseUrl}"/>
       

@@ -183,7 +183,7 @@ public class WebbisarFlowSupportBean {
         webbisarIdNames.put(webbisBean.getId(), webbisBean.getName());
 
         // add the message and the base url for html links
-        emailInformation.put("baseUrl", cfg.getBaseUrl());
+        emailInformation.put("baseUrl", cfg.getExternalBaseUrl());
         emailInformation.put("message", messageText);
         emailInformation.put("senderName", mailMessageBean.getSenderName());
         emailInformation.put("senderAddress", mailMessageBean.getSenderAddress());
