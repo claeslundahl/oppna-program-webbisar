@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core">
+  <ui:composition template="/template.xhtml">
+    <ui:define name="body">
+
+      <script type="text/javascript">
+      /* <![CDATA[ */
+        function showHoverFrames(divIds) {
+            var divIdArray = divIds.split(',');
+            var currentClass, currentElement;
+            for (i = 0; i < divIdArray.length; i++) {
+                currentElement = document.getElementById(divIdArray[i]);
+                if (currentElement) {
+                    currentClass = currentElement.className;
+                    currentElement.className = currentClass + ' badgeHover';
+                }
+            }
+        }
+        
+        function hideHoverFrames(divIds) {
+            var divIdArray = divIds.split(',');
+            var currentClass, currentElement;
+            for (i = 0; i < divIdArray.length; i++) {
+                currentElement = document.getElementById(divIdArray[i]);
+                if (currentElement) {
+                    currentClass = currentElement.className;
+                    currentElement.className = currentClass.replace(' badgeHover', '');
+                }
+            }
+        }
+      /* ]]> */
+      </script>
+    
+      <div id="custom-doc">
+        <div class="wrapper">
+        
+          <div id="hd">
+            <div class="yui-b header">
+              <h2>Webbisar</h2>
+            </div>
+            <div class="yui-b topinfo">
+              <p>
+                Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
+                <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
+              </p>
+            </div>
+            <div class="yui-b">
+              <div class="yui-gb header">
+                <div class="yui-u first">
+                  <p>&#160;</p>
+                </div>
+                <div class="yui-u searchfield">
+                  <form name="addressEntryForm" id="addressEntryForm" jsfc="h:form">
+                    <input type="text" name="searchCriteria" id="searchCriteria" 
+                      jsfc="h:inputText" value="#{SearchCriteria.text}" />
+                    <input class="btn" type="submit" action="searchForWebbisAction" 
+                      immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton" />
+                  </form>
+                </div>
+                <div class="rightHand yui-u">
+                  <p>
+                    <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
+                      Lägg till / Redigera webbis
+                    </h:outputLink>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- 
+            <div class="yui-b searchinfo">Exempel: 20090211 +Erik -Johan Svensson Östra</div>
+             -->
+          </div>
+          
+          <div id="bd">
+            <div id="yui-main">
+              <div class="yui-b">
+                
+                <c:forEach items="#{W.webbisar}" step="2" varStatus="refRow" var="webbis">
+                  <div class="yui-g">
+                    <div id="#{webbis.id}" class="yui-u first badge" onmouseover="showHoverFrames('#{webbis.allWebbisIdString}');" onmouseout="hideHoverFrames('#{webbis.allWebbisIdString}');">
+                      <h3 class="badge" title="#{webbis.header}">#{webbis.truncHeader}</h3>
+                      <div class="yui-g birthmultiplicityparent">
+                        <div class="birthmultiplicity">
+                          <c:choose>
+                            <c:when test="#{webbis.multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
+                            <c:when test="#{webbis.multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
+                          </c:choose>
+                        </div>
+                        <div class="yui-u first">
+                          <a onclick="hideHoverFrames('#{webbis.allWebbisIdString}');return true;"
+                            href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{webbis.id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                          <c:choose>
+                            <c:when test="#{not empty webbis.mediaFiles}">
+                              <c:choose>
+                                <c:when test="#{webbis.mediaFiles[0].mediaType != 'VIDEO'}">
+                                  <img class="thumb" alt="#{webbis.header}" src="#{webbis.mediaFiles[0].location}" />
+                                </c:when>
+                                <c:otherwise>
+                                  <img class="thumb" alt="#{webbis.header}" src="images/video-thumb.png" />
+                                </c:otherwise>
+                              </c:choose>
+                            </c:when>
+                            <c:otherwise>
+                              <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                            </c:otherwise>
+                          </c:choose> </a>
+                        </div>
+                        <div class="yui-u badge-text">
+                          <p><b>Tid:</b> #{webbis.time}</p>
+                          <p><b>Vikt:</b> 
+                            <c:choose>
+                              <c:when test="#{webbis.weight != '0g'}"> #{webbis.weight}</c:when>
+                              <c:otherwise> -</c:otherwise>
+                            </c:choose></p>
+                          <p><b>Längd:</b> 
+                            <c:choose>
+                              <c:when test="#{webbis.length != '0cm'}"> #{webbis.length}</c:when>
+                              <c:otherwise> -</c:otherwise>
+                            </c:choose></p>
+                          <br />              
+                          <p><c:choose>
+                            <c:when test="#{not empty webbis.truncParent1 or not empty webbis.truncParent2}">
+                              <b>Föräldrar:</b>
+                              <br />
+                              <span title="#{webbis.parent1}">#{webbis.truncParent1}</span>
+                              <br />
+                              <span title="#{webbis.parent2}">#{webbis.truncParent2}</span>
+                              <br />
+                            </c:when>
+                            <c:otherwise>
+                              <br />
+                              <br />
+                              <br />
+                            </c:otherwise>
+                          </c:choose> <br />
+                          </p>
+                          <p><c:choose>
+                            <c:when test="#{not empty webbis.home}">
+                              <b>Från:</b> #{webbis.home}<br />
+                            </c:when>
+                            <c:otherwise>
+                              <br />
+                            </c:otherwise>
+                          </c:choose> <b>Sjukhus:</b> #{webbis.hospital}</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <c:if test="#{W.webbisar[refRow.index+1] != null}" >
+                    
+                      <div id="#{W.webbisar[refRow.index+1].id}" class="yui-u badge" onmouseover="showHoverFrames('#{W.webbisar[refRow.index+1].allWebbisIdString}');" onmouseout="hideHoverFrames('#{W.webbisar[refRow.index+1].allWebbisIdString}');">
+                        <h3 class="badge" title="#{W.webbisar[refRow.index+1].header}">#{W.webbisar[refRow.index+1].truncHeader}</h3>
+                        <div class="yui-g birthmultiplicityparent">
+                          <div class="birthmultiplicity">
+                            <c:choose>
+                              <c:when test="#{W.webbisar[refRow.index+1].multipleBirthSiblingCount == 1}"><img alt="Tvilling" title="Tvilling" src="images/tvillingar.png" /><br /></c:when>
+                              <c:when test="#{W.webbisar[refRow.index+1].multipleBirthSiblingCount == 2}"><img alt="Trilling" title="Trilling" src="images/trillingar.png" /><br /></c:when>
+                            </c:choose>
+                          </div>
+                          <div class="yui-u first">
+                            <a onclick="hideHoverFrames('#{W.webbisar[refRow.index+1].allWebbisIdString}');return true;"
+                              href="${flowExecutionUrl}&amp;_eventId=showWebbisDetailsAction&amp;webbisId=#{W.webbisar[refRow.index+1].id}&amp;javax.faces.ViewState=${flowExecutionContext.key}">
+                              <c:choose>
+                                <c:when test="#{not empty W.webbisar[refRow.index+1].mediaFiles}">
+                                  <c:choose>
+                                    <c:when test="#{W.webbisar[refRow.index+1].mediaFiles[0].mediaType != 'VIDEO'}">
+                                      <img class="thumb" alt="#{W.webbisar[refRow.index+1].header}" src="#{W.webbisar[refRow.index+1].mediaFiles[0].location}" />
+                                    </c:when>
+                                    <c:otherwise>
+                                      <img class="thumb" alt="#{webbis.header}" src="images/video-thumb.png" />
+                                    </c:otherwise>
+                                  </c:choose>
+                                </c:when>
+                                <c:otherwise>
+                                  <img class="thumb" alt="ingen bild" src="images/no-image.jpg" />
+                                </c:otherwise>
+                              </c:choose>
+                            </a>
+                          </div>
+                          <div class="yui-u badge-text">
+                            <p><b>Tid:</b> #{W.webbisar[refRow.index+1].time}</p>
+                            <p><b>Vikt:</b> <c:choose>
+                              <c:when test="#{W.webbisar[refRow.index+1].weight != '0g'}"> #{W.webbisar[refRow.index+1].weight}</c:when>
+                              <c:otherwise> -</c:otherwise>
+                            </c:choose></p>
+                            <p><b>Längd:</b> <c:choose>
+                              <c:when test="#{W.webbisar[refRow.index+1].length != '0cm'}"> #{W.webbisar[refRow.index+1].length}</c:when>
+                              <c:otherwise> -</c:otherwise>
+                            </c:choose></p>
+                            <br />
+                            <p><c:choose>
+                              <c:when test="#{not empty W.webbisar[refRow.index+1].truncParent1 or not empty W.webbisar[refRow.index+1].truncParent2}">
+                                <b>Föräldrar:</b>
+                                <br />
+                                <span title="#{W.webbisar[refRow.index+1].parent1}">#{W.webbisar[refRow.index+1].truncParent1}</span>
+                                <br />
+                                <span title="#{W.webbisar[refRow.index+1].parent2}">#{W.webbisar[refRow.index+1].truncParent2}</span>
+                                <br />
+                              </c:when>
+                              <c:otherwise>
+                                <br />
+                                <br />
+                                <br />
+                              </c:otherwise>
+                            </c:choose> <br />
+                            </p>
+                            <p><c:choose>
+                              <c:when test="#{not empty W.webbisar[refRow.index+1].home}">
+                                <b>Från:</b> #{W.webbisar[refRow.index+1].home}<br />
+                              </c:when>
+                              <c:otherwise>
+                                <br />
+                              </c:otherwise>
+                            </c:choose> <b>Sjukhus:</b> #{W.webbisar[refRow.index+1].hospital}</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </c:if>
+                    
+                  </div>
+                </c:forEach>
+                
+              </div>      
+            </div>
+          </div>
+          <div class="push"></div>
+        </div>
+        
+        <div id="ft" class="footer">
+          <div class="yui-b">
+            <div class="yui-ge">
+              <div class="yui-u first">
+                <c:if test="#{!W.firstPage}">
+                  <p><a href="${flowExecutionUrl}&amp;_eventId=showPrevPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">&lt; Föregående </a></p>
+                </c:if>
+              </div>
+              <div class="rightHand yui-u">
+                <c:if test="#{!W.lastPage}">
+                  <p><a href="${flowExecutionUrl}&amp;_eventId=showNextPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}"> Nästa &gt;</a></p>
+                </c:if>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </ui:define>
+  </ui:composition>
+</div>

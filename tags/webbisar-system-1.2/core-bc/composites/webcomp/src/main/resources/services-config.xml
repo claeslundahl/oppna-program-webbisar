@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreUnresolvablePlaceholders" value="true" />
+    <property name="locations">
+    <list>
+      <value>classpath:application-prod.properties</value>
+      <value>classpath:security.properties</value>
+    </list>
+    </property>
+  </bean>
+  
+  <bean id="Webbisar_WebbisarFlowSupportBean" class="se.vgregion.webbisar.presentation.WebbisarFlowSupportBean" autowire="byType">
+    <property name="mailSender"><ref bean="mailSender"/></property>
+    <property name="velocityEngine"><ref bean="velocityEngine"/></property>
+  </bean>
+
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <property name="host"><value>${webbisar.mailHost}</value></property>
+  </bean>
+   
+  <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    <property name="velocityProperties">
+      <value>
+         resource.loader=class
+         class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+      </value>
+    </property>
+  </bean>
+  
+  <!-- Webbis cache/service -->
+  
+  <bean id="webbisService" class="se.vgregion.webbisar.svc.impl.WebbisServiceImpl"/>
+  
+  <bean id="webbisCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisCacheLoaderImpl">
+    <constructor-arg ref="webbisService"/>
+  </bean>
+  
+  <bean id="webbisCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisCacheServiceImpl">
+    <constructor-arg ref="webbisCacheLoader" />
+  </bean>
+  
+  <bean id="webbisCacheReload"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="webbisCacheService" />
+    <property name="targetMethod" value="reloadCache" />
+    <property name="concurrent" value="false" />
+  </bean>
+  
+  <!-- Public sitemap cachce/service -->
+  
+  <bean id="sitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.ExternalSitemapGenerator" />
+  
+  <bean id="sitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.ExternalSitemapCacheLoaderImpl">
+    <constructor-arg ref="webbisCacheService"/>
+    <constructor-arg value="${webbisar.externalBaseUrl}" />
+  </bean>
+  
+  <bean id="sitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+    <constructor-arg ref="sitemapCacheLoader" />
+  </bean>
+  
+  <bean id="sitemapSupportBean" class="se.vgregion.webbisar.svc.sitemap.SitemapSupportBean">
+    <constructor-arg ref="sitemapCacheService" />
+    <constructor-arg ref="sitemapGenerator" />
+  </bean>
+  
+  <bean id="sitemapCacheReload"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="sitemapCacheService" />
+    <property name="targetMethod" value="reloadCache" />
+    <property name="concurrent" value="false" />
+  </bean>
+  
+  <!-- Internal sitemap cache/service -->
+  
+  <bean id="internalSitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.InternalSitemapGenerator" />
+  
+  <bean id="internalSitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
+    <constructor-arg ref="webbisCacheService"/>
+    <constructor-arg value="${webbisar.externalBaseUrl}" />
+    <constructor-arg value="${webbisar.multimediaFileBaseUrl}" />
+  </bean>
+  
+  <bean id="internalSitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+    <constructor-arg ref="internalSitemapCacheLoader" />
+  </bean>
+  
+  <bean id="internalSitemapSupportBean" class="se.vgregion.webbisar.svc.sitemap.SitemapSupportBean">
+    <constructor-arg ref="internalSitemapCacheService" />
+    <constructor-arg ref="internalSitemapGenerator" />
+  </bean>
+  
+  <bean id="internalSitemapCacheReload"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="internalSitemapCacheService" />
+    <property name="targetMethod" value="reloadCache" />
+    <property name="concurrent" value="false" />
+  </bean>
+  
+  <!-- Quarz triggers for all caches -->
+  
+  <bean id="triggerSitemapCacheReload" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    <!-- see the example of method invoking job above -->
+    <property name="jobDetail" ref="sitemapCacheReload" />
+    <!-- 2 minutes so webbisCacheReload has completed -->
+    <property name="startDelay" value="120000" />
+    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
+    <property name="repeatInterval" value="300000" />
+  </bean>
+  
+  <bean id="triggerInternalSitemapCacheReload" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    <!-- see the example of method invoking job above -->
+    <property name="jobDetail" ref="internalSitemapCacheReload" />
+    <!-- 2 minutes so webbisCacheReload has completed -->
+    <property name="startDelay" value="120000" />
+    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
+    <property name="repeatInterval" value="300000" />
+  </bean>
+  
+  <bean id="triggerWebbisCacheReload" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    <!-- see the example of method invoking job above -->
+    <property name="jobDetail" ref="webbisCacheReload" />
+    <!-- 10 seconds -->
+    <property name="startDelay" value="10000" />
+    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
+    <property name="repeatInterval" value="300000" />
+  </bean>
+
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="startupDelay" value="10" />
+    <property name="triggers">
+      <list>
+        <ref bean="triggerWebbisCacheReload" />
+        <ref bean="triggerSitemapCacheReload" />
+        <ref bean="triggerInternalSitemapCacheReload" />
+      </list>
+    </property>
+  </bean>
+
+</beans>
