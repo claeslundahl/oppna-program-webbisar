@@ -38,6 +38,8 @@ public interface Configuration {
 
     String getBaseUrl();
 
+    String getExternalBaseUrl();
+
     String getRemoteEditUrl();
 
     String getSearchEngineBaseUrl();

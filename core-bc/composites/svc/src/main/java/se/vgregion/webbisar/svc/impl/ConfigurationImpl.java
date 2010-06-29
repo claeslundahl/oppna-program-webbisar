@@ -36,6 +36,7 @@ public class ConfigurationImpl implements Configuration {
     int maxVideoFileSize;
 
     String baseUrl;
+    String externalBaseUrl;
     String remoteEditUrl;
     String searchEngineBaseUrl;
     String ftpConfiguration;
@@ -120,6 +121,14 @@ public class ConfigurationImpl implements Configuration {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    public String getExternalBaseUrl() {
+        return externalBaseUrl;
+    }
+
+    public void setExternalBaseUrl(String externalBaseUrl) {
+        this.externalBaseUrl = externalBaseUrl;
     }
 
     public String getRemoteEditUrl() {

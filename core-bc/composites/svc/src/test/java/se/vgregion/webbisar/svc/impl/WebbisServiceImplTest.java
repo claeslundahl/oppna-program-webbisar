@@ -123,7 +123,7 @@ public class WebbisServiceImplTest {
         Appender appender = new WriterAppender(new SimpleLayout(), writer);
         logger.addAppender(appender);
 
-        List<Webbis> list = webbisService.getAllWebbisar();
+        List<Webbis> list = webbisService.getAllEnabledWebbisar();
         Webbis toUpdate = list.get(0);
         assertEquals("Kalle", toUpdate.getName());
 
@@ -146,12 +146,12 @@ public class WebbisServiceImplTest {
         Appender appender = new WriterAppender(new SimpleLayout(), writer);
         logger.addAppender(appender);
 
-        List<Webbis> list = webbisService.getAllWebbisar();
+        List<Webbis> list = webbisService.getAllEnabledWebbisar();
         Webbis toUpdate = list.get(0);
 
         webbisService.delete(toUpdate.getId());
 
-        list = webbisService.getAllWebbisar();
+        list = webbisService.getAllEnabledWebbisar();
         assertEquals(0, list.size());
 
         // Ensure trace log was called
@@ -173,7 +173,7 @@ public class WebbisServiceImplTest {
         Appender appender = new WriterAppender(new SimpleLayout(), writer);
         logger.addAppender(appender);
 
-        List<Webbis> list = webbisService.getAllWebbisar();
+        List<Webbis> list = webbisService.getAllEnabledWebbisar();
         Webbis toUpdate = list.get(0);
 
         URL fileUrl = Thread.currentThread().getContextClassLoader().getResource("TestImage.jpg");
