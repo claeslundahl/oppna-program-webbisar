@@ -50,6 +50,8 @@
 							<p>Vill du gå tillbaks och lägga till, redigera eller ta bort en webbis trycker du på tillbaka knappen.
 							Är du klar med dina ändringar, kan du logga ut i övre högra hörnet. 
 							</p>
+              <br/>
+              <p>Notera att det kan ta en stund innan ändringen syns i sökresultat och liknande.</p>
 						</div>
 						<div class="yui-u" style="text-align: right">
 							<form action="<portlet:actionURL/>" method="post" name="back_from_confirm" id="back_from_confirm">			
