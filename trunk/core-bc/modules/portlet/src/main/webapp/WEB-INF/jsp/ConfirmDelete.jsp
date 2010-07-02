@@ -55,7 +55,7 @@
 						<input type="submit" name="confirmDelete" value="Ta bort"/>
 					</div>
 				</div>
-        <p style="margin-left: 0.4em">(Notera att det kan ta några minuter innan webbisen tas bort från sökresultat och liknande)</p>
+        <p style="margin-left: 0.4em">(Notera att det kan ta upp till en timma innan webbisen tas bort från sökresultat och liknande)</p>
 			</div>
 		</form>		
 	    </div>
