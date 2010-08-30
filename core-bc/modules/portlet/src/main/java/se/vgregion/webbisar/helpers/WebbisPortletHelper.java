@@ -51,10 +51,10 @@ import se.vgregion.webbisar.beans.PreviewWebbisBean;
 import se.vgregion.webbisar.types.BirthTime;
 import se.vgregion.webbisar.types.Hospital;
 import se.vgregion.webbisar.types.MultimediaFile;
+import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 import se.vgregion.webbisar.types.Name;
 import se.vgregion.webbisar.types.Sex;
 import se.vgregion.webbisar.types.Webbis;
-import se.vgregion.webbisar.types.MultimediaFile.MediaType;
 
 @SuppressWarnings("unchecked")
 public class WebbisPortletHelper {
@@ -162,7 +162,7 @@ public class WebbisPortletHelper {
                     }
                 }
             }
-            List<String> imageFiles = null;
+            List<String> imageFiles = new ArrayList<String>();
 
             // Check if "main" or multiple birth sibling webbis
             Integer webbisIndex = 0;
@@ -193,7 +193,6 @@ public class WebbisPortletHelper {
                         fileHandler.writeTempFile(filename, session.getId(), item.getInputStream());
                         if (MediaType.IMAGE.equals(mediaType)) {
                             // Add to list, we need to resize later...
-                            imageFiles = new ArrayList<String>();
                             imageFiles.add("temp/" + session.getId() + "/" + filename);
                         }
 
@@ -202,8 +201,10 @@ public class WebbisPortletHelper {
 
                         // If main image not set
                         if (MediaType.IMAGE.equals(mediaType) && !isMainImageSet(webbisIndex, request)) {
-                            setMainImage(webbisIndex, Integer.parseInt(item.getFieldName().substring(
-                                    item.getFieldName().length() - 1)), request);
+                            setMainImage(
+                                    webbisIndex,
+                                    Integer.parseInt(item.getFieldName().substring(
+                                            item.getFieldName().length() - 1)), request);
                         }
                     }
                 }
