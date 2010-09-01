@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+<flow xmlns="http://www.springframework.org/schema/webflow"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+    start-state="checkShouldShowWebbis">
+
+  <var name="SearchCriteria" class="se.vgregion.webbisar.presentation.SearchCriteriaBean"/>
+
+  <!-- Check if we have a 'webbisId' parameter. If we have go to the 
+       showWebbisDetails sub-flow. 
+  -->
+  <action-state id="checkShouldShowWebbis">
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.shouldShowWebbis(requestParameters.webbisId)" />
+    
+    <transition on="yes" to="showWebbisDetails"/>
+    <transition on="no" to="actionLoadPage"/>
+  </action-state>
+
+	<action-state id="actionLoadPage">
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadPage(flowScope.W)" 
+      result="flowScope.W" />
+    <transition on="success" to="viewPage" />
+	</action-state>
+	
+	<action-state id="actionNextPage">
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadNextPage(flowScope.W)" 
+      result="flowScope.W" />
+    <transition on="success" to="viewPage" />
+	</action-state>
+  
+  <action-state id="actionPrevPage">
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.loadPrevPage(flowScope.W)" 
+      result="flowScope.W" />
+    <transition on="success" to="viewPage" />
+  </action-state>
+
+	<view-state id="viewPage" view="/Webbisar_viewWebbisar.xhtml">
+		<transition on="showWebbisDetailsAction" to="showWebbisDetails"/>
+		<transition on="showNextPageAction" to="actionNextPage" />
+    <transition on="showPrevPageAction" to="actionPrevPage" />
+    <transition on="searchForWebbisAction" to="searchWebbis"/>
+	</view-state>
+
+	<subflow-state id="showWebbisDetails" subflow="Webbisar.viewWebbis-flow">
+    <input name="webbisId" value="requestParameters.webbisId"/>
+    <input name="SearchCriteria" value="flowScope.SearchCriteria"/>
+  
+  	<transition on="back" to="actionLoadPage" />
+    <transition on="search" to="searchWebbis"/>
+	</subflow-state>
+  
+  <subflow-state id="searchWebbis" subflow="Webbisar.searchWebbis-flow">
+    <input name="SearchCriteria" value="flowScope.SearchCriteria"/>
+
+    <transition on="finish" to="actionLoadPage" />
+  </subflow-state>
+  
+	<end-state id="finish" />
+
+</flow>

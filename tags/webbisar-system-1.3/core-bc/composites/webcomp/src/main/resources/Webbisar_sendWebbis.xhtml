@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core">
+<head>
+  <title></title>
+</head>
+<body>
+  <ui:composition template="/template.xhtml">
+    <ui:define name="body">
+      <div id="custom-doc">
+        <div id="hd">
+          <div class="yui-b header"><h2>Webbisar - Skicka webbis till vän</h2></div>
+          <div class="yui-b topinfo">
+            <p>
+            Här kan du skicka ett meddelande till dina vänner och bekanta. Mailet kommer även att innehålla en direktlänk till webbisen.
+            </p>
+          </div>
+        </div>
+        <div id="bd">
+          <div id="yui-main">
+            <div class="yui-b webbis">
+              <form name="sendWebbisForm" id="sendWebbisForm" jsfc="h:form">
+                <!-- h3 class="webbis">Skicka webbis till vän</h3  -->
+                <div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
+                  <h3 class="webbis" style="margin-left: 0;">Till</h3>
+                  <p>
+                    Flera mailadresser kan anges, separera då adresserna med kommatecken.
+                    <br/>
+                    <br/>
+                    Mailadress(er):
+                    <br/>
+                    <input type="text" name="mailMessageRecipients" id="mailMessageRecipients" jsfc="h:inputText" value="#{MailMessage.recipientAddresses}" size="45" />
+                    <br/>
+                    <br/>
+                    Rubrik:
+                    <br/>
+                    <input type="text" name="mailMessageSubject" id="mailMessageSubject" jsfc="h:inputText" value="#{MailMessage.subject}" size="45" />
+                  </p>
+                </div>
+                <div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
+                  <p>
+                    Meddelande:
+                    <br/>
+                    <input type="text" name="mailMessageBody" id="mailMessageBody" jsfc="h:inputTextarea" value="#{MailMessage.message}" cols="60" rows="5" />
+                    <br/>
+                  </p>
+                </div>
+                <div class="yui-gb" style="margin-left: 0.8em; padding-bottom: 1.0em;">
+                  <h3 class="webbis" style="margin-left: 0;">Från</h3>
+                  <p>
+                    Glöm inte att skriva in ditt eget namn och mailadress.
+                    <br/>
+                    <br/>
+                    Namn:
+                    <br/>
+                    <input type="text" name="mailMessageSenderName" id="mailMessageSenderName" jsfc="h:inputText" value="#{MailMessage.senderName}" size="45" />
+                    <br/>
+                    <br/>
+                    Mailadress:
+                    <br/>
+                    <input type="text" name="mailMessageSender" id="mailMessageSender" jsfc="h:inputText" value="#{MailMessage.senderAddress}" size="45" />
+                  </p>
+                  <br/>
+                  <p>
+                    <span style="color: red;">
+                      #{MailMessageResult.message}
+                    </span>
+                  </p>
+                </div>
+                <div class="yui-g first" style="margin-right: 0.4em; padding-bottom: 0.4em;">
+                  <div class="yui-u first"></div>
+                  <div class="yui-u" style="text-align: right">
+                      <input class="btn" type="submit" action="cancelSendWebbisAction" immidiate="false" value="&#160;Avbryt&#160;" jsfc="h:commandButton"/>&#160;
+                      <input class="btn" type="submit" action="sendWebbisAction" immidiate="false" value="&#160;Skicka&#160;" jsfc="h:commandButton"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div id="ft"></div> 
+      </div>
+    </ui:define>
+  </ui:composition>
+</body>
+</html>
