@@ -32,7 +32,7 @@
     <property name="ignoreUnresolvablePlaceholders" value="true" />
     <property name="locations">
     <list>
-      <value>classpath:application-dev.properties</value>
+      <value>classpath:application-prod.properties</value>
       <value>classpath:security.properties</value>
     </list>
     </property>
