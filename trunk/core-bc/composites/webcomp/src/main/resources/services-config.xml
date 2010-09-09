@@ -56,39 +56,24 @@
     </property>
   </bean>
   
-  <!-- Webbis cache/service -->
+  <!-- Shared SitemapEntry loader  -->
   
-  <bean id="webbisService" class="se.vgregion.webbisar.svc.impl.WebbisServiceImpl"/>
-  
-  <bean id="webbisCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisCacheLoaderImpl">
-    <constructor-arg ref="webbisService"/>
-  </bean>
-  
-  <bean id="webbisCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisCacheServiceImpl">
-    <constructor-arg ref="webbisCacheLoader" />
-  </bean>
-  
-  <bean id="webbisCacheReload"
-    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    <property name="targetObject" ref="webbisCacheService" />
-    <property name="targetMethod" value="reloadCache" />
-    <property name="concurrent" value="false" />
-  </bean>
+  <bean id="sitemapEntryLoader" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisSitemapEntryLoader"/>
   
   <!-- Public sitemap cachce/service -->
   
-  <bean id="sitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.ExternalSitemapGenerator" />
+  <bean id="sitemapGenerator" class="se.vgregion.sitemap.impl.DefaultSitemapGenerator" />
   
-  <bean id="sitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.ExternalSitemapCacheLoaderImpl">
-    <constructor-arg ref="webbisCacheService"/>
+  <bean id="sitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisSitemapCacheLoader">
+    <constructor-arg ref="sitemapEntryLoader"/>
     <constructor-arg value="${webbisar.externalBaseUrl}" />
   </bean>
   
-  <bean id="sitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+  <bean id="sitemapCacheService" class="se.vgregion.sitemap.impl.DefaultCacheService">
     <constructor-arg ref="sitemapCacheLoader" />
   </bean>
   
-  <bean id="sitemapSupportBean" class="se.vgregion.webbisar.svc.sitemap.SitemapSupportBean">
+  <bean id="sitemapService" class="se.vgregion.sitemap.service.SitemapService">
     <constructor-arg ref="sitemapCacheService" />
     <constructor-arg ref="sitemapGenerator" />
   </bean>
@@ -102,19 +87,19 @@
   
   <!-- Internal sitemap cache/service -->
   
-  <bean id="internalSitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.InternalSitemapGenerator" />
+  <bean id="internalSitemapGenerator" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisSitemapGenerator" />
   
-  <bean id="internalSitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.InternalSitemapCacheLoaderImpl">
-    <constructor-arg ref="webbisCacheService"/>
+  <bean id="internalSitemapCacheLoader" class="se.vgregion.webbisar.svc.sitemap.impl.WebbisExtraInfoSitemapCacheLoader">
+    <constructor-arg ref="sitemapEntryLoader"/>
     <constructor-arg value="${webbisar.externalBaseUrl}" />
     <constructor-arg value="${webbisar.multimediaFileBaseUrl}" />
   </bean>
   
-  <bean id="internalSitemapCacheService" class="se.vgregion.webbisar.svc.sitemap.impl.SitemapCacheServiceImpl">
+  <bean id="internalSitemapCacheService" class="se.vgregion.sitemap.impl.DefaultCacheService">
     <constructor-arg ref="internalSitemapCacheLoader" />
   </bean>
   
-  <bean id="internalSitemapSupportBean" class="se.vgregion.webbisar.svc.sitemap.SitemapSupportBean">
+  <bean id="internalSitemapService" class="se.vgregion.sitemap.service.SitemapService">
     <constructor-arg ref="internalSitemapCacheService" />
     <constructor-arg ref="internalSitemapGenerator" />
   </bean>
@@ -145,21 +130,11 @@
     <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
     <property name="repeatInterval" value="300000" />
   </bean>
-  
-  <bean id="triggerWebbisCacheReload" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-    <!-- see the example of method invoking job above -->
-    <property name="jobDetail" ref="webbisCacheReload" />
-    <!-- 10 seconds -->
-    <property name="startDelay" value="10000" />
-    <!-- repeat every 5 minutes = 300000 (24 hours = 86400000) -->
-    <property name="repeatInterval" value="300000" />
-  </bean>
 
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="startupDelay" value="10" />
     <property name="triggers">
       <list>
-        <ref bean="triggerWebbisCacheReload" />
         <ref bean="triggerSitemapCacheReload" />
         <ref bean="triggerInternalSitemapCacheReload" />
       </list>

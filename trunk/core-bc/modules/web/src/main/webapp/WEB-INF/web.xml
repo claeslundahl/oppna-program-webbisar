@@ -235,7 +235,7 @@
   <!-- Servlet serving standard sitemap -->
   <servlet>
     <servlet-name>sitemap</servlet-name>
-    <servlet-class>se.vgregion.webbisar.web.SitemapServlet</servlet-class>
+    <servlet-class>se.vgregion.sitemap.servlet.DefaultSitemapServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -246,7 +246,7 @@
   <!-- Servlet serving internal sitemap (with extra, non standard, webbis info elements) -->
   <servlet>
     <servlet-name>internalsitemap</servlet-name>
-    <servlet-class>se.vgregion.webbisar.web.InternalSitemapServlet</servlet-class>
+    <servlet-class>se.vgregion.webbisar.web.WebbisExtraInfoSitemapServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>

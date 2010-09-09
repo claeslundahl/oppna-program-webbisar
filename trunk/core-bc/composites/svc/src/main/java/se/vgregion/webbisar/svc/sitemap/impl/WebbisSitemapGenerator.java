@@ -15,19 +15,23 @@
  *   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *   Boston, MA 02111-1307  USA
  */
-package se.vgregion.webbisar.svc.sitemap;
+package se.vgregion.webbisar.svc.sitemap.impl;
 
 import java.util.List;
 
+import se.vgregion.sitemap.SitemapGenerator;
+import se.vgregion.sitemap.model.SitemapEntry;
+
 /**
- * Implementation of SitemapGenerator for external use. The generated XML contains only the base tags from
- * sitemap.org.
+ * Implementation of SitemapGenerator for internal use. The generated XML contains a private namespace where
+ * additional attributes can be added.
  */
-public class ExternalSitemapGenerator implements SitemapGenerator {
+public class WebbisSitemapGenerator implements SitemapGenerator {
 
     public String generate(List<SitemapEntry> sitemapEntries) {
-        StringBuilder output = new StringBuilder(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
+        StringBuilder output = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        output.append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"");
+        output.append(" xmlns:webbis=\"http://www.vgregion.se/schemas/webbis_schema\">\n");
 
         for (SitemapEntry entry : sitemapEntries) {
             output.append("<url>\n");
@@ -35,6 +39,11 @@ public class ExternalSitemapGenerator implements SitemapGenerator {
             output.append("<lastmod>").append(entry.getLastModified()).append("</lastmod>\n");
             output.append("<changefreq>").append(entry.getChangeFrequency()).append("</changefreq>\n");
             output.append("<priority>0.5</priority>\n");
+            for (SitemapEntry.ExtraInformation extraInformation : entry) {
+                output.append("<webbis:").append(extraInformation.getName()).append(">")
+                        .append(extraInformation.getValue()).append("</webbis:")
+                        .append(extraInformation.getName()).append(">\n");
+            }
             output.append("</url>\n");
         }
 

@@ -32,18 +32,18 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import se.vgregion.webbisar.svc.sitemap.SitemapSupportBean;
+import se.vgregion.sitemap.service.SitemapService;
 
 /**
- * Generates a sitemap for Webbisar.
+ * Generates an internal sitemap for Webbisar.
  */
-public class SitemapServlet extends HttpServlet {
+public class WebbisExtraInfoSitemapServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String ENCODING_UTF8 = "UTF-8";
-    private static final String CLASS_NAME = SitemapServlet.class.getName();
-    private static final Log LOGGER = LogFactory.getLog(SitemapServlet.class);
+    private static final String CLASS_NAME = WebbisExtraInfoSitemapServlet.class.getName();
+    private static final Log LOGGER = LogFactory.getLog(WebbisExtraInfoSitemapServlet.class);
 
-    private SitemapSupportBean sitemapSupportBean;
+    private SitemapService<?> sitemapService;
 
     /**
      * Get reference to SitemapSupportBean from Spring context.
@@ -59,7 +59,7 @@ public class SitemapServlet extends HttpServlet {
         WebApplicationContext springContext = WebApplicationContextUtils
                 .getWebApplicationContext(getServletContext());
 
-        sitemapSupportBean = (SitemapSupportBean) springContext.getBean("sitemapSupportBean");
+        sitemapService = (SitemapService<?>) springContext.getBean("internalSitemapService");
     }
 
     /**
@@ -68,16 +68,16 @@ public class SitemapServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug(CLASS_NAME + ".doGet()");
-        LOGGER.debug("SitemapServlet starting to put together the sitemap.");
+        LOGGER.debug("WebbisExtraInfoSitemapServlet starting to put together the sitemap.");
 
         long startTimeMillis = System.currentTimeMillis();
 
-        String sitemapContent = sitemapSupportBean.getSitemapContent();
+        String sitemapContent = sitemapService.getSitemapContent();
 
         long endTimeMillis = System.currentTimeMillis();
 
-        LOGGER.debug("SitemapServlet generation finished. It took: " + (endTimeMillis - startTimeMillis) / 1000
-                + " seconds.");
+        LOGGER.debug("WebbisExtraInfoSitemapServlet generation finished. It took: "
+                + (endTimeMillis - startTimeMillis) / 1000 + " seconds.");
 
         response.setCharacterEncoding(ENCODING_UTF8);
 
