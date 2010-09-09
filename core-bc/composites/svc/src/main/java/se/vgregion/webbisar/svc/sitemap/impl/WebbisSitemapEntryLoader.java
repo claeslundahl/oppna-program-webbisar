@@ -20,22 +20,33 @@
 /**
  * 
  */
-package se.vgregion.webbisar.util;
+package se.vgregion.webbisar.svc.sitemap.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import se.vgregion.sitemap.SitemapEntryLoader;
+import se.vgregion.webbisar.svc.WebbisService;
+import se.vgregion.webbisar.types.Webbis;
 
 /**
+ * @author anders.bergkvist@omegapoint.se
  * 
  */
-public class DateTimeUtil {
-    public static final String SWEDISH_DATE_TIME = "yyyy-MM-dd HH:mm";
+public class WebbisSitemapEntryLoader implements SitemapEntryLoader<Webbis> {
 
-    public static final String formatDateSwedish(Date date) {
-        String formattedDate = "";
-        if (date != null) {
-            formattedDate = new SimpleDateFormat(SWEDISH_DATE_TIME).format(date);
-        }
-        return formattedDate;
+    private final WebbisService webbisService;
+
+    @Autowired
+    public WebbisSitemapEntryLoader(final WebbisService webbisService) {
+        this.webbisService = webbisService;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Webbis> loadSitemapEntrySourceData() {
+        return webbisService.getAllEnabledWebbisar();
     }
 }
