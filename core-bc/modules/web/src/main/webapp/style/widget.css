@@ -28,6 +28,7 @@
 }
 
 #webbis-txt {
+  color:#333;
 	font-size: 1.0em;
 	float : left;
 	height: 8em;
@@ -35,7 +36,7 @@
 }
 
 #webbis-header {
-	color:#2A6344;
+	color:#333;
 	font-family:Arial,Helvetica,sans-serif;
 	font-size:1.8em;
 	font-weight:normal;

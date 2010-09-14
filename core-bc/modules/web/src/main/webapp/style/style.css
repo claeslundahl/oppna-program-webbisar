@@ -62,7 +62,7 @@ h2{
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:1.8em;
 	font-weight:normal; 
-	color:#2a6344;
+	color:#333;
 }
 
 
@@ -70,7 +70,7 @@ h3.badge{
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.2em;
 	font-weight:bold;
-	color:#2a6344; 
+	color:#444; 
 	margin-bottom:0.4em;
 	margin-top:0.4em;
 	margin-left:0.8em;
@@ -80,10 +80,14 @@ h3.webbis{
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.4em;
 	font-weight:bold;
-	color:#2a6344; 
+	color:#444; 
 	margin-bottom:0.4em;
 	margin-top:0.4em;
 	margin-left:0.8em;
+}
+
+a { 
+  color:#9c132f;
 }
 
 span.bold {
