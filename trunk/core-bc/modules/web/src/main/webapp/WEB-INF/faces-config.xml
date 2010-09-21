@@ -29,7 +29,7 @@
   <application>
     <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
     
-    <message-bundle>application-dev</message-bundle>
+    <message-bundle>application</message-bundle>
   </application>
 
   <lifecycle>

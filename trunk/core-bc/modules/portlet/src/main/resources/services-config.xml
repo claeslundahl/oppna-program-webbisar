@@ -29,7 +29,7 @@
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-  <context:property-placeholder location="classpath:application-dev.properties"/>
+  <context:property-placeholder location="classpath:application.properties"/>
 
   <bean id="webbisServiceProxy"
     class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
