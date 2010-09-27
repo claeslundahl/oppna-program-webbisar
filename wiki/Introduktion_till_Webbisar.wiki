@@ -115,25 +115,26 @@ Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbil
 
 = Konfiguration = 
 
-Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources` i respektive projekt (not: Under src/test/resources finns konfigurationsfiler som används vid enhetstester - dessa inställningar bör dock fungera utan ändringar. Se t ex projektet core-bc/composites/svc). 
-I services-config.xml (composites/webcomp, module/portlet samt module/web) och faces-config.xml (modules/web) anges om det är dev, poc eller prod-konfigurationen som skall användas.
+Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources`, `src/main/resources/test` och `src/main/resources/prod` i respektive projekt (not: Under src/test/resources finns konfigurationsfiler som används vid enhetstester - dessa inställningar bör dock fungera utan ändringar. Se t ex projektet core-bc/composites/svc).
+
+I services-config.xml (composites/webcomp, module/portlet samt module/web) och faces-config.xml (modules/web) pekas en properties-fil ut. Man anger via profil vid Maven-bygget  om det är dev, poc eller prod-konfigurationen som skall användas. Ingen profil = dev, test = poc och prod = prod.
 
 Under core-bc/modules/web finns en security.properties.template som innehåller definition av de properties som inte är publika. Värden för dessa properties finns incheckade i motsvarande security.properties i VGR's interna repo, denna fil måste manuellt checkas ut och kopieras in på samma ställe som .template-filen.
 
 Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil: 
 
 || *Projekt* || *Konfigurations-fil* || *Inställning/property* || *Förklaring* ||
-||core-bc/composites/webcomp, core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator||services-config.xml (applicationContext-hibernate.xml för tools/data-generator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Här kan man peka ut application-prod.properties, application-poc.properties eller application-dev.properties. Sedan är det inställningarna i utpekad fil som gäller i projektet. ||
-||core-bc/modules/portlet||application-xyz.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webappen på denna url. Därav att den enda konfigurationen som portletten behöver är urlen till webappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer (t ex FTP-konfigurationen). ||
+||core-bc/composites/webcomp, core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator||services-config.xml (applicationContext-hibernate.xml för tools/data-generator)||`<context:property-placeholder location="classpath:application-prod.properties"/>`||Tidigare peka man här ut application-prod.properties, application-poc.properties eller application-dev.properties. Detta sker nu istället med hjälp av en profil vid maven-bygget. ||
+||core-bc/modules/portlet||application.properties||`webbapp.remoting.url`||Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webappen på denna url. Därav att den enda konfigurationen som portletten behöver är urlen till webappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer (t ex FTP-konfigurationen). ||
 ||core-bc/modules/web samt tools/data-generator||hibernate.cfg.xml||`hibernate.search.default.indexBase`||Pekar ut var lucene-indexet ska ligga, t ex `C:/webbisar/lucene/indexes`. Vid lokal utveckling kan man behöva ändra denna inställning, om man inte kör på samma struktur som på utv/test-servern. ||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.testMode` || Om denna är satt till TRUE tillåts man addera/editera webbisar utan krav på inloggning.||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.multimediaFileBaseDir` || Katalog på disk där bilderna ska sparas. Hit måste no-image.jpg, video-thumb.png och vglogga_2.gif (eller annan bild om så anges i property webbisar.mailLogo) kopieras så de finns tillgängliga för bl.a. portleten. Bilderna finns incheckade under images på webappen.||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.multimediaFileBaseUrl` || URL där bilderna kan accessas via http (se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]).||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.maxVideoFileSize` || Maximal storlek på video tillåten för uppladdning.||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.baseUrl` || Root-URL för applikationen. ||
-||core-bc/modules/web samt tools/data-generator||application-xyz.properties|| `webbisar.remoteEditUrl` || Länk till admin/edit-gränssnitt (portlet). ||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.testMode` || Om denna är satt till TRUE tillåts man addera/editera webbisar utan krav på inloggning.||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.multimediaFileBaseDir` || Katalog på disk där bilderna ska sparas. Hit måste no-image.jpg, video-thumb.png och vglogga_2.gif (eller annan bild om så anges i property webbisar.mailLogo) kopieras så de finns tillgängliga för bl.a. portleten. Bilderna finns incheckade under images på webappen.||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.multimediaFileBaseUrl` || URL där bilderna kan accessas via http (se [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder ovan]).||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.imageSize` || Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.imageQuality` || Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.maxVideoFileSize` || Maximal storlek på video tillåten för uppladdning.||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.baseUrl` || Root-URL för applikationen. ||
+||core-bc/modules/web samt tools/data-generator||application.properties|| `webbisar.remoteEditUrl` || Länk till admin/edit-gränssnitt (portlet). ||
 ||core-bc/modules/web samt tools/data-generator||security.properties|| `jdbc.url` samt `hibernate.connection.url` || Båda dessa ska ang JDBC-urlen till databasen. I den lokala utvecklingsmiljön har vi använt en lokal HSQL DB.||
 ||core-bc/modules/web samt tools/data-generator||security.properties|| `jdbc.username` samt `hibernate.connection.username` || Båda dessa sätts till användarnamnet i db.||
 ||core-bc/modules/web samt tools/data-generator||security.properties|| `jdbc.password` samt `hibernate.connection.password` || Båda sätts till db-lösenordet.||
@@ -202,7 +203,7 @@ Projektet byggs och deployas som de flesta andra projekt på Öppna program, byg
 
 = Deployment / Release = 
 
-För att bygga till utv-miljö/test/produktion behöver man se till att rätt properties är satta i respektive projekt. Se avsnittet [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration konfiguration] ovan för information om vilka properties som behöver sättas. application-xyz.properties skall pekas ut i web och portlet-modulerna samt att Lucene-indexet ska pekas ut rätt i hibernate.cfg.xml. Dessutom måste rätt properties vara tillgängliga i security.properties.
+För att bygga till utv-miljö/test/produktion behöver man se till att rätt properties är satta i respektive projekt genom att ange motsvarande profil vid mavenbygge. Se avsnittet [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration konfiguration] ovan för information om vilka properties som behöver sättas. Lucene-indexet ska pekas ut rätt i hibernate.cfg.xml.
 
 Ett tillägg till mavenbygget är att det finns ytterligare en profil att ta hänsyn till. Om portletarna skall deployas på WebSphere måste profilen 'wsp' användas. Annars byggs/releasas projektet som vanligt enligt [http://code.google.com/p/oppna-program/wiki/Bygganvisningar_Oppna_Program Bygganvisningar, Öppna program].
 
