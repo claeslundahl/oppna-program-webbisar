@@ -8,7 +8,7 @@
   <parent>
     <groupId>se.vgregion.webbisar</groupId>
     <artifactId>webbisar-core-bc</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
   </parent>
   <!--
     Use full name qualification (with system name) here to ensure uniqueness when deploying in container.
