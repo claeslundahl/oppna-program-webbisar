@@ -8,7 +8,7 @@
   <parent>
     <groupId>se.vgregion.webbisar</groupId>
     <artifactId>webbisar-core-bc</artifactId>
-    <version>1.5</version>
+    <version>1.6-SNAPSHOT</version>
   </parent>
   <artifactId>webbisar-core-bc-composite-svc</artifactId>
   <packaging>jar</packaging>
