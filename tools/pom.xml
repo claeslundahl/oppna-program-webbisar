@@ -11,11 +11,11 @@ Generation time : 2009-01-08 10:18:23 CET
   <parent>
     <groupId>se.vgregion.webbisar</groupId>
     <artifactId>webbisar-system</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
   </parent>
   <artifactId>webbisar-tools</artifactId>
   <packaging>pom</packaging>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.5</version>
   <name>${project.artifactId}</name>
 
   <modules>
