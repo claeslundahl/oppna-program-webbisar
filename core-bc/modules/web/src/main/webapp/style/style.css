@@ -33,7 +33,7 @@ body {
 }
 
 #custom-doc {
-	margin:auto;text-align:left; /* leave unchanged */
+	text-align:left; /* leave unchanged */
 	width:66em;/* non-IE */
 	*width:66.36em;/* IE */
 	min-width:600px;/* optional but recommended */
