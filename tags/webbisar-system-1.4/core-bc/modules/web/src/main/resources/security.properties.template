@@ -1,0 +1,88 @@
+#######
+## DEV
+#######
+jdbc.username=sa
+jdbc.password=
+jdbc.url=jdbc:log:org.hsqldb.jdbcDriver:hsqldb:hsql://localhost/webbisardb
+
+hibernate.connection.username=sa
+hibernate.connection.password=
+hibernate.connection.url=jdbc:log:org.hsqldb.jdbcDriver:hsqldb:hsql://localhost/webbisardb
+
+webbisar.ftpConfiguration=localhost;port;<user>;<pwd>
+
+#######
+## POC
+#######
+#jdbc.username=<user>
+#jdbc.password=<pwd>
+#jdbc.url=jdbc:jtds:sqlserver://server:port/database
+#
+#hibernate.connection.username=<user>
+#hibernate.connection.password=<pwd>
+#hibernate.connection.url=jdbc:jtds:sqlserver://server:port/database
+#
+#webbisar.ftpConfiguration=server;port;<user>;<pwd>
+
+#######
+## PROD
+#######
+#jdbc.username=<user>
+#jdbc.password=<pwd>
+#jdbc.url=jdbc:jtds:sqlserver://server:port/database
+#
+#hibernate.connection.username=<user>
+#hibernate.connection.password=<pwd>
+#hibernate.connection.url=jdbc:jtds:sqlserver://server:port/database
+#
+#webbisar.ftpConfiguration=server;port;<user>;<pwd>
+
+########################################################################################################
+# Apache Mina FTP server configuration
+########################################################################################################
+#
+# Generate password at http://www.iwebtool.com/md5
+#
+# DEV
+ftpserver.user.<user>.userpassword=<encrypted pwd>
+ftpserver.user.<user>.homedirectory=C:/Temp/webbisarImages
+ftpserver.user.<user>.enableflag=true
+ftpserver.user.<user>.writepermission=true
+ftpserver.user.<user>.maxloginnumber=0
+ftpserver.user.<user>.maxloginperip=0
+ftpserver.user.<user>.idletime=0
+ftpserver.user.<user>.uploadrate=0
+ftpserver.user.<user>.downloadrate=0
+
+# POC
+#ftpserver.user.<user>.userpassword=<encrypted pwd>
+#ftpserver.user.<user>.homedirectory=D:/webbisar/images
+#ftpserver.user.<user>.enableflag=true
+#ftpserver.user.<user>.writepermission=true
+#ftpserver.user.<user>.maxloginnumber=0
+#ftpserver.user.<user>.maxloginperip=0
+#ftpserver.user.<user>.idletime=0
+#ftpserver.user.<user>.uploadrate=0
+#ftpserver.user.<user>.downloadrate=0
+
+# PROD
+#ftpserver.user.<user>.userpassword=<encrypted pwd>
+#ftpserver.user.<user>.homedirectory=D:/webbisar/images
+#ftpserver.user.<user>.enableflag=true
+#ftpserver.user.<user>.writepermission=true
+#ftpserver.user.<user>.maxloginnumber=0
+#ftpserver.user.<user>.maxloginperip=0
+#ftpserver.user.<user>.idletime=0
+#ftpserver.user.<user>.uploadrate=0
+#ftpserver.user.<user>.downloadrate=0
+
+# Admin (never used?)
+#ftpserver.user.<user>.userpassword=<encrypted pwd>
+#ftpserver.user.<user>.homedirectory=/tmp
+#ftpserver.user.<user>.enableflag=true
+#ftpserver.user.<user>.writepermission=true
+#ftpserver.user.<user>.maxloginnumber=0
+#ftpserver.user.<user>.maxloginperip=0
+#ftpserver.user.<user>.idletime=0
+#ftpserver.user.<user>.uploadrate=0
+#ftpserver.user.<user>.downloadrate=0
