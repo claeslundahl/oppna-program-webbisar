@@ -8,7 +8,7 @@
   <parent>
     <groupId>se.vgregion.webbisar</groupId>
     <artifactId>webbisar-core-bc</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
   </parent>
   <artifactId>webbisar-core-bc-module-portlet</artifactId>
   <packaging>war</packaging>
