@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jstl/core">
+<head>
+	<title></title>
+</head>
+<body>
+	<ui:composition template="/template.xhtml">
+		<ui:define name="body">
+          <div id="custom-doc">
+          	<div id="hd">
+          		<div class="yui-b header"><h2>Webbisar - Sökresultat</h2></div>
+              <!-- 
+              <div class="yui-b topinfo">
+                <p>
+                  Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
+                  <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
+                </p>
+              </div>
+               -->
+          		<div class="yui-b">
+          			<div class="yui-gb header">
+          				<div class="yui-u first">
+                    <p>	
+        				  		<h:outputLink value="#{msgBundle['webbisar.baseUrl']}">
+                        Till startsidan
+                      </h:outputLink>
+                    </p>
+          				</div>
+          				<div class="yui-u searchfield">
+                    <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
+      								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
+      								<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton"/>
+      							</form>
+          				</div>
+                  <!-- 
+						      <div class="yui-u" style="text-align: right">
+                    <p>
+                      <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
+                        Lägg till / Redigera webbis
+                      </h:outputLink>
+                    </p>
+                  </div>
+                   -->
+        			</div>
+          		</div>	
+              <!-- 
+              <div class="yui-b searchinfo">Exempel: 20091011 +Erik -Johan Svensson Östra</div>
+               -->
+          	</div>
+            
+          	<div id="bd">
+          		<div id="yui-main" style="margin-top: 10px;">
+                <iframe id="searchResult" src="#{msgBundle['webbisar.searchEngineBaseUrl']}?#{SearchCriteria.searchEngineQueryParameters}" frameborder="0" scrolling="no" height="650px" width="660px">
+                  Kan tyvärr inte visa sökresultatet, din webläsare har inte stöd för IFrames.
+                </iframe>
+          		</div>
+          	</div>
+            
+          	<div id="ft">
+              <div class="yui-b">
+              </div>     
+            </div>
+          </div>
+       </ui:define>
+    </ui:composition>
+</body>
+</html>
