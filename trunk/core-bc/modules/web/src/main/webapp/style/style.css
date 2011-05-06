@@ -46,6 +46,11 @@ body {
 	width: 75%;
 }
 
+#custom-doc div a img {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 #addressEntryForm {
 	display: inline;
 }
@@ -297,7 +302,7 @@ img.thumb {
 }
 
 img.full {
-	width: 43em;
+	width: 42em;
 	margin-bottom:0.4em;
 	margin-left:0.8em;
 }
