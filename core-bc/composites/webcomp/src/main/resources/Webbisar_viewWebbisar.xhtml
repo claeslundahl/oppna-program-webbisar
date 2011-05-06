@@ -53,14 +53,26 @@
         }
       /* ]]> */
       </script>
-    
+      
       <div id="custom-doc">
+      <div>
+      	<a href="Webbisar.view-flow.flow"> <img src="images/vglogga_2.gif" /> </a>
+      </div>
         <div class="wrapper">
         
           <div id="hd">
             <div class="yui-b header">
-              <h2>Webbisar</h2>
+              <h2 class="yui-u first">Webbisar</h2>
+              <div class="yui-u searchfield">
+                  <form name="addressEntryForm" class="inputs" id="addressEntryForm" jsfc="h:form">
+                    <input type="text" name="searchCriteria" id="searchCriteria" 
+                      jsfc="h:inputText" value="#{SearchCriteria.text}" />
+                    <input class="btn" type="submit" action="searchForWebbisAction" 
+                      immidiate="false" value="&#160;Sök&#160;" jsfc="h:commandButton" />
+                  </form>
+                </div>
             </div>
+            <br/><br/>
             <div class="yui-b topinfo">
               <p>
                 Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
@@ -72,15 +84,10 @@
                 <div class="yui-u first">
                   <p>&#160;</p>
                 </div>
-                <div class="yui-u searchfield">
-                  <form name="addressEntryForm" id="addressEntryForm" jsfc="h:form">
-                    <input type="text" name="searchCriteria" id="searchCriteria" 
-                      jsfc="h:inputText" value="#{SearchCriteria.text}" />
-                    <input class="btn" type="submit" action="searchForWebbisAction" 
-                      immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton" />
-                  </form>
+                <div class="yui-u">
+                  <p>&#160;</p>
                 </div>
-                <div class="rightHand yui-u">
+                <div class="first rightHand yui-u">
                   <p>
                     <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
                       Lägg till / Redigera webbis
@@ -253,12 +260,12 @@
         <div id="ft" class="footer">
           <div class="yui-b">
             <div class="yui-ge">
-              <div class="yui-u first">
+              <div class="yui-u first navigateLeft">
                 <c:if test="#{!W.firstPage}">
                   <p><a href="${flowExecutionUrl}&amp;_eventId=showPrevPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">&lt; Föregående </a></p>
                 </c:if>
               </div>
-              <div class="rightHand yui-u">
+              <div class="navigateRight yui-u">
                 <c:if test="#{!W.lastPage}">
                   <p><a href="${flowExecutionUrl}&amp;_eventId=showNextPageAction&amp;javax.faces.ViewState=${flowExecutionContext.key}"> Nästa &gt;</a></p>
                 </c:if>

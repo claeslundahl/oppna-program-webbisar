@@ -32,22 +32,35 @@
 	<ui:composition template="/template.xhtml">
 		<ui:define name="body">
 			<div id="custom-doc">
+			
+   
+      <div>
+      	<a href="Webbisar.view-flow.flow"> <img src="images/vglogga_2.gif" /> </a>
+      </div>
+	  <div class="wrapper">
 				<div id="hd">
+				
+				
 					<div class="yui-b header"><h2>Webbisar</h2></div>
+
+					<div class="yui-u searchfield">
+             			 		<form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
+                 				<input type="text" name="searchEngineQueryParameters" id="searchEngineQueryParameters" jsfc="h:inputHidden" value="#{SearchCriteria.searchEngineQueryParameters}"/>
+ 								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
+ 								<input class="btn" type="submit" forceId="true" id="searchButtonId" action="searchForWebbisAction" immidiate="false" value="&#160;Sök&#160;" jsfc="h:commandButton"/>
+								</form>
+					</div>
+					
             <div class="yui-b topinfo">
               <p>
                 Här kan du som förälder lägga in information om din nyfödda bebis. Du kan även lägga till bilder och film. För att skapa ett konto behöver du ha en &#160;<h:outputLink value="#{msgBundle['webbisar.eLegUrl']}" target="_blank">e-legitimation</h:outputLink>.
               <br/>Tjänsten ägs och drivs av Västra Götalandsregionen men du som lägger in informationen ansvarar själv för innehållet.                 
               </p>
             </div>
-					<div class="yui-b">
-						<div class="yui-gb header">
+					<div>
+						<div class="yui-ge header">
 							<div class="yui-u first">	
                 <p>			
-                  <h:outputLink value="#{msgBundle['webbisar.baseUrl']}">
-                    Till startsidan
-                  </h:outputLink>
-						  		<br/>
                   <c:choose>
                     <c:when test="#{not empty SearchCriteria.searchEngineQueryParameters}">
                       <a href="${flowExecutionUrl}&amp;_eventId=searchForWebbisAction&amp;javax.faces.ViewState=${flowExecutionContext.key}">Tillbaka</a>
@@ -58,15 +71,9 @@
                   </c:choose>
                 </p>
 							</div>
-							<div class="yui-u searchfield">
-                <form name="webbisSearchForm" id="webbisSearchForm" jsfc="h:form">
-                  <input type="text" name="searchEngineQueryParameters" id="searchEngineQueryParameters" jsfc="h:inputHidden" value="#{SearchCriteria.searchEngineQueryParameters}"/>
-  								<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
-  								<input class="btn" type="submit" forceId="true" id="searchButtonId" action="searchForWebbisAction" immidiate="false" value="&#160;Hitta&#160;" jsfc="h:commandButton"/>
-  							</form>
-							</div>
-    						<div class="rightHand yui-u">
-                  <p>
+							
+    						<div class="yui-u">
+                  <p class="rightHand">
                     <h:outputLink value="#{msgBundle['webbisar.remoteEditUrl']}" target="_blank">
                       Lägg till / Redigera webbis
                     </h:outputLink>
@@ -281,10 +288,36 @@
                   </div>
 								</div>
 							</div>
+							
+							<div class="share-this" align="center">
+								<div class="yui-g">
+									<div class="first quarter-space">X</div>
+								    <div class="first" style="width:10%;">
+								    	<h2>Dela:</h2>
+								    </div>
+								    <span class="core">
+										<!-- AddThis Button BEGIN -->
+										<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+										<a class="addthis_button_preferred_1"></a>
+										<a class="addthis_button_preferred_2"></a>
+										<a class="addthis_button_preferred_3"></a>
+										<a class="addthis_button_preferred_4"></a>
+										<a class="addthis_button_compact"></a>
+										<a class="addthis_counter addthis_bubble_style"></a>
+										</div>
+										<script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+										<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=vardportalen"></script>
+										<!-- AddThis Button END -->
+									</span>
+									<div class="first quarter-space">X</div>
+								</div>
+						   </div>	
+							
 						</div>
 					</div>
 				</div>
 				<div id="ft"></div>	
+				</div>
 			</div>
 		</ui:define>
 	</ui:composition>
