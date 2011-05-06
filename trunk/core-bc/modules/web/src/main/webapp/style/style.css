@@ -36,17 +36,57 @@ body {
 	text-align:left; /* leave unchanged */
 	width:66em;/* non-IE */
 	*width:66.36em;/* IE */
+	margin: auto;
 	min-width:600px;/* optional but recommended */
 }
 
-.wrapper {
-     min-height: 100%;
-     height: auto !important;
-     height: 100%;
-     margin: 0 auto -4em;
+#custom-doc .header h2 {
+	display: inline;
+	float: left;
+	width: 75%;
 }
+
+#addressEntryForm {
+	display: inline;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -4em;
+	border-style: solid;
+	border-width: thin;
+	padding: 1em;
+	width: 100%;
+}
+
 .footer, .push {
-     height: 4em;
+    height: 4em;
+}
+
+.share-this {
+	width: 100%;
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.share-this .quarter-space {
+	width:25%; 
+	visibility: hidden;
+}
+
+.share-this .core {
+	min-width:40%;
+	white-space: nowrap;
+	overflow: visible;
+	text-align: center;
+}
+
+.share-this h2, .share-this div {
+	display: inline;
+	line-height: 32px;
 }
 
 .webbisSelectedImageComment {
@@ -56,6 +96,17 @@ body {
 
 .rightHand {
   text-align: right;
+  float:right;
+}
+
+.navigateRight {
+  text-align: right;
+  padding-right: 1em;
+  float:right;
+}
+
+.navigateLeft a {
+  margin-left: 1em;
 }
 
 h2{
@@ -64,7 +115,6 @@ h2{
 	font-weight:normal; 
 	color:#333;
 }
-
 
 h3.badge{
 	font-family:Arial, Helvetica, sans-serif;
@@ -122,6 +172,14 @@ div.header {
 	margin-top:0.6em;
 }
 
+#hd {
+	padding-bottom: 2em;
+	width: 100%;
+}
+
+.header h2 {
+	display: inline;	
+}
 div.topinfo {
 	margin-top: 0;
 	margin-bottom: 0.8em;
@@ -130,10 +188,18 @@ div.searchinfo {
 	text-align: center;
 	margin-bottom: 0.5em;
 }
-div.searchfield {
-	text-align: center;
+div.searchfield input {
+	vertical-align: text-top;
 }
-
+div.searchfield .inputs {
+	vertical-align: text-top;
+	float: right;
+	z-index: 100;
+	position: relative;
+	width: 25%;
+	overflow: visible;
+	white-space: nowrap;
+}
 div.badge {
 	height: 15em;
 	border: 1px solid #D1D1D1;
