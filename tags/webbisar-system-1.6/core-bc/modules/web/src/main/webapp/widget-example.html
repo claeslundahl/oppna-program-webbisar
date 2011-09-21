@@ -1,0 +1,71 @@
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang"sv" lang="sv">
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+  <title>JSONP Example</title>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/yahoo/yahoo-min.js" ></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/event/event-min.js" ></script>
+  <script type="text/javascript" src="http://webbisar.vgregion.se/webbisar/scripts/widget.js" ></script>
+  
+  <link rel="stylesheet" type="text/css" href="http://vard.vgregion.se/VGRStyles/total.css" /> 
+  <link rel="stylesheet" type="text/css" href="http://webbisar.vgregion.se/webbisar/style/widget.css" />
+</head>
+
+<body style="padding-left: 20px; padding-top: 20px">
+
+<div id="boxright1">
+  <div id="webbis-widget">
+  	<div id="webbis-img">
+      <a href="http://vard.vgregion.se/sv/Webbisar/">
+      	<img id="webbis-image" src="http://webbisar.vgregion.se/webbisar/images/webbis2.gif" alt="Webbisar"/>
+      </a>
+    </div>
+    <div id="webbis-txt">
+      <div id="webbis-header">
+      	<a href="http://vard.vgregion.se/sv/Webbisar/">Webbisar</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="font-size: 1.2em; clear: left;">
+	<h1>Usage:</h1>
+	
+	<p>URL: <a href="http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build&loc=SAS&num=10">http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build&loc=SAS&num=10</a></p>
+	<p>URL: <a href="http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build&loc=OSTRA">http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build&loc=OSTRA</a></p>
+	<p>URL: <a href="http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build">http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build</a></p>
+	<p>URL: <a href="http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build&id=99">http://webbisar.vgregion.se/webbisar/widget.jsonp?callback=WebbisWidget.build&id=99</a></p>
+	
+	<ul>
+		<li>KSS = "KSS"</li> 
+		<li>MOLNDAL = "Mölndals sjukhus"</li>
+		<li>NAL = "Näl"</li>
+		<li>SAS = "Säs Borås"</li> 
+		<li>OSTRA = "Östra sjukhuset"</li> 
+		<li>OVRIGT = "Övrigt"</li>
+	</ul>
+</div>
+
+</body>
+</html>

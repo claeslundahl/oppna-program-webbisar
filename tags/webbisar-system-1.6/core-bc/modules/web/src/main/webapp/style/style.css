@@ -1,0 +1,315 @@
+/**
+ * Copyright 2010 Västra Götalandsregionen
+ *
+ *   This library is free software; you can redistribute it and/or modify
+ *   it under the terms of version 2.1 of the GNU Lesser General Public
+ *   License as published by the Free Software Foundation.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU Lesser General Public
+ *   License along with this library; if not, write to the
+ *   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ *   Boston, MA 02111-1307  USA
+ *
+ */
+
+@CHARSET "UTF-8";
+
+html {
+	height: 100%;
+}
+
+body {
+    height: 100%;
+	font: 62.5% Arial, Verdana, Helvetica, sans-serif;
+	background:#fff;
+	padding: 0;
+	margin: 0;
+	margin-left: 0.5em
+}
+
+#custom-doc {
+	text-align:left; /* leave unchanged */
+	width:66em;/* non-IE */
+	*width:66.36em;/* IE */
+	margin: auto;
+	min-width:600px;/* optional but recommended */
+}
+
+#custom-doc .header h2 {
+	display: inline;
+	float: left;
+	width: 75%;
+}
+
+#custom-doc div a img {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#addressEntryForm {
+	display: inline;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -4em;
+	border-style: solid;
+	border-width: thin;
+	padding: 1em;
+	width: 100%;
+}
+
+.footer, .push {
+    height: 4em;
+}
+
+.share-this {
+	width: 100%;
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.share-this .quarter-space {
+	width:25%; 
+	visibility: hidden;
+}
+
+.share-this .core {
+	min-width:40%;
+	white-space: nowrap;
+	overflow: visible;
+	text-align: center;
+}
+
+.share-this h2, .share-this div {
+	display: inline;
+	line-height: 32px;
+}
+
+.webbisSelectedImageComment {
+  margin-left: 0.8em; 
+  padding-bottom: 1.0em;
+}
+
+.rightHand {
+  text-align: right;
+  float:right;
+}
+
+.navigateRight {
+  text-align: right;
+  padding-right: 1em;
+  float:right;
+}
+
+.navigateLeft a {
+  margin-left: 1em;
+}
+
+h2{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:1.8em;
+	font-weight:normal; 
+	color:#333;
+}
+
+h3.badge{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 1.2em;
+	font-weight:bold;
+	color:#444; 
+	margin-bottom:0.4em;
+	margin-top:0.4em;
+	margin-left:0.8em;
+}
+
+h3.webbis{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 1.4em;
+	font-weight:bold;
+	color:#444; 
+	margin-bottom:0.4em;
+	margin-top:0.4em;
+	margin-left:0.8em;
+}
+
+a { 
+  color:#9c132f;
+}
+
+span.bold {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin: 0
+}
+
+p {
+	-x-system-font:none;
+	color:#222222;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:1.1em;
+	font-size-adjust:none;
+	font-stretch:normal;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.3em;
+	margin-bottom:0;
+	margin-top:0;
+}
+
+input.btn {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 1.2em;
+}
+
+div.header {
+	text-align: left; 
+	margin-top:0.6em;
+}
+
+#hd {
+	padding-bottom: 2em;
+	width: 100%;
+}
+
+.header h2 {
+	display: inline;	
+}
+div.topinfo {
+	margin-top: 0;
+	margin-bottom: 0.8em;
+}
+div.searchinfo {
+	text-align: center;
+	margin-bottom: 0.5em;
+}
+div.searchfield input {
+	vertical-align: text-top;
+}
+div.searchfield .inputs {
+	vertical-align: text-top;
+	float: right;
+	z-index: 100;
+	position: relative;
+	width: 25%;
+	overflow: visible;
+	white-space: nowrap;
+}
+div.badge {
+	height: 15em;
+	border: 1px solid #D1D1D1;
+	margin-bottom:0.8em;
+}
+
+div.badgeHover {
+  border: 1px solid #9C132F;
+}
+
+div.badge-text {
+	font-size: 0.8em;
+}
+
+div.birthmultiplicityparent {
+  position: relative;
+}
+
+div.webbis {
+	border: thin solid #D1D1D1;
+	margin-bottom:0.8em;
+	margin-right:0.2em;
+}
+
+div.birthmultiplicity {
+  position: absolute; 
+  right: 0; 
+  top: 0;
+  padding-right: 5px;
+}
+
+div.addwebbis {
+	border: thin solid #D1D1D1;
+	margin-bottom:0.8em;
+}
+
+div.addrow {
+	padding-top: 0.8em;
+	padding-bottom: 1.2em;
+}
+
+div.header {
+	margin-bottom:0.4em;
+}
+
+div.piclist {
+	margin-top:1.0em;
+}
+
+div.search_item {
+	font-size: 1.5em;
+	padding-top: 1.0em;
+	padding-bottom: 0.0em;
+}
+
+div.search_info {
+	font-size: 1.0em;
+	padding-top: 0.2em;
+	padding-bottom: 0.8em;
+}
+
+img.selected {
+	border: 0.2em solid #9C132F;
+	width:14em;
+	margin-top:0.4em;
+	margin-bottom:0.4em;
+	margin-left:0.4em;
+	/*padding: 0.2em;*/
+}
+
+img.video {
+  height:10.5em;
+}
+
+img.notselected {
+	width:14em;
+	margin-top:0.6em;
+	margin-bottom:0.6em;
+	margin-left:0.6em;
+}
+
+img.icon {
+	height: 1.2em;
+	width: 1.2em;
+	padding-top: 0.3em;
+	padding-right: 0.2em;
+}
+	
+img.thumb {
+	width: 14em;
+	margin-top:0.1em;
+	margin-bottom:0.4em;
+	margin-left:0.8em;
+	
+}
+
+img.full {
+	width: 42em;
+	margin-bottom:0.4em;
+	margin-left:0.8em;
+}
+
+object.full {
+  width: 425px;
+  height: 320px;
+  margin-bottom:0.4em;
+  margin-left:0.4em;
+}
