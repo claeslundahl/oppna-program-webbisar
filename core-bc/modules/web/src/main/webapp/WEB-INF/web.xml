@@ -24,7 +24,7 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
 
   <description>Webbisar Application</description>
-  <display-name>Webbisar</display-name>
+  <display-name>Webbisar - Region Västra Götaland</display-name>
 
   <!-- resolving .xhmtl files for Facelets -->
   <context-param>

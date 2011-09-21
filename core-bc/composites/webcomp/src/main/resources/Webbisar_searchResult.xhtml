@@ -37,14 +37,19 @@
 		</h:outputLink></div>
 		<div class="wrapper">
 	          	<div id="hd">
-		            <div class="yui-b header">
-		              <h2 class="yui-u first">Webbisar - Sökresultat</h2>
+		            <div class="yui-b first header">
+		              <h2 class="yui-u">Webbisar - Sökresultat</h2>
 		              <div class="yui-u searchfield">
 	             		<form name="webbisSearchForm" class="inputs" id="webbisSearchForm" jsfc="h:form">
 							<input type="text" name="searchCriteria" id="searchCriteria" jsfc="h:inputText"	value="#{SearchCriteria.text}" />
 							<input class="btn" type="submit" action="searchForWebbisAction" immidiate="false" value="&#160;Sök&#160;" jsfc="h:commandButton"/>
 						</form>
 		              </div>
+                  <div class="yui-u first" style="clear: both;">
+                    <p>
+                    <a href="#{msgBundle['webbisar.baseUrl']}">Till startsidan</a>
+                    </p>
+                  </div>
 		            </div>
 	          	</div>
 
