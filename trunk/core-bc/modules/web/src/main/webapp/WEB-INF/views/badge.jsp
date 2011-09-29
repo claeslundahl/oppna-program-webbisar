@@ -36,8 +36,8 @@
 	  		"time" : "<c:out value="${w.smartTime}"/>",
 	  		"parents" : "<c:out value="${w.parentsShort}"/>",
 	  		"home" : "<c:out value="${w.home}"/>",
-	  		"link" : "http://vard.vgregion.se/sv/Webbisar/?webbisId=<c:out value="${w.id}"/>",
-	  		"linkall" : "http://vard.vgregion.se/sv/Webbisar"
+	  		"link" : "http://webbisar.vgregion.se/webbisar/?webbisId=<c:out value="${w.id}"/>",
+	  		"linkall" : "http://webbisar.vgregion.se/webbisar/"
 	 	}<c:if test="${not w.last}">,</c:if>      	
       	</c:forEach>
    ]	
