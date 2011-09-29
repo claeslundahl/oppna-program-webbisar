@@ -57,6 +57,7 @@ var WebbisWidget = function() {
       div.appendChild(divtxt);
     
       var link = document.createElement('a');
+      link.target='_blank';
       link.href = webbis.link;
     
       var img = document.createElement('img');
@@ -69,6 +70,8 @@ var WebbisWidget = function() {
       header.id = "webbis-header";
       header.appendChild(document.createTextNode('Webbisar'));
       var link = document.createElement('a');
+      link.target='_blank';
+      
       link.href = webbis.linkall
       link.appendChild(header)
       
