@@ -19,6 +19,8 @@
 
 package se.vgregion.webbisar.helpers;
 
+import static javax.portlet.PortletRequest.P3PUserInfos.USER_LOGIN_ID;
+import static javax.portlet.PortletRequest.USER_INFO;
 import static org.apache.commons.lang.StringUtils.*;
 
 import java.io.IOException;
@@ -645,10 +647,14 @@ public class WebbisPortletHelper {
                 throw new RuntimeException("User not logged in properly, no user principal found in request.");
             }
         } else {
-            userId = request.getUserPrincipal().getName();
+            Map<String, ?> userInfo = (Map<String, ?>) request.getAttribute(USER_INFO);
+            if (userInfo != null && userInfo.get(USER_LOGIN_ID.toString()) != null) {
+                userId = (String) userInfo.get(USER_LOGIN_ID.toString());
+            }
             if (userId == null) {
                 throw new RuntimeException("User not logged in properly, no user principal name found in request.");
             }
+            System.out.println("UserId: "+userId);
         }
         return userId;
     }

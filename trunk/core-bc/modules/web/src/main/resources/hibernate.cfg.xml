@@ -24,7 +24,7 @@
 <hibernate-configuration>
 	<session-factory>
     <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-    <property name="hibernate.search.default.indexBase">D:/webbisar/index</property>
+    <property name="hibernate.search.default.indexBase">~/temp/webbisar/index</property>
     <!--
     <property name="hibernate.search.default.indexBase">C:/Temp/webbisarIndex</property>
     --> 

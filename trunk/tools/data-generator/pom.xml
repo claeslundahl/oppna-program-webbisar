@@ -53,7 +53,6 @@
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
       <version>1.4</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -71,6 +70,8 @@
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
+      <version>1.8.0.1</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
@@ -82,12 +83,7 @@
       <artifactId>joda-time</artifactId>
       <version>1.6</version>
     </dependency>
-    <dependency>
-      <groupId>net.rkbloom.logdriver</groupId>
-      <artifactId>logdriver</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    
+
     <dependency>
       <groupId>org.apache.ftpserver</groupId>
       <artifactId>ftpserver-core</artifactId>

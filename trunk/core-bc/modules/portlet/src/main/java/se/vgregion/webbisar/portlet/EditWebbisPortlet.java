@@ -19,39 +19,33 @@
 
 package se.vgregion.webbisar.portlet;
 
+import org.apache.commons.fileupload.portlet.PortletFileUpload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import se.vgregion.webbisar.beans.MainWebbisBean;
+import se.vgregion.webbisar.helpers.FileHandler;
+import se.vgregion.webbisar.helpers.WebbisPortletHelper;
+import se.vgregion.webbisar.helpers.WebbisPortletHelper.WebbisValidationException;
+import se.vgregion.webbisar.helpers.WebbisServiceProxy;
+import se.vgregion.webbisar.types.Hospital;
+import se.vgregion.webbisar.types.Webbis;
+import se.vgregion.webbisar.util.CallContext;
+import se.vgregion.webbisar.util.CallContextUtil;
+
+import javax.portlet.*;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.GenericPortlet;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
-import org.apache.commons.fileupload.portlet.PortletFileUpload;
-
-import se.vgregion.webbisar.beans.MainWebbisBean;
-import se.vgregion.webbisar.helpers.FileHandler;
-import se.vgregion.webbisar.helpers.WebbisPortletHelper;
-import se.vgregion.webbisar.helpers.WebbisServiceProxy;
-import se.vgregion.webbisar.helpers.WebbisPortletHelper.WebbisValidationException;
-import se.vgregion.webbisar.types.Hospital;
-import se.vgregion.webbisar.types.Webbis;
-import se.vgregion.webbisar.util.CallContext;
-import se.vgregion.webbisar.util.CallContextUtil;
-
 /**
  * EditWebbis Portlet Class
- * 
+ *
  * @author sofiajonsson
  */
 public class EditWebbisPortlet extends GenericPortlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditWebbisPortlet.class);
 
     // these parameters are set in the action phase. They help decide which view
     // to redirect to in the render phase
@@ -84,24 +78,25 @@ public class EditWebbisPortlet extends GenericPortlet {
         PortletRequestDispatcher dispatcher = null;
         Object view = request.getParameter(VIEW);
 
+        String userId = null;
+        try {
+            userId = helper.getUserId(request);
+        } catch (RuntimeException re) {
+            // userId was probably not found in request
+            dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/UserIdNotFound.jsp");
+            dispatcher.include(request, response);
+            return;
+        }
+
         if ((view == null) || (view.equals(SHOW_WEBBIS_LIST_VIEW))) {
             // CleanUp so the session is empty
             helper.cleanUp(request.getPortletSession(true));
-
-            String userId = null;
-            try {
-                userId = helper.getUserId(request);
-            } catch (RuntimeException re) {
-                // userId was probably not found in request
-                dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/UserIdNotFound.jsp");
-                dispatcher.include(request, response);
-                return;
-            }
 
             List<MainWebbisBean> webbisar = webbisServiceProxy.getWebbisarForAuthorId(userId);
             if (webbisar != null && webbisar.size() > 0) {
                 // helper.storeMyWebbisarInSession(request, webbisar);
                 request.setAttribute("webbisar", webbisar);
+                request.setAttribute("userId", userId);
                 dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/ShowWebbisList.jsp");
             } else {
                 // show an empty main edit webbis page - for adding a new webbis
@@ -109,6 +104,7 @@ public class EditWebbisPortlet extends GenericPortlet {
                 // this is used in the jsp
                 request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
                 request.setAttribute("hospitals", Hospital.values());
+                request.setAttribute("userId", userId);
                 dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
             }
         } else if (view.equals(ADD_IMAGES_VIEW)) {// show add picture page
@@ -126,6 +122,7 @@ public class EditWebbisPortlet extends GenericPortlet {
             // this is used in the jsp
             request.setAttribute("currentYear", new GregorianCalendar().get(Calendar.YEAR));
             request.setAttribute("hospitals", Hospital.values());
+            request.setAttribute("userId", userId);
             // show the main edit webbis page
             dispatcher = getPortletContext().getRequestDispatcher("/WEB-INF/jsp/EditWebbis.jsp");
         }
@@ -134,7 +131,8 @@ public class EditWebbisPortlet extends GenericPortlet {
     }
 
     @Override
-    public void processAction(ActionRequest request, ActionResponse response) throws PortletException, IOException {
+    public void processAction(ActionRequest request, ActionResponse response) throws PortletException,
+            IOException {
 
         // Moved proxy init out of portlet init() to enable easy localhost deploy
         initServiceProxyAndHelper();
@@ -253,22 +251,30 @@ public class EditWebbisPortlet extends GenericPortlet {
 
     private void initServiceProxyAndHelper() {
         if (webbisServiceProxy == null) {
-            webbisServiceProxy = new WebbisServiceProxy();
-            String baseUrl = webbisServiceProxy.getImageBaseUrl();
-            String ftpCfg = webbisServiceProxy.getFtpConfig();
-            Boolean testMode = webbisServiceProxy.isTestMode();
-            int maxNoOfVideoFiles = webbisServiceProxy.getMaxNoOfVideoFiles();
-            int maxVideoFileSize = webbisServiceProxy.getMaxVideoFileSize();
+            try {
+                webbisServiceProxy = new WebbisServiceProxy();
+                String baseUrl = webbisServiceProxy.getImageBaseUrl();
+                String ftpCfg = webbisServiceProxy.getFtpConfig();
+                Boolean testMode = webbisServiceProxy.isTestMode();
+                int maxNoOfVideoFiles = webbisServiceProxy.getMaxNoOfVideoFiles();
+                int maxVideoFileSize = webbisServiceProxy.getMaxVideoFileSize();
 
-            FileHandler fileHandler = new FileHandler(ftpCfg);
+                FileHandler fileHandler = new FileHandler(ftpCfg);
 
-            helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode, maxNoOfVideoFiles, maxVideoFileSize);
+                helper = new WebbisPortletHelper(baseUrl, fileHandler, testMode, maxNoOfVideoFiles,
+                        maxVideoFileSize);
+            } catch (Exception ex) {
+                LOGGER.error("The configuration is broken", ex);
+                webbisServiceProxy = null;
+                throw new RuntimeException(ex);
+            }
         }
     }
 
     private void handleImageOperations(ActionRequest request) {
         // For all multiple birth siblings, check if operation was performed
-        siblingLoop: for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
+        siblingLoop:
+        for (int i = 0; i < SUPPORTED_MULTIPLE_BIRTH_SIBLINGS; i++) {
             // Check if we have a remove image operation in request
             for (int x = 0; x < SUPPORTED_NO_OF_MEDIAFILES; x++) {
                 if (request.getParameter("w" + i + "_remove-mediaFile" + x) != null) {

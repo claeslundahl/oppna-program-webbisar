@@ -24,7 +24,6 @@ Generation time : 2009-01-08 10:18:23 CET
     <module>composites/webcomp</module>
     <module>modules/web</module>
     <module>modules/portlet</module>
-    <module>applications/core-bc</module>
   </modules>
 
 </project>
