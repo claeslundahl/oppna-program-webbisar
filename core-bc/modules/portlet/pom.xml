@@ -10,6 +10,7 @@
     <artifactId>webbisar-core-bc</artifactId>
     <version>1.6-SNAPSHOT</version>
   </parent>
+  <groupId>se.vgregion.webbisar</groupId>
   <artifactId>webbisar-core-bc-module-portlet</artifactId>
   <packaging>war</packaging>
   <name>${project.artifactId}</name>
@@ -35,6 +36,7 @@
           <warName>webbisar-portlet</warName>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 
@@ -77,6 +79,19 @@
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
       <version>2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.liferay</groupId>
+      <artifactId>portal-service</artifactId>
+      <version>${liferay.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.liferay</groupId>
+      <artifactId>portal-kernel</artifactId>
+      <version>${liferay.version}</version>
+      <scope>provided</scope>
     </dependency>
 
   </dependencies>
