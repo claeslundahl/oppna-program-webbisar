@@ -72,7 +72,7 @@ Portletarna är i största möjliga mån uppbyggda enligt [http://code.google.co
 
 All konfiguration som behövs i portlettarna hämtas från web-applikationen via Spring remoting. Den enda konfig som behövs i portlet-projektet är alltså urlen till webprojektets Spring remoting-interface. Se avsnittet [http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration konfiguration] nedan.
 
-Den grundläggande arkitekturen för dessa portlets är sund, dock är kodbasen riktigt dålig och är i stort behov av att lyftas till reference arkitekturen (SpringPortletMVC).
+Den grundläggande arkitekturen för dessa portlets är sund, dock är kodbasen i stort behov av att lyftas till reference arkitekturen (SpringPortletMVC).
 
 == !EditWebbis Portlet ==
 !EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera och ta bort webbisar. Portleten skall endast vara tillgänglig då man har loggat in i portalen med hjälp av e-id. Korrekta rättigheter konfigureras i portalen, portleten i sig förutätter att användaren är inloggad. 
