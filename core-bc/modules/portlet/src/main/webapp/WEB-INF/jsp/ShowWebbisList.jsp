@@ -71,7 +71,9 @@
                     <div class="yui-u first" style="margin-left: 0.4em">
                         <c:forEach var="webbis" items="${requestScope.webbisar}">
                             <p>
-                                <a href="<portlet:actionURL><portlet:param name="editWebbisId" value="${webbis.mainWebbis.id}"/></portlet:actionURL>">
+                                <a href="<portlet:actionURL secure="true"><portlet:param name="editWebbisId"
+                                value="${webbis
+                                .mainWebbis.id}"/></portlet:actionURL>">
                                     <c:choose>
                                         <c:when test="${webbis.hasMultipleBirthSiblings}">Redigera webbisar</c:when>
                                         <c:otherwise>Redigera webbis</c:otherwise>

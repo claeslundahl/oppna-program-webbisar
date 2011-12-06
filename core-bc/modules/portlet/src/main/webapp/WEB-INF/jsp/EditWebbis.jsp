@@ -80,7 +80,7 @@
 </div>
 <div>
 <div id="yui-main">
-<form action="<portlet:actionURL/>" method="post" name="webbis_main_form" id="webbis_main_form">
+<form action="<portlet:actionURL secure="true"/>" method="post" name="webbis_main_form" id="webbis_main_form">
 
 <c:if test="${portletSessionScope['webbisForm.mainWebbisBean'] != null and portletSessionScope['webbisForm.mainWebbisBean'].mainWebbis != null}">
     <input type="hidden" name="w0_webbisId"

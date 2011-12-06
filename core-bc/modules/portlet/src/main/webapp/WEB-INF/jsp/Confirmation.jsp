@@ -54,7 +54,9 @@
               <p>Notera att det kan ta en stund innan ändringen syns i sökresultat och liknande.</p>
 						</div>
 						<div class="yui-u" style="text-align: right">
-							<form action="<portlet:actionURL/>" method="post" name="back_from_confirm" id="back_from_confirm">			
+							<form action="<portlet:actionURL secure="true"/>" method="post"
+                                  name="back_from_confirm"
+                                  id="back_from_confirm">
 								<input type="submit" name="backFromConfirm" value="Tillbaka"/>
 							</form>		
 						</div>

@@ -40,7 +40,8 @@
 	</div>
 	<div>
 		<div id="yui-main">
-			<form action="<portlet:actionURL/>" method="post" name="webbis_main_form" id="webbis_main_form">
+			<form action="<portlet:actionURL secure="true"/>" method="post" name="webbis_main_form"
+                  id="webbis_main_form">
 				<div class="yui-b webbis">
         
           <c:forEach items="${previewWebbis.webbisPreviews}" varStatus="refRow" var="previewWebbis">
