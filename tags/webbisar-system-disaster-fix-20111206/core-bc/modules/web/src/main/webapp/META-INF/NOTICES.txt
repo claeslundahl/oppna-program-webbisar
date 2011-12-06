@@ -1,0 +1,239 @@
+Copyright Â© 2009 VŠstra Gštalandsregionen
+
+This product includes/uses software, LogDriver
+(http://rkbloom.net/logdriver/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Antlr
+(http://www.antlr.org)
+License: BSD License
+(http://www.opensource.org/licenses/bsd-license.php)
+
+This product includes/uses software, ASM
+(http://asm.ow2.org/),
+License: BSD License
+(http://www.opensource.org/licenses/bsd-license.php)
+
+
+This product includes/uses software, CGLib
+(http://cglib.sourceforge.net/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-collections
+(http://commons.apache.org/collections/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-fileupload
+(http://commons.apache.org/fileupload/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-io
+(http://commons.apache.org/io/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-logging
+(http://commons.apache.org/logging/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-net
+(http://commons.apache.org/net/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Dom4j
+(http://www.dom4j.org/),
+License: BSD
+(http://www.dom4j.org/license.html)
+
+This product includes/uses software, Ehcache
+(http://ehcache.sourceforge.net/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, ejb3-persistence
+(http://www.jcp.org/en/jsr/detail?id=220)
+License: thirdpartylicenses/ejb3-persistence.license.txt
+
+This product includes/uses software, Apache FtpServer
+(http://mina.apache.org/ftpserver/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache Mina
+(http://mina.apache.org/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Hibernate Annotations
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Hibernate Ehcache
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Hibernate Commons Annotations
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Hibernate EntityManager
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Hibernate Core
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Hibernate Search
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Hibernate Validator
+(http://www.hibernate.org)
+License: GNU Lesser General Public License (LGPL), Version 2.1
+(http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+This product includes/uses software, Javassist
+(http://www.csg.is.titech.ac.jp/~chiba/javassist/)
+License: GNU Lesser General Public License
+(http://www.gnu.org/copyleft/lesser.html)
+
+This product includes/uses software, Joda Time
+(http://joda-time.sourceforge.net/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, JavaBeans Activation Framework
+(http://java.sun.com/javase/technologies/desktop/javabeans/jaf/reference/api/index.html),
+License: thirdpartylicenses/activation.license.txt
+
+This product includes/uses software, Apache XML Commons, xml-apis
+(http://xml.apache.org/commons/#external)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, AOP Alliance 
+(http://aopalliance.sourceforge.net/),
+License: Public Domain
+
+This product includes/uses software, cglib
+(http://cglib.sourceforge.net/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-dbcp
+(http://commons.apache.org/dbcp/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-dbcp
+(http://commons.apache.org/dbcp/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-lang
+(http://commons.apache.org/lang/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-logging
+(http://commons.apache.org/logging/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache commons-pool
+(http://commons.apache.org/pool/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Ehcache
+(http://ehcache.sourceforge.net/)
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)This product includes/uses software, Unified Expression Language (EL)
+(https://uel.dev.java.net/),
+License: Common Development and Distribution License (CDDL) Version 1.0
+(https://glassfish.dev.java.net/public/CDDL+GPL.html)
+
+This product includes/uses software, HSQL DB
+(http://hsqldb.org/),
+License: http://hsqldb.org/web/hsqlLicense.html
+
+This product includes/uses software, JavaServer Faces (JSF)
+(https://javaserverfaces.dev.java.net/),
+License: Common Development and Distribution License (CDDL) Version 1.0
+(https://glassfish.dev.java.net/public/CDDL+GPL.html)
+
+This product includes/uses software, Facelets 
+(https://facelets.dev.java.net/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Jakarta Standard Taglibs
+(http://jakarta.apache.org/taglibs/index.html),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Java Transaction API (JTA)
+(http://java.sun.com/javaee/technologies/jta/index.jsp),
+License: Common Development and Distribution License (CDDL) Version 1.0
+(https://glassfish.dev.java.net/public/CDDL+GPL.html)
+
+This product includes/uses software, jTDS JDBC Driver
+(http://jtds.sourceforge.net),
+License: GNU Lesser General Public License
+(http://www.gnu.org/copyleft/lesser.html)
+
+This product includes/uses software, Apache Log4j
+(http://logging.apache.org/log4j),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Apache Lucene
+(http://lucene.apache.org/),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, OGNL
+(http://www.ognl.org/),
+License: BSD License
+(http://www.opensource.org/licenses/bsd-license.php)
+
+This product includes/uses software, Spring Webflow
+(http://www.springsource.org/webflow),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Spring
+(http://www.springsource.org/about),
+License: The Apache Software License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This product includes/uses software, Simple Logging Facade for Java (SLF4J)
+(http://www.slf4j.org/),
+License: MIT Licence
+(http://www.opensource.org/licenses/mit-license.php)
+
+This product includes/uses software, Java persistence-api
+(https://glassfish.dev.java.net/javaee5/persistence/),
+License: Common Development and Distribution License (CDDL) Version 1.0
+(https://glassfish.dev.java.net/public/CDDL+GPL.html)
+
+
+
+
+
+
+
+

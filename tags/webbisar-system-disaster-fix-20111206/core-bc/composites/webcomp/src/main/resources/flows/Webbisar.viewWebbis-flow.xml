@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+<flow xmlns="http://www.springframework.org/schema/webflow"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+    start-state="showWebbis">
+
+  <input name="webbisId" value="flowScope.webbisId" />
+  <input name="SearchCriteria" value="flowScope.SearchCriteria" />
+  
+	<action-state id="showWebbis">
+    <evaluate expression="Webbisar_WebbisarFlowSupportBean.getWebbis(flowScope.webbisId, flowScope.selectedImage, externalContext, requestParameters, flowScope.SearchCriteria)" 
+      result="flowScope.Webbis" />
+		<transition on="success" to="viewPage" />
+    <transition on-exception="se.vgregion.webbisar.presentation.exceptions.WebbisNotFoundException" to="showWebbis.noHit" />
+	</action-state>
+  
+  <view-state id="showWebbis.noHit" view="/webbis404.xhtml"/>
+
+	<view-state id="viewPage" view="/Webbisar_viewWebbis.xhtml">
+    <transition on="selectWebbisImageAction" to="showWebbis">
+      <set name="flowScope.selectedImage" value="requestParameters.selectedImage" type="java.lang.Integer" />
+    </transition>
+		<transition on="backToWebbisarAction" to="back" />
+    <transition on="searchForWebbisAction" to="search"/>
+    <transition on="showSendWebbisAction" to="showSendWebbis"/>
+	</view-state>
+  
+  <subflow-state id="showSendWebbis" subflow="Webbisar.sendWebbis-flow">
+    <input name="webbisId" value="requestParameters.webbisId" type="java.lang.Long"/>
+    <output name="MailMessageResult" type="se.vgregion.webbisar.presentation.MailMessageResultBean"/>
+    
+    <transition on="cancelSend" to="viewPage" />
+    <transition on="mailSent" to="viewPage" />
+  </subflow-state>
+	
+  <end-state id="search"/>
+  
+	<end-state id="back" />
+  
+</flow>

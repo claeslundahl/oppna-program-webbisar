@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Västra Götalandsregionen
+
+      This library is free software; you can redistribute it and/or modify
+      it under the terms of version 2.1 of the GNU Lesser General Public
+      License as published by the Free Software Foundation.
+
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Lesser General Public License for more details.
+
+      You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+      Boston, MA 02111-1307  USA
+
+
+-->
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+  id="webbisar-portlet" version="2.0">
+  <portlet>
+    <portlet-name>EditWebbis</portlet-name>
+    <portlet-class>se.vgregion.webbisar.portlet.EditWebbisPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <resource-bundle>EditWebbis</resource-bundle>
+  </portlet>
+
+  <portlet>
+    <portlet-name>AdminEditWebbis</portlet-name>
+    <portlet-class>se.vgregion.webbisar.portlet.AdminEditWebbisPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <resource-bundle>AdminEditWebbis</resource-bundle>
+  </portlet>
+
+  <user-attribute>
+    <description>User Login ID</description>
+    <name>user.login.id</name>
+  </user-attribute>
+
+  <container-runtime-option>
+    <name>javax.portlet.actionScopedRequestAttributes</name>
+    <value>true</value>
+    <value>numberOfCachedScopes</value>
+    <value>10</value>
+  </container-runtime-option>
+</portlet-app>
