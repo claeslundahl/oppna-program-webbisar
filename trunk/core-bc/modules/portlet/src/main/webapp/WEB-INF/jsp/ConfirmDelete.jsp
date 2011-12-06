@@ -43,7 +43,8 @@
 	</div>
 	<div>
 		<div id="yui-main">
-		<form action="<portlet:actionURL><portlet:param name="webbisId" value="${requestScope.webbisId}"/></portlet:actionURL>" method="post" id="webbis_delete_form">			
+		<form action="<portlet:actionURL secure="true"><portlet:param name="webbisId" value="${requestScope
+		.webbisId}"/></portlet:actionURL>" method="post" id="webbis_delete_form">
 			<div class="yui-b addwebbis">
 				<div class="yui-g">
 					<h3 class="webbis">Ta bort webbis</h3>

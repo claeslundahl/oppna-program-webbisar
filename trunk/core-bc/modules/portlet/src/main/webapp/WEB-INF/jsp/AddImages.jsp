@@ -44,7 +44,8 @@
 	</div>
 	<div>
 		<div id="yui-main">
-			<form action="<portlet:actionURL/>" enctype="multipart/form-data" method="post" id="webbis_images_form" onsubmit="document.body.style.cursor = 'wait';">
+			<form action="<portlet:actionURL secure="true"/>" enctype="multipart/form-data" method="post"
+                  id="webbis_images_form" onsubmit="document.body.style.cursor = 'wait';">
 			
 				<div class="yui-b addwebbis">
 					<div class="yui-g">
