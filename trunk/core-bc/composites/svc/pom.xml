@@ -89,13 +89,6 @@
     </dependency>
 
     <dependency>
-      <groupId>net.rkbloom.logdriver</groupId>
-      <artifactId>logdriver</artifactId>
-      <version>1.0.0</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <scope>test</scope>
