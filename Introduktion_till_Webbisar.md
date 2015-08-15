@@ -1,0 +1,240 @@
+# Innehåll #
+
+
+# Introduktion #
+
+Webbisar är en webbapplikation som har som huvudsyfte att lagra och visa bilder/film på nyfödda bäbisar, sk "webbisar". Genom att logga in i portalen (i VGRs fall med e-id) kan nyblivna föräldrar själva lägga upp och administrera mediafiler på sina nyfödda. Webbapplikationen visar sedan upp webbisarna.
+
+Det finns även en "widget" som kan användas på andra webbsidor för att länka till webbisar-applikationen. Se webbisar på adressen http://vard.vgregion.se
+
+# Systemöversikt #
+
+Webbisar består av två huvudkomponenter, en webapplikation som exekverar i en web-container, i dagsläget Apache Tomcat och en portlet webbapplikation med två portlets som exekverar i en JSR 286-kompatibel portal, t ex i IBM Websphere Portal. Förutom dessa två komponenter finns det även en mediaservlet som servar mediafiler. I dagsläget görs detta från Apache Tomcat (se nedan för konfiguration) men mediafilerna skulle även kunna ligga någon annanstans.
+
+Webbapplikationen innefattar funktionalitet för att söka efter och visa upp webbisar samt för att spara och uppdatera webbisar. Det är dock portlet-komponenten som implementerar gränssnittet för att lägga till och uppdatera webbisar. Detta för att användaren ska tvingas logga in (vi utnyttjar portalens inloggning mha e-id) innan han/hon lägger upp sina webbisar. Portlet-komponenterna kommunicerar med webapplikationen via HTTP (på URL:en `http://<host>/webbisar/remoting`) och FTP. HTTP används för att göra remote-anrop via Spring Remoting och FTP används för att överföra mediafiler. Dessa gränssnitt är ej åtkomliga utifrån utan nås bara från portalen.
+
+Två diskareor används lokalt på Apache Tomcat servern. En för att lagra mediafiler och en för att lagra ett Lucene-index som används i sökningar.
+
+![http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png](http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/systemoversikt.png)
+
+# Webbapplikationen - för att visa webbisar #
+Web-applikationen är utvecklad i enlighet med [Öppna programs referensarkitektur](http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA) och är därför baserad på [Spring Webflow version 2](http://www.springsource.org/webflow) och [JSF](http://java.sun.com/javaee/javaserverfaces/)/[Facelets](https://facelets.dev.java.net/). Detta gör att applikationen har tillstånd kopplat till en användares session och användaren befinner sig alltid i ett flöde. Det finns två ingångar till flödet:
+
+  1. `http://<host>/webbisar/`
+  1. `http://<host>/webbisar/?webbisId=<id>`
+
+Den första URL:en gör att man hamnar på förstasidan och den andra att man hamnar direkt på en webbis med det angivna id:et.
+
+## Integration med EpiServer ##
+Den naturliga ingången för en användare är via VGRs publika vårdportal http://vard.vgregion.se . Vårdportalen baseras på EpiServer och webbisar är inlemmad som en gadget i denna. När användaren klickar på gadgeten så hamnar han/hon på sidan som visas i bilden nedan. Bilden nedan visar hur Webbisar integrerar med EpiServer. På sidan i EpiServer finns en iframe för webbisar-applikationen (innanför den röda ramen). Denna iframe pekar på urlen till webbisar (ex `http://webbisar.vgregion.se/webbisar`). Den kan även hantera vidarebefordran av parametrar från den yttre sidan till iframe i det fallet att man länkar direkt till en webbis.
+
+![http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/integration_med_episerver.png](http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/integration_med_episerver.png)
+
+### P3P ###
+För att kunna köra i en iframe i Internet Explorer 6 och 7 så krävs att man annonserar att man inte gör vissa saker med cookies som skulle kunna inkräkta på användarens integritet. Eftersom vi inte använder användarens identitet i Webbisar-applikationen så har vi ett servlet filter som lägger på en P3P header i varje response. Denna header gör att Internet Explorer 6 och 7 kan sätta cookien i iframe:en.
+
+
+## Felhantering ##
+
+Om något går fel i applikationen så görs en redirect till en servlet (`<host>/webbisar/internalerror/*`). Denna redirect görs dels från getlink.xhtml och dels från error.xhtml. Servleten som hanterar requests för internalerror försöker göra redirect till första sidan och räknar i användarsessionen upp det antal fel som inträffar inom 10 sekunder. Om det antalet överstiger tre, så görs redirect till en felsida som meddelar att applikationen har ett internt fel.
+
+Anledningen till detta upplägg är att man får ett fel då en användarsession och därmed ett flöde råkar ut för en timeout. Detta måste hanteras på något sätt. Nuvarande lösning är inte optimal men fungerar.
+
+
+## Loggning ##
+
+Applikationen har en eventlog som hittas under Apache Tomcats installations-katalog under `logs`. Filen heter `tracelog.log`. I den kan man se när användare skapat, uppdaterat samt tagit bort webbisar. Övrig loggning sker i `webbisar.log`.
+
+## Tredjepartsramverk ##
+Applikationen använder sig av JPA och Hibernate för databas-persistens. Dessutom används Hibernate Search och Hibernate Validator. Den förstnämnda är ett ramverk för att indexera och tillåta sökningar på databasentiteter via ett Lucene-index. Hibernate Search integrerar med Hibernate. Hibernate Validator används för datavalidering.
+
+# Servning av mediafiler #
+
+Som en temporär lösning lagras mediafiler direkt på den lokala disken på Apache Tomcat-maskinen (t ex under `C:/webbisar/mediafiles`). För att dessa mediafiler ska kunna kommas åt via http behöver följande konfiguration göras i Tomcat:
+
+Under .../tomcat/conf/Catalina/localhost/ eller .../tomcat/conf, beroende på Tomcat-version, finns filen mediafiles.xml med innehållet
+
+```
+<?xml version='1.0' encoding='utf-8'?>
+<Context path = "/media" docBase="C:/webbisar/mediafiles">
+</Context>
+```
+
+Denna konfiguration innebär att det går att komma åt mediafiler i den lokala katalogen `C:/webbisar/mediafiles` och dess underkataloger via Tomcat-servern: `http://<host>/media/`.
+
+# Portlets - för att editera webbisar #
+Applikationen har två portlets, en som används för att lägga till och uppdatera webbisar och en admin-portlet, som används av administratörer för att inaktivera webbisar (om någon lagt upp något olämpligt innehåll) samt för att uppdatera lucene-indexet.
+
+Portletarna är i största möjliga mån uppbyggda enligt [referensarkitekturen](http://code.google.com/p/oppna-program/wiki/Introduktion_till_RA). De följer t ex referensarkitekturen när det gäller katalogstruktur och att maven2 används för bygge etc. Portletarna använder sig däremot inte av den teknikstack som referensarkitekturen förespråkar då vissa av dessa ramverk (främst JSF och facelets) inte har visat sig fungera ihop med nuvarande version av Websphere Portal. Istället är portletarna implementerade mha av standarden JSR 286, utan några specifika webb-ramverk som hjälp.
+
+All konfiguration som behövs i portlettarna hämtas från web-applikationen via Spring remoting. Den enda konfig som behövs i portlet-projektet är alltså urlen till webprojektets Spring remoting-interface. Se avsnittet [konfiguration](http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration) nedan.
+
+Den grundläggande arkitekturen för dessa portlets är sund, dock är kodbasen i stort behov av att lyftas till reference arkitekturen (SpringPortletMVC).
+
+## EditWebbis Portlet ##
+EditWebbis portleten används av slutanvändarna för att lägga till, uppdatera och ta bort webbisar. Portleten skall endast vara tillgänglig då man har loggat in i portalen med hjälp av e-id. Korrekta rättigheter konfigureras i portalen, portleten i sig förutätter att användaren är inloggad.
+
+## AdminEditWebbis Portlet ##
+AdminEditWebbis portleten är endast tillgänglig för administratörer (konfigureras i portalen, själva portleten förutsätter att användaren är inloggad). Den används för att inaktivera/aktivera webbisar (inaktiva webbisar - innebär att de inte längre syns i sökningar och menyer) samt uppdatera lucene-indexet.
+
+# Widget #
+
+Webbapplikationen har förberett stöd för sk widgets, som möjliggör att man kan visa delar av webbisar-innehållet på sin egen webbsida och samtidigt länka till webbisar. Det finns ett exempel som följer med webbapplikationen i `widget-example.html`. Deployas per default på:
+
+`http://<host>/webbisar/widget-example.html`
+
+Exemplet använder sig av en css-fil och en JavaScript-fil
+
+`/style/widget.css`
+`/scripts/widget.js`
+
+Widget:en, som kommunicerar med webbapplikationen, baserar sig på _JSON (JavaScript Object Notation) with padding_. Det är en mekanism som möjliggör att en webbläsare kan hämta information från en annan domän utan att säkerhetsmodellen i webbläsaren blockerar det. Principen är att man istället för att skicka tillbaka ett JavaScript objekt i JSON-format från servern, så kapslar man in objektet i ett metodanrop:
+
+`{”message”, ”hello”}`
+
+Blir således:
+
+`callback({ ”message”, ”hello”})`
+
+Sidan som tar emot anropet skapar dynamiskt en skript-tag och lägger i head-elementet på sidan. Skript-taggen pekar med src-attributet mot servern som har informationen. Skriptelementet evalueras och i detta fallet så sker ett anrop till en funktion som heter callback på sidan. Om sidan har definierat en sådan funktion, så kommer den att anropas med JavaScript objektet och man kan använda det för att dynamiskt förändra sidan.
+
+Genom att titta på exemplet, ffa widget.js, så kan man förstå hur man kan använda mekanismen för att bygga widgets på sina egna sidor.
+
+Notera att sökvägar till widget.js samt json-controller är hårdkodade i skript/html.
+
+# Databas #
+Databasen består av tre tabeller. En för webbisen, en som innehåller namn på föräldrar (WebbisParent) och en som innehåller mediainformation (WebbisMediaFile). Webbis\_id i sub-tabellerna kopplar till id i Webbis tabellen.
+
+![http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/db_tabeller.png](http://oppna-program-webbisar.googlecode.com/svn/wiki/bilder/db_tabeller.png)
+
+En webbis kan även vara kopplad till en annan webbis via multiple\_birth\_main\_webbis\_id, detta sker då tvillingar/trillingar läggs upp.
+
+Det är webb-applikationen som har kontakt med databasen, se systemöversiktsbilden ovan.
+
+
+# Konfiguration #
+
+Konfiguration görs via ett antal konfigfiler. Dessa återfinns under `src/main/resources`, `src/main/resources/test` och `src/main/resources/prod` i respektive projekt (not: Under src/test/resources finns konfigurationsfiler som används vid enhetstester - dessa inställningar bör dock fungera utan ändringar. Se t ex projektet core-bc/composites/svc).
+
+I services-config.xml (composites/webcomp, module/portlet samt module/web) och faces-config.xml (modules/web) pekas en properties-fil ut. Man anger via profil vid Maven-bygget  om det är dev, poc eller prod-konfigurationen som skall användas. Ingen profil = dev, test = poc och prod = prod.
+
+Under core-bc/modules/web finns en security.properties.template som innehåller definition av de properties som inte är publika. Värden för dessa properties finns incheckade i motsvarande security.properties i VGR's interna repo, denna fil måste manuellt checkas ut och kopieras in på samma ställe som .template-filen.
+
+Här följer en uppställning kring de viktigaste konfigurationerna man kan göra i respektive projekt och fil:
+
+| **Projekt** | **Konfigurations-fil** | **Inställning/property** | **Förklaring** |
+|:------------|:-----------------------|:-------------------------|:---------------|
+|core-bc/composites/webcomp, core-bc/modules/portlet, core-bc/modules/web samt tools/data-generator|services-config.xml (applicationContext-hibernate.xml för tools/data-generator)|`<context:property-placeholder location="classpath:application-prod.properties"/>`|Tidigare peka man här ut application-prod.properties, application-poc.properties eller application-dev.properties. Detta sker nu istället med hjälp av en profil vid maven-bygget. |
+|core-bc/modules/portlet|application.properties  |`webbapp.remoting.url`    |Här anger man urlen till Spring remoting-interfacet i webbappen. I dev-filen anger man sin lokala url och i prod-filen urlen till produktionsmiljön (i dagsläget test/utvecklingsmiljön). När portletten deployas efterfrågar den all sin konfiguration genom ett anrop till webappen på denna url. Därav att den enda konfigurationen som portletten behöver är urlen till webappens remoting-interface samt att viss konfig som används i portletten ligger i web-projektets konfig-filer (t ex FTP-konfigurationen). |
+|core-bc/modules/web samt tools/data-generator|hibernate.cfg.xml       |`hibernate.search.default.indexBase`|Pekar ut var lucene-indexet ska ligga, t ex `C:/webbisar/lucene/indexes`. Vid lokal utveckling kan man behöva ändra denna inställning, om man inte kör på samma struktur som på utv/test-servern. |
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.testMode`      | Om denna är satt till TRUE tillåts man addera/editera webbisar utan krav på inloggning.|
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.multimediaFileBaseDir` | Katalog på disk där bilderna ska sparas. Hit måste no-image.jpg, video-thumb.png och vglogga\_2.gif (eller annan bild om så anges i property webbisar.mailLogo) kopieras så de finns tillgängliga för bl.a. portleten. Bilderna finns incheckade under images på webappen.|
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.multimediaFileBaseUrl` | URL där bilderna kan accessas via http (se [ovan](http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder)).|
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.imageSize`     | Storlek på bilderna när de sparas på disk (de skalas ner till denna storlek).|
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.imageQuality`  | Kvalitet på bilderna när de sparas på disk - 0 är lägst och 100 är högst.|
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.maxVideoFileSize` | Maximal storlek på video tillåten för uppladdning.|
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.baseUrl`       | Root-URL för applikationen. |
+|core-bc/modules/web samt tools/data-generator|application.properties  | `webbisar.remoteEditUrl` | Länk till admin/edit-gränssnitt (portlet). |
+|core-bc/modules/web samt tools/data-generator|security.properties     | `jdbc.url` samt `hibernate.connection.url` | Båda dessa ska ang JDBC-urlen till databasen. I den lokala utvecklingsmiljön har vi använt en lokal HSQL DB.|
+|core-bc/modules/web samt tools/data-generator|security.properties     | `jdbc.username` samt `hibernate.connection.username` | Båda dessa sätts till användarnamnet i db.|
+|core-bc/modules/web samt tools/data-generator|security.properties     | `jdbc.password` samt `hibernate.connection.password` | Båda sätts till db-lösenordet.|
+|core-bc/modules/web samt tools/data-generator|security.properties     | `webbisar.ftpConfiguration` | URL till ftp-gränssnittet inkl användarnamn och lösen. Not: Detta används ifrån portletten men anges här eftersom portletten efterfrågar all sin konfiguration från webappen. |
+|core-bc/composites/svc|security.properties (ftp-inställningarna låg tidigare i users.properties)| -                        | Filen innehåller alla inställningar för respektive ftp-användare (denna fil pekas ut i den generella ftp-server-konfigen i composites/svc/services-config.xml). |
+|core-bc/composites/svc|security.properties     | `ftpserver.user.<ftp-username>.userpassword` | MD5 krypterat lösenord till ftp-användaren med användarnamn `<ftp-username>`. Ska matcha inställningen i `webbisar.ftpConfiguration` ovan. Se http://www.iwebtool.com/md5 för hur man krypterar lösenordet. |
+|core-bc/composite/svc|security.properties     | `ftpserver.user.<ftp-username>.homedirectory` | I denna katalog lagras bilderna som ftp:as upp med denna användare. Ska alltså matcha inställningen i `webbisar.multimediaFileBaseDir` ovan. |
+
+Se respektive konfigurationsfil samt källkoden för övrig konfig.
+
+# Sätta upp sin lokala utvecklingsmiljö #
+
+För att utveckla och köra projektet lokalt används referensarkitekturens utvecklingsmiljö. Börja därför med att sätta upp utvecklingsmiljön enligt [referensarkitekturens instruktioner](http://code.google.com/p/oppna-program/wiki/Anvisningar_Utvecklingsmiljo). Se [Source](http://code.google.com/p/oppna-program-webbisar/source/checkout) för information om hur du checkar ut källkoden.
+
+För att köra webbisars webbapplikation och portlet lokalt behövs några ytterligare inställningar.
+
+## Ladda hem och installera en lokal databas ##
+Databasen HSQL DB används lokalt för utveckling och test. I enhetstesterna körs den embedded och laddas hem (mha maven) och dras igång automatiskt.
+
+Då man kör webbappen i en lokal Tomcat så behöver man dra igång databasen som en separat process.
+
+Ladda hem och packa upp HSQL DB 1.8.0 från http://hsqldb.org/. Skapa en env-variabel `HSQLDB_HOME` som pekar på din installation.
+
+Skapa sedan en katalog där du vill ha databasen. Starta databasen i den katalogen med följande kommando:
+```
+java -cp $HSQLDB_HOME/lib/hsqldb.jar org.hsqldb.Server -database.0 file:webbisardb -dbname.0 webbisardb
+```
+
+Not: Vid behov av att titta på vad som finns i databasen kan följande kommando användas för att starta HSQL DBs admingränssnitt (en swing-applikation som följer med HSQL DB):
+```
+java -cp $HSQLDB_HOME/lib/hsqldb.jar org.hsqldb.util.DatabaseManagerSwing
+```
+
+De db-inställningar som återfinns i application-dev.properties (jdbc-url, användarnamn och lösenord) bör fungera utan ändring.
+
+Fullständig dokumentation över HSQL DB finns [här](http://hsqldb.sourceforge.net/web/hsqlDocsFrame.html).
+
+## Skapa en lokal katalog för lucene-indexet ##
+
+Skapa en katalog där du vill att lucene-indexet skall ligga. Peka ut denna katalog i hibernate.cfg.xml-filen, propertyn heter `hibernate.search.default.indexBase`, under src/main/resources i projekten core-bc/modules/web samt tools/data-generator.
+
+## Skapa en lokal katalog för mediafiler ##
+
+Skapa en katalog där mediafiler kan sparas lokalt. Peka ut denna katalog ifrån projektet core-bc/modules/web -> filen security.properties -> propertyn `ftpserver.user.testuser.homedirectory` samt
+projekten core-bc/modules/web och tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseDir`.
+
+## Konfigurera din lokala Tomcat att serva mediafiler ##
+Följ instruktionerna [ovan](http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Servning_av_bilder) för att låta Tomcat serva mediafiler från disk via http.
+
+Peka ut URLen i projekten core-bc/modules/web samt tools/data-generator -> filen application-dev.properties -> propertyn `webbisar.imageBaseUrl`.
+
+## Populera den lokala databasen och lucene-indexet med testdata ##
+
+Endera lägger man upp testdata mha det medföljande skript (en vanlig Java-klass) som finns för detta syfte, eller så lägger man manuellt upp en eller flera webbisar via portletten.
+
+Observera att testdataskriptet lägger upp _mycket_ testdata och därför tar relativt lång tid att köra:
+
+  * Kör tools/data-generator -> WebbisGenerator.java (OBS tar lång tid! Kontrollera loggen efter "Closing JPA EntityManagerFactory for persistence unit 'dbschema'", detta indikerar att skriptet är klart.)
+  * Kör därefter tools/data-generator -> WebbisIndexer.java för att indexera om - även detta tar lång tid. Alternativt kan man aktivera indexeringen via admin-portleten.
+
+Testskriptet skapar webbisar som länkar till ett antal testbilder som behöver läggas upp manuellt. Testbilderna skall heta 0-10.jpg och placeras i roten på din lokala katalog för mediafilerna. Tidigare låg en zip med bilder incheckad under data-generator/test-images, men denna har tagits bort av rättighets-/integritetsskäl.
+
+## Testa portlets/webapp lokalt ##
+
+Projektet byggs och deployas som de flesta andra projekt på Öppna program, bygg med maven och deploya via VGR's bundlade Eclipse på en lokal instans av Liferay.
+
+# Deployment / Release #
+
+För att bygga till utv-miljö/test/produktion behöver man se till att rätt properties är satta i respektive projekt genom att ange motsvarande profil vid mavenbygge. Se avsnittet [konfiguration](http://code.google.com/p/oppna-program-webbisar/wiki/Introduktion_till_Webbisar#Konfiguration) ovan för information om vilka properties som behöver sättas. Lucene-indexet ska pekas ut rätt i hibernate.cfg.xml.
+
+Ett tillägg till mavenbygget är att det finns ytterligare en profil att ta hänsyn till. Om portletarna skall deployas på WebSphere måste profilen 'wsp' användas. Annars byggs/releasas projektet som vanligt enligt [Bygganvisningar, Öppna program](http://code.google.com/p/oppna-program/wiki/Bygganvisningar_Oppna_Program).
+
+# Tomcat i test/produktion (webapp) #
+
+## Test ##
+Tomcat är i test/utv-miljön installerat som en windows service (Apache Tomcat Tomcat55).
+
+För att avinstallera:
+
+`> cd C:\webbisar\apache-tomcat-5.5.27\bin`
+`> service.bat remove Tomcat55`
+
+För att installera
+
+`> cd C:\webbisar\apache-tomcat-5.5.27\bin`
+`> service.bat install Tomcat55`
+
+Man kan editera service.bat skriptet för att t ex öka minnet för Tomcat.
+
+## Produktion ##
+Tomcat är i produktionsmiljön installerad som en windows service (Apache Tomcat 6).
+
+För att t.ex. öka minnet för Tomcat får man gå in i programmenyn / Apache Tomcat 6.0 / Configure Tomcat
+
+# websphere eller liferay i test och produktion (portlets) #
+
+För närvarande används WebSphere för test och produktion när det gäller portlets. Tanken är att migrering skall ske till Liferay inom kort, vilket även förberetts för i projektet.
+
+# Subversion #
+Se [Source](http://code.google.com/p/oppna-program-webbisar/source/checkout) för information om hur du checkar ut källkoden.
+
+# CI Server (Hudson) #
+Detta projekt byggs på VGRs interna Hudson-server. Denna är bara tillgänglig internt på VGR.
